@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Providers | Admin</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body style="background: #f1f5f9;">
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">LocalServe <span
+                        style="font-size: 0.8rem; vertical-align: middle; color: var(--secondary);">ADMIN</span></a>
+                <div class="nav-links">
+                    <a href="../index.html">View Site</a>
+                    <a href="index.html" style="font-weight: bold; color: var(--primary);">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <a href="index.html" class="admin-nav-item">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="providers.html" class="admin-nav-item active">
+                <i class="fas fa-users"></i> Providers
+            </a>
+            <a href="categories.html" class="admin-nav-item">
+                <i class="fas fa-folder"></i> Categories
+            </a>
+            <a href="locations.html" class="admin-nav-item">
+                <i class="fas fa-map-marker-alt"></i> Locations
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Manage Providers</h2>
+                <button class="btn btn-primary" onclick="document.getElementById('addModal').style.display='flex'">+ Add
+                    Provider</button>
+            </div>
+
+            <div
+                style="background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Provider Name</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=50"
+                                    style="border-radius: 4px;"></td>
+                            <td>Elite Plumbing Solutions</td>
+                            <td>Plumbing</td>
+                            <td>Downtown</td>
+                            <td><span style="color: #10b981;">Active</span></td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i
+                                        class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i
+                                        class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <!-- More rows... -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Simple "Add Provider" Modal Mockup -->
+    <div id="addModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+        <div style="background: white; width: 600px; padding: 2rem; border-radius: var(--radius);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Add New Provider</h3>
+                <button onclick="document.getElementById('addModal').style.display='none'"
+                    style="border: none; background: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Provider Name</label>
+                <input type="text" class="form-control" placeholder="Enter business name">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-control">
+                        <option>Plumbing</option>
+                        <option>Electrical</option>
+                        <option>Cleaning</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <select class="form-control">
+                        <option>Downtown</option>
+                        <option>Uptown</option>
+                        <option>Suburbs</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="3" placeholder="Briefly describe the business"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-outline"
+                    onclick="document.getElementById('addModal').style.display='none'">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('addModal').style.display='none'">Save
+                    Provider</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

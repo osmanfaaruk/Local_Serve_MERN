@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalServe | Modern Local Service Directory</title>
+    <!-- Tailwind CSS & DaisyUI via CDN for easy implementation -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 px-4 md:px-20">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </label>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="providers.html">All Providers</a></li>
+                    <li><a href="admin/index.html">Admin Dashboard</a></li>
+                </ul>
+            </div>
+            <a href="index.html" class="btn btn-ghost normal-case text-2xl font-bold text-primary">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-medium">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="providers.html">All Providers</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="admin/index.html" class="btn btn-primary btn-sm md:btn-md outline-none">Admin Area</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero min-h-[60vh] bg-base-100 border-b border-base-300">
+        <div class="hero-content text-center">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl font-extrabold mb-4 leading-tight">Find Trusted <span
+                        class="text-primary italic">Local Professionals</span></h1>
+                <p class="text-xl text-base-content/70 mb-8">The most reliable way to discover high-quality services in
+                    your neighborhood. Simple, professional, and verified.</p>
+
+                <!-- Advanced Search Box -->
+                <div
+                    class="flex flex-col md:flex-row gap-2 bg-base-200 p-3 rounded-2xl shadow-lg border border-base-300">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40"></i>
+                        <input type="text" placeholder="What service are you looking for?"
+                            class="input input-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100" />
+                    </div>
+                    <div class="relative flex-1 md:max-w-[200px]">
+                        <i
+                            class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 z-10"></i>
+                        <select
+                            class="select select-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-bold appearance-none">
+                            <option disabled selected>All Chittagong</option>
+                            <option>GEC Circle</option>
+                            <option>Agrabad</option>
+                            <option>Nasirabad</option>
+                            <option>Halishahar</option>
+                            <option>Chawkbazar</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold"
+                        onclick="window.location.href='providers.html'">
+                        Search Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-16">
+
+        <!-- Categories -->
+        <div class="mb-20 text-center">
+            <h2 class="text-3xl font-bold mb-2">Browse by Category</h2>
+            <p class="text-base-content/60 mb-10">Select a service to see verified providers near you.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                <!-- Category Card -->
+                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                    onclick="window.location.href='providers.html?cat=home'">
+                    <div class="card-body items-center text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i class="fas fa-hammer text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Home Repairs</h3>
+                    </div>
+                </div>
+                <!-- Category Card -->
+                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                    onclick="window.location.href='providers.html?cat=cleaning'">
+                    <div class="card-body items-center text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i class="fas fa-broom text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Cleaning</h3>
+                    </div>
+                </div>
+                <!-- Category Card -->
+                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                    onclick="window.location.href='providers.html?cat=plumbing'">
+                    <div class="card-body items-center text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i class="fas fa-faucet text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Plumbing</h3>
+                    </div>
+                </div>
+                <!-- Category Card -->
+                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                    onclick="window.location.href='providers.html?cat=electrical'">
+                    <div class="card-body items-center text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i class="fas fa-bolt text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Electrical</h3>
+                    </div>
+                </div>
+                <!-- Category Card -->
+                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                    onclick="window.location.href='providers.html?cat=landscaping'">
+                    <div class="card-body items-center text-center p-8">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i class="fas fa-leaf text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Gardening</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Providers -->
+        <div>
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <h2 class="text-3xl font-bold">Featured Professionals</h2>
+                    <p class="text-base-content/60">Top-rated providers in your area this month.</p>
+                </div>
+                <a href="providers.html" class="link link-primary font-bold decoration-2 underline-offset-4">Explore All
+                    &rarr;</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Provider Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
+                    onclick="window.location.href='detail.html'">
+                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
+                        <i class="fas fa-tools text-6xl text-primary/20"></i>
+                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Plumbing</div>
+                        <div
+                            class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 badge-sm md:badge-md border-none">
+                            Verified</div>
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Elite
+                            Plumbing Solutions</h3>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> 123 Main St, Downtown
+                        </p>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> 123 Main St, GEC Circle
+                        </p>
+                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
+                            <div class="text-lg font-bold">From <span class="text-primary">$45/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Provider Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
+                    onclick="window.location.href='detail.html'">
+                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
+                        <i class="fas fa-soap text-6xl text-primary/20"></i>
+                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Cleaning</div>
+                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
+                            Verified</div>
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Sparkle
+                            Clean Co.</h3>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> Uptown Commercial Area
+                        </p>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> Agrabad Commercial Area
+                        </p>
+                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
+                            <div class="text-lg font-bold">From <span class="text-primary">$35/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Provider Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
+                    onclick="window.location.href='detail.html'">
+                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
+                        <i class="fas fa-bolt text-6xl text-primary/20"></i>
+                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Electrical</div>
+                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
+                            Verified</div>
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Pro Circuit
+                            Electrical</h3>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> West Side Districts
+                        </p>
+                        <p class="text-base-content/60 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-primary"></i> West Side Districts
+                        </p>
+                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
+                            <div class="text-lg font-bold">From <span class="text-primary">$60/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer p-10 bg-neutral text-neutral-content py-20 px-4 md:px-20">
+        <div>
+            <span class="text-2xl font-bold text-white mb-4 block">LocalServe</span>
+            <p>Providing the easiest way to connect<br />with local professionals since 2026.</p>
+        </div>
+        <div>
+            <span class="footer-title">Services</span>
+            <a class="link link-hover">Home Repairs</a>
+            <a class="link link-hover">Cleaning</a>
+            <a class="link link-hover">Plumbing</a>
+            <a class="link link-hover">Electrical</a>
+        </div>
+        <div>
+            <span class="footer-title">Company</span>
+            <a class="link link-hover">About us</a>
+            <a class="link link-hover">Contact</a>
+            <a class="link link-hover">Privacy Policy</a>
+        </div>
+        <div>
+            <span class="footer-title">Newsletter</span>
+            <div class="form-control w-80">
+                <label class="label">
+                    <span class="label-text text-neutral-content">Enter your email address</span>
+                </label>
+                <div class="relative">
+                    <input type="text" placeholder="username@site.com"
+                        class="input input-bordered w-full pr-16 bg-white text-black rounded-lg" />
+                    <button
+                        class="btn btn-primary absolute top-0 right-0 rounded-l-none rounded-r-lg">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer footer-center p-4 bg-neutral border-t border-neutral-content/10 text-neutral-content/60">
+        <div>
+            <p>Copyright © 2026 - All right reserved by LocalServe Directory</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

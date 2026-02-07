@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Providers | LocalServe Modern</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 px-4 md:px-20">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </label>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="providers.html">All Providers</a></li>
+                    <li><a href="admin/index.html">Admin Dashboard</a></li>
+                </ul>
+            </div>
+            <a href="index.html" class="btn btn-ghost normal-case text-2xl font-bold text-primary">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-medium">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="providers.html" class="active">All Providers</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="admin/index.html" class="btn btn-primary btn-sm md:btn-md">Admin Area</a>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Filter Sidebar -->
+            <aside class="w-full lg:w-80 space-y-6">
+                <div class="card bg-base-100 shadow-sm border border-base-300 sticky top-24">
+                    <div class="card-body p-6">
+                        <h2 class="card-title text-xl font-bold mb-4">Filter Results</h2>
+
+                        <!-- Search Within -->
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Search</span></label>
+                            <div class="relative">
+                                <i
+                                    class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40"></i>
+                                <input type="text" placeholder="e.g. Plumber"
+                                    class="input input-bordered w-full pl-10" />
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Category</span></label>
+                            <select class="select select-bordered w-full">
+                                <option>All Categories</option>
+                                <option>Home Repairs</option>
+                                <option>Cleaning</option>
+                                <option>Plumbing</option>
+                                <option>Electrical</option>
+                            </select>
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Location</span></label>
+                            <select class="select select-bordered w-full">
+                                <option>All Chittagong</option>
+                                <option>GEC Circle</option>
+                                <option>Agrabad</option>
+                                <option>Nasirabad</option>
+                                <option>Halishahar</option>
+                                <option>Chawkbazar</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="form-control mb-6">
+                            <label class="label"><span class="label-text font-bold">Price Range ($)</span></label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" placeholder="Min" class="input input-bordered w-full" />
+                                <span>-</span>
+                                <input type="number" placeholder="Max" class="input input-bordered w-full" />
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-full">Apply Filters</button>
+                        <button class="btn btn-ghost btn-sm w-full mt-2">Reset All</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Listing Main Content -->
+            <main class="flex-1">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold">Professional Providers</h1>
+                        <p class="text-base-content/60">Showing 12 verified service providers near you.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm opacity-60">Sort by:</span>
+                        <select class="select select-bordered select-sm">
+                            <option>Most Recent</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid of Results -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Provider 1 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-xl transition-all cursor-pointer group"
+                        onclick="window.location.href='detail.html'">
+                        <div class="card-body p-0 flex-row overflow-hidden">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center">
+                                <i class="fas fa-wrench text-4xl text-primary/30"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline badge-sm mb-2">Plumbing</div>
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Elite Plumbing
+                                    Solutions</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt"></i> GEC Circle, CTG
+                                </p>
+                                </p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <div class="font-bold text-primary">$45 - $90/hr</div>
+                                    <button class="btn btn-ghost btn-circle btn-sm"><i
+                                            class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Provider 2 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-xl transition-all cursor-pointer group"
+                        onclick="window.location.href='detail.html'">
+                        <div class="card-body p-0 flex-row overflow-hidden">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center">
+                                <i class="fas fa-broom text-4xl text-primary/30"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline badge-sm mb-2">Cleaning</div>
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Sparkle Clean
+                                    Co.</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt"></i> Agrabad, CTG
+                                </p>
+                                </p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <div class="font-bold text-primary">$30 - $60/hr</div>
+                                    <button class="btn btn-ghost btn-circle btn-sm"><i
+                                            class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Provider 3 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-xl transition-all cursor-pointer group"
+                        onclick="window.location.href='detail.html'">
+                        <div class="card-body p-0 flex-row overflow-hidden">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center">
+                                <i class="fas fa-plug text-4xl text-primary/30"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline badge-sm mb-2">Electrical</div>
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Pro Circuit
+                                    Electrical</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt"></i> Nasirabad, CTG
+                                </p>
+                                </p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <div class="font-bold text-primary">$50 - $110/hr</div>
+                                    <button class="btn btn-ghost btn-circle btn-sm"><i
+                                            class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat Card for Grid filling -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-xl transition-all cursor-pointer group"
+                        onclick="window.location.href='detail.html'">
+                        <div class="card-body p-0 flex-row overflow-hidden">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center">
+                                <i class="fas fa-leaf text-4xl text-primary/30"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline badge-sm mb-2">Gardening</div>
+                                <h3 class="text-xl font-bold group-hover:text-primary transition-colors">Green Thumb
+                                    Gardens</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt"></i> Halishahar, CTG
+                                </p>
+                                </p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <div class="font-bold text-primary">$40 - $85/hr</div>
+                                    <button class="btn btn-ghost btn-circle btn-sm"><i
+                                            class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12 pb-12">
+                    <div class="join shadow-sm">
+                        <button class="join-item btn btn-outline btn-sm">«</button>
+                        <button class="join-item btn btn-primary btn-sm">1</button>
+                        <button class="join-item btn btn-outline btn-sm">2</button>
+                        <button class="join-item btn btn-outline btn-sm">3</button>
+                        <button class="join-item btn btn-outline btn-sm">»</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer p-10 bg-neutral text-neutral-content mt-auto px-4 md:px-20">
+        <div>
+            <span class="text-2xl font-bold text-white mb-4 block text-primary">LocalServe</span>
+            <p>Connect with local professionals in seconds.</p>
+        </div>
+        <div>
+            <span class="footer-title">Navigation</span>
+            <a href="index.html" class="link link-hover">Home</a>
+            <a href="providers.html" class="link link-hover">Providers</a>
+            <a href="admin/index.html" class="link link-hover">Admin Portal</a>
+        </div>
+        <div>
+            <span class="footer-title">Legal</span>
+            <a class="link link-hover">Terms of use</a>
+            <a class="link link-hover">Privacy policy</a>
+            <a class="link link-hover">Cookie policy</a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

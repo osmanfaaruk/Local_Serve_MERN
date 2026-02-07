@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="emerald">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LocalServe Modern</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-md px-4 md:px-20 sticky top-0 z-50">
+        <div class="flex-1">
+            <a href="../index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe <span
+                    class="badge badge-neutral ml-2">ADMIN</span></a>
+        </div>
+        <div class="flex-none gap-4">
+            <a href="../index.html" class="btn btn-ghost btn-sm">View Website</a>
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-circle avatar placeholder">
+                    <div class="bg-primary text-primary-content rounded-full w-10">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </label>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a class="justify-between">Profile <span class="badge">New</span></a></li>
+                    <li><a>Settings</a></li>
+                    <li><a class="text-error font-bold" href="../index.html">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Wrapper -->
+    <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto min-h-[calc(100vh-64px)] overflow-hidden">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 flex-shrink-0">
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
+            <a href="index.html"
+                class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="providers.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-users"></i> Providers
+            </a>
+            <a href="categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-th-large"></i> Categories
+            </a>
+            <a href="locations.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-map-marker-alt"></i> Locations
+            </a>
+            <div class="divider"></div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest">System</div>
+            <a href="#" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-shield-alt"></i> Security
+            </a>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
+                <div>
+                    <h1 class="text-4xl font-extrabold mb-1">Chittagong Local Directory</h1>
+                    <p class="text-base-content/60 font-medium">Managing service providers across Chittagong District.
+                    </p>
+                </div>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <button class="btn btn-outline border-base-300 bg-base-100"><i class="fas fa-download"></i> Export
+                        Data</button>
+                    <a href="providers.html" class="btn btn-primary shadow-lg shadow-primary/20"><i
+                            class="fas fa-plus"></i> New Provider</a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="stats shadow bg-base-100 border border-base-300">
+                    <div class="stat">
+                        <div class="stat-figure text-primary"><i class="fas fa-users-cog text-3xl"></i></div>
+                        <div class="stat-title font-bold">Total Providers</div>
+                        <div class="stat-value text-primary">1,240</div>
+                        <div class="stat-desc text-success">↗︎ 400 (22%) this month</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-100 border border-base-300">
+                    <div class="stat">
+                        <div class="stat-figure text-secondary"><i class="fas fa-search-location text-3xl"></i></div>
+                        <div class="stat-title font-bold">Total Searches</div>
+                        <div class="stat-value text-secondary">42.6k</div>
+                        <div class="stat-desc">21% more than last week</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-100 border border-base-300">
+                    <div class="stat">
+                        <div class="stat-figure text-warning"><i class="fas fa-clock text-3xl"></i></div>
+                        <div class="stat-title font-bold">Pending Approval</div>
+                        <div class="stat-value text-warning">14</div>
+                        <div class="stat-desc font-medium">Needs urgent review</div>
+                    </div>
+                </div>
+                <div class="stats shadow bg-base-100 border border-base-300">
+                    <div class="stat">
+                        <div class="stat-figure text-accent"><i class="fas fa-check-circle text-3xl"></i></div>
+                        <div class="stat-title font-bold">Active Locations</div>
+                        <div class="stat-value text-accent">12</div>
+                        <div class="stat-desc text-success">Chittagong Metro Coverage</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Recent Providers Table -->
+                <div class="xl:col-span-2 card bg-base-100 shadow-sm border border-base-300 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="flex items-center justify-between p-6 border-b border-base-200">
+                            <h3 class="card-title font-bold">Recently Added Providers</h3>
+                            <button class="btn btn-ghost btn-xs">View All <i
+                                    class="fas fa-chevron-right ml-1"></i></button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="table table-zebra w-full">
+                                <thead class="bg-base-200">
+                                    <tr>
+                                        <th>Provider</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date Added</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center space-x-3">
+                                                <div class="avatar placeholder">
+                                                    <div
+                                                        class="bg-blue-100 text-blue-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
+                                                        <i class="fas fa-tools text-sm"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="font-bold">Elite Plumbing</div>
+                                                    <div class="text-xs opacity-50 text-success">Verified</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="badge badge-ghost badge-sm font-bold">Plumbing</div>
+                                        </td>
+                                        <td>
+                                            <div class="badge badge-success text-white badge-xs p-2">Active</div>
+                                        </td>
+                                        <td>Oct 24, 2026</td>
+                                        <th class="text-right"><button
+                                                class="btn btn-ghost btn-xs font-bold text-primary">Edit</button></th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="flex items-center space-x-3">
+                                                <div class="avatar placeholder">
+                                                    <div
+                                                        class="bg-green-100 text-green-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
+                                                        <i class="fas fa-leaf text-sm"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="font-bold">Green Gardens</div>
+                                                    <div class="text-xs opacity-50">Pending</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="badge badge-ghost badge-sm font-bold">Landscaping</div>
+                                        </td>
+                                        <td>
+                                            <div class="badge badge-warning text-white badge-xs p-2">Pending</div>
+                                        </td>
+                                        <td>Oct 23, 2026</td>
+                                        <th class="text-right"><button
+                                                class="btn btn-ghost btn-xs font-bold text-primary">Verify</button></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simple Management Card -->
+                <div class="card bg-primary text-primary-content shadow-xl overflow-hidden relative">
+                    <i class="fas fa-rocket absolute -right-4 -bottom-4 text-9xl opacity-10 rotate-12"></i>
+                    <div class="card-body relative z-10">
+                        <h3 class="card-title text-2xl font-bold mb-4">Quick Management</h3>
+                        <p class="mb-6 opacity-90 leading-relaxed font-medium">Manage your directory categories and
+                            locations with one click to keep your catalog updated.</p>
+                        <div class="flex flex-col gap-3">
+                            <a href="categories.html"
+                                class="btn btn-white text-primary border-none bg-white hover:bg-white/90 font-bold">Manage
+                                Categories</a>
+                            <a href="locations.html"
+                                class="btn btn-outline border-white/30 text-white hover:bg-white/10 font-bold">Set
+                                Coverage Areas</a>
+                        </div>
+                        <div class="divider before:bg-white/20 after:bg-white/20"></div>
+                        <div class="flex items-center gap-4">
+                            <div class="avatar-group -space-x-6">
+                                <div class="avatar border-white/20 placeholder">
+                                    <div class="bg-white text-primary rounded-full w-10"><i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="avatar border-white/20 placeholder">
+                                    <div class="bg-white text-primary rounded-full w-10"><i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="avatar placeholder border-white/20">
+                                    <div class="bg-neutral text-neutral-content rounded-full w-10"><span>+5</span></div>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold opacity-80 uppercase tracking-tighter">New Applicants
+                                Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

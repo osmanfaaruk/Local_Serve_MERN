@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalServe | Find Trusted Local Services</title>
+    <meta name="description" content="Discover local service providers in your area easily.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">LocalServe</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="providers.html">All Providers</a>
+                    <a href="admin/index.html">Admin</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Find Local Professionals</h1>
+            <p>The easiest way to discover trusted services in your neighborhood.</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="What service do you need? (e.g. Plumber)">
+                <select class="search-select">
+                    <option value="">All Locations</option>
+                    <option value="downtown">Downtown</option>
+                    <option value="uptown">Uptown</option>
+                    <option value="suburbs">Suburbs</option>
+                </select>
+                <button class="btn-search" onclick="window.location.href='providers.html'">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <h2 class="section-title">Browse by Category</h2>
+        <div class="categories-grid">
+            <div class="category-card" onclick="window.location.href='providers.html?cat=home'">
+                <i class="fas fa-home"></i>
+                <h3>Home Repairs</h3>
+            </div>
+            <div class="category-card" onclick="window.location.href='providers.html?cat=cleaning'">
+                <i class="fas fa-broom"></i>
+                <h3>Cleaning</h3>
+            </div>
+            <div class="category-card" onclick="window.location.href='providers.html?cat=plumbing'">
+                <i class="fas fa-faucet"></i>
+                <h3>Plumbing</h3>
+            </div>
+            <div class="category-card" onclick="window.location.href='providers.html?cat=electrical'">
+                <i class="fas fa-bolt"></i>
+                <h3>Electrical</h3>
+            </div>
+            <div class="category-card" onclick="window.location.href='providers.html?cat=landscaping'">
+                <i class="fas fa-leaf"></i>
+                <h3>Landscaping</h3>
+            </div>
+        </div>
+
+        <h2 class="section-title">Featured Providers</h2>
+        <div class="providers-grid">
+            <!-- Mock Provider 1 -->
+            <div class="provider-card" onclick="window.location.href='detail.html'">
+                <div class="provider-img" style="background: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=400') center/cover;"></div>
+                <div class="provider-info">
+                    <div class="provider-category">Plumbing</div>
+                    <div class="provider-name">Elite Plumbing Solutions</div>
+                    <div class="provider-location"><i class="fas fa-map-marker-alt"></i> Downtown, Central City</div>
+                </div>
+            </div>
+            <!-- Mock Provider 2 -->
+            <div class="provider-card" onclick="window.location.href='detail.html'">
+                <div class="provider-img" style="background: url('https://images.unsplash.com/photo-1581578731522-745a05ad9ad5?auto=format&fit=crop&q=80&w=400') center/cover;"></div>
+                <div class="provider-info">
+                    <div class="provider-category">Cleaning</div>
+                    <div class="provider-name">Sparkle Clean Co.</div>
+                    <div class="provider-location"><i class="fas fa-map-marker-alt"></i> Uptown Area</div>
+                </div>
+            </div>
+            <!-- Mock Provider 3 -->
+            <div class="provider-card" onclick="window.location.href='detail.html'">
+                <div class="provider-img" style="background: url('https://images.unsplash.com/photo-1558444479-c8f010524f1c?auto=format&fit=crop&q=80&w=400') center/cover;"></div>
+                <div class="provider-info">
+                    <div class="provider-category">Electrical</div>
+                    <div class="provider-name">Pro Circuit Electrical</div>
+                    <div class="provider-location"><i class="fas fa-map-marker-alt"></i> Suburbs, West Side</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 LocalServe Directory. All rights reserved.</p>
+            <p>Minimal, Professional, Reliable.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
