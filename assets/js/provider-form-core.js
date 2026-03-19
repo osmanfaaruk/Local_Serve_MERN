@@ -21,7 +21,11 @@ const allAvailableAreas = [
 // --- VALIDATION & UTILS ---
 
 /**
- * Updates character count for a textarea and handles the 300-char limit.
+ * Updates the character count display for a given textarea input.
+ * It also applies an error warning class if the maximum length is exceeded.
+ * @param {string} inputId - The HTML ID of the `<textarea>` element.
+ * @param {string} labelId - The HTML ID of the `<span>` or `<label>` displaying the count.
+ * @param {number} [maxChars=300] - The maximum allowed characters before showing an error state.
  */
 function updateCharCount(inputId, labelId, maxChars = 300) {
     const input = document.getElementById(inputId);
@@ -43,6 +47,10 @@ function updateCharCount(inputId, labelId, maxChars = 300) {
 
 // --- AREA SEARCH LOGIC ---
 
+/**
+ * Initializes the area (location) search input behavior.
+ * Attaches event listeners for typing, focusing, and clicking outside the dropdown container.
+ */
 function setupAreaSearch() {
     const input = document.getElementById('areaSearchInput');
     const dropdown = document.getElementById('areaDropdown');
@@ -169,6 +177,10 @@ function setupTagInput() {
     });
 }
 
+/**
+ * Processes the input from the tag field (services offered).
+ * Splits input by comma, enforces a 6-word limit per tag, and adds valid tags to the global array.
+ */
 function processTagInput() {
     const input = document.getElementById('tagInput');
     if (!input) return;
@@ -242,7 +254,9 @@ function refreshTags() {
 let allAvailableCategories = [];
 
 /**
- * Fetch categories from JSON if not already loaded.
+ * Fetches the list of available categories from the local JSON file.
+ * If fetching fails, it provides a fallback set of hardcoded categories.
+ * @returns {Promise<Array>} A promise that resolves to an array of category objects.
  */
 async function fetchCategories() {
     if (allAvailableCategories.length > 0) return allAvailableCategories;
