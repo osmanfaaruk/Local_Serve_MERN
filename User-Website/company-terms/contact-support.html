@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Support | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {themes: ['sky', 'light'], darkTheme: 'light'}
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        [data-theme] { --p: 221 70% 41% !important; --pf: 221 70% 31% !important; --pc: 0 0% 100% !important; }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .navbar { background-color: rgba(255, 255, 255, 0.8) !important; backdrop-filter: blur(12px) !important; border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; position: sticky !important; top: 0 !important; z-index: 50 !important; }
+    </style>
+</head>
+<body class="min-h-screen bg-base-100 flex flex-col">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="../request-to-serve.html">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="../../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+        </div>
+    </div>
+
+    <!-- Contact & Support Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <div class="bg-base-200 py-20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-top"></div>
+            <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+                <div class="badge badge-primary badge-outline font-bold mb-6 p-4">24/7 Support</div>
+                <h1 class="text-5xl font-extrabold mb-4 leading-tight">Get In <span class="text-primary italic">Touch</span></h1>
+                <p class="text-xl text-base-content/70 max-w-2xl mx-auto">Have questions or need assistance? Our team is here to help ensure you have the best experience on LocalServe.</p>
+            </div>
+        </div>
+
+        <!-- Contact Information & Form -->
+        <div class="max-w-7xl mx-auto px-4 py-16 -mt-10 relative z-20">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Info Cards -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="card bg-base-100 shadow-xl border border-base-200 hover:-translate-y-1 transition-transform">
+                        <div class="card-body">
+                            <i class="fas fa-map-marker-alt text-3xl text-primary mb-2"></i>
+                            <h2 class="card-title text-2xl font-bold">Office Address</h2>
+                            <p class="text-base-content/70">Chadgaon, Chottogram, Bangladesh</p>
+                            <p class="text-xs text-base-content/50 mt-2">Open: 9 AM - 6 PM (Sun-Thu)</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-200 hover:-translate-y-1 transition-transform">
+                        <div class="card-body">
+                            <i class="fas fa-phone-alt text-3xl text-primary mb-2"></i>
+                            <h2 class="card-title text-2xl font-bold">Phone Number</h2>
+                            <p class="text-base-content/70 mb-2">Reach out directly via phone.</p>
+                            <a href="tel:+8801841483138" class="text-xl font-bold text-primary hover:underline">+880 1841 483138</a>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-200 hover:-translate-y-1 transition-transform">
+                        <div class="card-body">
+                            <i class="fas fa-envelope text-3xl text-primary mb-2"></i>
+                            <h2 class="card-title text-2xl font-bold">Email Us</h2>
+                            <p class="text-base-content/70 mb-2">Send us your queries anytime.</p>
+                            <a href="mailto:localserve.admin@hotmail.com" class="text-lg font-bold text-primary break-all hover:underline">localserve.admin@hotmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-2">
+                    <div class="card bg-base-100 shadow-2xl border border-base-200">
+                        <div class="card-body p-8 sm:p-12">
+                            <h2 class="text-3xl font-extrabold mb-6">Send a Message</h2>
+                            <form class="space-y-6" onsubmit="event.preventDefault(); document.getElementById('successMsg').classList.remove('hidden'); this.reset();">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-bold">Full Name</span></label>
+                                        <input type="text" placeholder="John Doe" class="input input-bordered w-full focus:outline-primary bg-base-200/50" required />
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-bold">Email Address</span></label>
+                                        <input type="email" placeholder="john@example.com" class="input input-bordered w-full focus:outline-primary bg-base-200/50" required />
+                                    </div>
+                                </div>
+                                <div class="form-control w-full">
+                                    <label class="label"><span class="label-text font-bold">Subject</span></label>
+                                    <input type="text" placeholder="How can we help?" class="input input-bordered w-full focus:outline-primary bg-base-200/50" required />
+                                </div>
+                                <div class="form-control w-full">
+                                    <label class="label"><span class="label-text font-bold">Your Message</span></label>
+                                    <textarea class="textarea textarea-bordered h-32 focus:outline-primary bg-base-200/50" placeholder="Type your message here..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-full text-lg font-bold">Send Message <i class="fas fa-paper-plane ml-2"></i></button>
+                                
+                                <!-- Success Message -->
+                                <div id="successMsg" class="hidden alert alert-success mt-4">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Thank you! Your message has been sent successfully.</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="../js/footer-loader.js"></script>
+</body>
+</html>

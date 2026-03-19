@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Our Mission | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {themes: ['sky', 'light'], darkTheme: 'light'}
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        [data-theme] { --p: 221 70% 41% !important; --pf: 221 70% 31% !important; --pc: 0 0% 100% !important; }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .navbar { background-color: rgba(255, 255, 255, 0.8) !important; backdrop-filter: blur(12px) !important; border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; position: sticky !important; top: 0 !important; z-index: 50 !important; }
+    </style>
+</head>
+<body class="min-h-screen bg-base-100 flex flex-col">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="../request-to-serve.html">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="../../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="text-center">
+            <div class="text-6xl text-primary/40 mb-6"><i class="fas fa-tools"></i></div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">This Page is Under Construction</h1>
+            <p class="text-lg text-base-content/60 max-w-lg mx-auto mb-8">We are working hard to bring you the best experience. Please check back later for updates to our About section!</p>
+            <a href="../index.html" class="btn btn-primary">Return to Home</a>
+        </div>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="../js/footer-loader.js"></script>
+</body>
+</html>

@@ -6,6 +6,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    const isSubdir = window.location.pathname.includes('/company-terms/');
+    const pfx = isSubdir ? '../' : '';
+
     const footerTemplate = `
     <footer class="bg-slate-950 text-slate-300 pt-20 pb-10 px-6 md:px-20 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -40,10 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="space-y-6">
                 <h4 class="text-white font-bold uppercase tracking-widest text-xs">Explore LocalServe</h4>
                 <ul class="space-y-4 text-sm">
-                    <li><a href="index.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Home & Featured</a></li>
-                    <li><a href="search-providers.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Search All Providers</a></li>
-                    <li><a href="request-to-serve.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Become a Provider</a></li>
-                    <li><a href="../Admin-Dashboard/index.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Administrator Portal</a></li>
+                    <li><a href="${pfx}index.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Home & Featured</a></li>
+                    <li><a href="${pfx}search-providers.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Search All Providers</a></li>
+                    <li><a href="${pfx}request-to-serve.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Become a Provider</a></li>
                 </ul>
             </div>
 
@@ -51,41 +53,38 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="space-y-6">
                 <h4 class="text-white font-bold uppercase tracking-widest text-xs">Company & Terms</h4>
                 <ul class="space-y-4 text-sm">
-                    <li><a href="#" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">About Our Mission</a></li>
-                    <li><a href="#" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Contact Support</a></li>
-                    <li><a href="#" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Terms of Service</a></li>
+                    <li><a href="${pfx}company-terms/about-mission.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">About Our Mission</a></li>
+                    <li><a href="${pfx}company-terms/contact-support.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Contact Support</a></li>
+                    <li><a href="${pfx}company-terms/privacy-policy.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
+                    <li><a href="${pfx}company-terms/terms-of-service.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Terms of Service</a></li>
                 </ul>
             </div>
 
-            <!-- Newsletter -->
+            <!-- Contact -->
             <div class="space-y-6">
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Stay Updated</h4>
-                <p class="text-sm opacity-70">Get the latest news on service updates and verified professional listings.</p>
-                <div class="form-control">
-                    <div class="join w-full shadow-2xl shadow-blue-900/10">
-                        <input type="email" placeholder="Email Address" class="input input-bordered join-item w-full bg-white/5 border-white/10 focus:border-blue-700 transition-colors placeholder:opacity-50 text-white" />
-                        <button class="btn btn-primary join-item border-none text-white font-bold px-6">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Contact</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt text-blue-700 mt-1"></i>
+                        <span>Chadgaon, Chottogram</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone-alt text-blue-700"></i>
+                        <a href="tel:+8801841483138" class="hover:text-blue-700 transition-colors">+8801841483138</a>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-blue-700"></i>
+                        <a href="mailto:localserve.admin@hotmail.com" class="hover:text-blue-700 transition-colors">localserve.admin@hotmail.com</a>
+                    </li>
+                </ul>
             </div>
         </div>
 
         <!-- Copyright Bottom -->
-        <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 text-center">
             <p class="text-xs font-medium opacity-50 tracking-wide">
-                &copy; 2026 LocalServe Directory. Built with <i class="fas fa-heart text-rose-500 mx-1"></i> for the community.
+                &copy; 2026 LocalServe Directory.
             </p>
-            <div class="flex items-center gap-8">
-                <div class="flex items-center gap-2 text-[10px] font-bold opacity-30 uppercase tracking-tighter">
-                   <i class="fas fa-shield-alt"></i> SSL Secured
-                </div>
-                <div class="flex items-center gap-2 text-[10px] font-bold opacity-30 uppercase tracking-tighter">
-                   <i class="fas fa-check-circle"></i> Verified Listing
-                </div>
-            </div>
         </div>
     </footer>
     `;
