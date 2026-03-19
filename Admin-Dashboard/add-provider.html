@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Provider | Admin Modern</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/provider-form-core.js"></script>
+    <style>
+        :root {
+            --p: 221 70% 41%; /* Dark Blue (blue-700 equivalent) */
+            --pf: 221 70% 31%; /* Darker focus */
+            --success: 142 76% 36%;
+            --error: 0 84% 60%;
+            --neutral: 0 0% 10%;
+        }
+        body { opacity: 0; transition: opacity 0.3s ease; color: #1a1a1a; }
+        
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        
+        .step-primary::before, .step-primary::after { background-color: hsl(var(--p)) !important; color: white !important; }
+
+        /* Professional Tag Styles */
+        .tag-container { 
+            display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.75rem; 
+            background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.75rem; min-height: 3.5rem; 
+        }
+        .tag-item {
+            display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem;
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 2rem;
+            font-size: 0.8rem; font-weight: 600; color: #374151; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .tag-remove { cursor: pointer; color: #9ca3af; transition: color 0.2s; }
+        .tag-remove:hover { color: #ef4444; }
+        .category-tag .remove-btn:hover { color: #ef4444; }
+        #areaDropdown {
+            border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .dropdown-item { padding: 0.75rem 1rem; cursor: pointer; transition: background 0.2s; font-weight: 500; }
+        .dropdown-item:hover { background: #f3f4f6; color: hsl(var(--p)); }
+        /* Consistent Navbar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
+        <div class="flex-1">
+            <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
+        </div>
+        <div class="flex-none"><a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a></div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
+        <!-- Sidebar -->
+        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen"></aside>
+        <script src="js/sidebar.js"></script>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div class="flex items-center gap-4 mb-8">
+                <a href="manage-providers.html" class="btn btn-circle btn-ghost"><i class="fas fa-arrow-left"></i></a>
+                <div>
+                    <h1 class="text-3xl font-extrabold">Add New Provider</h1>
+                    <p class="text-base-content/60">Fill in the details to list a new verified service provider</p>
+                </div>
+            </div>
+
+            <!-- Main Content Container -->
+            <div class="max-w-4xl max-w-4xl mx-auto" id="main-container">
+                 <div class="flex justify-center p-12">
+                    <span class="loading loading-spinner text-primary loading-lg"></span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+<!-- ========================================== -->
+<!-- TEMPLATES (Hidden, used by JS)             -->
+<!-- ========================================== -->
+
+<!-- View: Application Form -->
+<template id="tmpl-form">
+    <div class="card bg-base-100 shadow-sm border border-base-300">
+        <div class="card-body p-6 md:p-10">
+            <!-- Progress Steps -->
+            <ul class="steps steps-horizontal w-full mb-10 text-sm font-bold opacity-80 overflow-hidden">
+                <li class="step step-primary">Company Info</li>
+                <li class="step">Services</li>
+                <li class="step">Review</li>
+            </ul>
+
+            <form id="providerForm" onsubmit="handleFormNext(event)" class="space-y-8">
+                <!-- PART 1: Company Information -->
+                <div id="form-part-1">
+                    <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 border-b pb-2 mb-6">
+                        <i class="fas fa-building text-primary"></i> Company Information
+                    </h2>
+                    
+                    <div class="form-control mb-6">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Provider Type <span class="text-error">*</span></span></label>
+                        <div class="flex gap-4">
+                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1 hover:border-primary/50 transition-colors">
+                                <input type="radio" name="providerType" value="Company" class="radio radio-primary radio-sm" checked />
+                                <span class="label-text font-semibold">Company</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1 hover:border-primary/50 transition-colors">
+                                <input type="radio" name="providerType" value="Self Provider" class="radio radio-primary radio-sm" />
+                                <span class="label-text font-semibold">Self Provider (Individual)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="form-control md:col-span-2">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Business / Provider Name <span class="text-error">*</span></span></label>
+                            <input type="text" id="f_businessName" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Contact Number <span class="text-error">*</span></span></label>
+                            <input type="tel" id="f_phone" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Email Address <span class="text-error">*</span></span></label>
+                            <input type="email" id="f_email" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold uppercase tracking-wider text-xs">About The Provider <span class="text-error">*</span></span>
+                            <span class="label-text-alt text-xs opacity-70" id="wordCountLabel">0 / 300 characters</span>
+                        </label>
+                        <textarea id="f_about" class="textarea textarea-bordered h-32 focus:outline-primary" placeholder="Write a short bio or company description..." required oninput="updateCharCount('f_about', 'wordCountLabel', 300)"></textarea>
+                    </div>
+
+                    <div class="flex justify-end mt-8">
+                        <button type="button" onclick="goToStep(2)" class="btn btn-primary text-white font-bold px-8">Next Step <i class="fas fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+
+                <!-- PART 2: Services Information (Hidden initially) -->
+                <div id="form-part-2" class="hidden">
+                    <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 border-b pb-2 mb-6">
+                        <i class="fas fa-tools text-primary"></i> Services Information
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <!-- Working Hours (Improved UX) -->
+                        <div class="form-control col-span-1 md:col-span-2">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Working Days <span class="text-error">*</span></span></label>
+                            <div class="flex flex-wrap gap-2 mb-4" id="workDayPicker">
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Sat" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Sat
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Sun" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Sun
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Mon" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Mon
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Tue" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Tue
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Wed" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Wed
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Thu" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Thu
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="workDay" value="Fri" class="peer sr-only" />
+                                    <div class="badge badge-lg py-4 px-4 gap-2 font-bold bg-base-200 text-base-content/40 border-base-300 peer-checked:bg-blue-700 peer-checked:text-white peer-checked:border-blue-700 transition-all hover:bg-base-300">
+                                        <i class="fas fa-calendar-alt text-[10px] opacity-70"></i>
+                                        Fri
+                                    </div>
+                                </label>
+                            </div>
+
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Working Hours <span class="text-error">*</span></span></label>
+                            <div class="flex items-center gap-3">
+                                <div class="relative flex-1">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs opacity-50 font-bold uppercase">From</span>
+                                    <input type="time" id="f_workTimeStart" class="input input-bordered w-full pl-16 focus:outline-primary" required />
+                                </div>
+                                <span class="font-bold opacity-30">TO</span>
+                                <div class="relative flex-1">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs opacity-50 font-bold uppercase">To</span>
+                                    <input type="time" id="f_workTimeEnd" class="input input-bordered w-full pl-10 focus:outline-primary" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Guide -->
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Pricing - Consultation Fee (৳) <span class="text-error">*</span></span></label>
+                            <input type="text" id="f_priceConsult" placeholder="e.g. Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Pricing - Hourly Labor Fee (৳) <span class="text-error">*</span></span></label>
+                            <input type="text" id="f_priceHourly" placeholder="e.g. 500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+
+                        <!-- Categories Selection (Searchable Dropdown) - UPGRADED -->
+                        <div class="form-control md:col-span-2 relative" id="categorySearchSection">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Categories <span class="text-error">*</span></span></label>
+                            
+                            <div class="join w-full mb-3 shadow-sm">
+                                <span class="join-item flex items-center px-4 bg-base-200 border border-base-300 border-r-0"><i class="fas fa-search opacity-50"></i></span>
+                                <input type="text" id="categorySearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Search and select categories (e.g. Plumbing)..." autocomplete="off" />
+                                <button type="button" class="btn btn-primary join-item text-white" onclick="toggleCategoryDropdown()"><i class="fas fa-chevron-down"></i></button>
+                            </div>
+
+                            <!-- Dropdown List -->
+                            <div id="categoryDropdown" class="absolute top-[85px] left-0 w-full bg-base-100 border border-base-300 rounded-lg z-[60] hidden">
+                                <!-- Category items will be injected here -->
+                            </div>
+
+                            <!-- Selected Categories Tags -->
+                            <div class="bg-base-200/50 p-4 rounded-xl border border-base-300 flex flex-wrap gap-2 min-h-[4rem] mt-2" id="categoryTagContainer">
+                                <span class="text-xs opacity-50 italic py-1 px-1">No categories selected yet. Click search bar to see options.</span>
+                            </div>
+                            
+                            <label class="label"><span class="label-text-alt opacity-70">Search and select all categories that describe the business.</span></label>
+                        </div>
+
+                        <!-- Service Areas (Searchable Dropdown) -->
+
+                        <div class="form-control md:col-span-2 relative" id="areaSearchSection">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Service Areas <span class="text-error">*</span></span></label>
+                            
+                            <div class="join w-full mb-3 shadow-sm">
+                                <span class="join-item flex items-center px-4 bg-base-200 border border-base-300 border-r-0"><i class="fas fa-search opacity-50"></i></span>
+                                <input type="text" id="areaSearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Type to search locations (e.g. Halishahar)..." autocomplete="off" />
+                                <button type="button" class="btn btn-primary join-item text-white" onclick="toggleAreaDropdown()"><i class="fas fa-chevron-down"></i></button>
+                            </div>
+
+                            <!-- Dropdown List -->
+                            <div id="areaDropdown" class="absolute top-[85px] left-0 w-full bg-base-100 border border-base-300 rounded-lg z-[60] hidden">
+                                <!-- Area items will be injected here -->
+                            </div>
+
+                            <!-- Selected Areas Tags -->
+                            <div class="bg-base-200/50 p-4 rounded-xl border border-base-300 flex flex-wrap gap-2 min-h-[4rem] mt-2" id="selectedAreasContainer">
+                                <span class="text-xs opacity-50 italic py-1 px-1">No areas selected yet. Click search bar to see options.</span>
+                            </div>
+                            
+                            <label class="label"><span class="label-text-alt opacity-70">Search and select all areas where you can provide service.</span></label>
+                        </div>
+
+                        <!-- Offered Services Tags -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label">
+                                <span class="label-text font-bold uppercase tracking-wider text-xs">Offered Services <span class="text-error">*</span></span>
+                                <span class="label-text-alt opacity-70">Max 6 words per service</span>
+                            </label>
+                            <div class="join w-full mb-3">
+                                <input type="text" id="tagInput" class="input input-bordered join-item w-full focus:outline-primary" placeholder="Type a service and press Add or comma (,)..." />
+                                <button type="button" class="btn btn-primary join-item text-white" onclick="processTagInput()"><i class="fas fa-plus"></i> Add</button>
+                            </div>
+                            <div class="bg-base-200/50 p-4 rounded-xl border border-base-300 flex flex-wrap gap-2 min-h-[4rem] mt-1" id="tagContainer">
+                                <span class="text-sm opacity-50 italic py-2">No services added yet.</span>
+                            </div>
+                            <label class="label"><span class="label-text-alt text-error hidden" id="tagError">Service name cannot exceed 6 words.</span></label>
+                        </div>
+                        
+                        <!-- Why Choose Us -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Why Choose Us (Select multiple) <span class="text-error">*</span></span></label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="whyChooseUsContainer">
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Professional Grade" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Professional Grade</span>
+                                </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Fixed Pricing" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Fixed Pricing</span>
+                                </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Guaranteed Quality" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Guaranteed Quality</span>
+                                </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Fast Response" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Fast Response</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button type="button" onclick="goToStep(1)" class="btn btn-ghost font-bold"><i class="fas fa-arrow-left mr-2"></i> Back</button>
+                        <button type="button" onclick="goToReview()" class="btn btn-primary text-white font-bold px-8">Review Application</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<!-- View: Review Application -->
+<template id="tmpl-review">
+    <div class="card bg-base-100 shadow-sm border border-base-300">
+        <div class="card-body p-6 md:p-10">
+            <ul class="steps steps-horizontal w-full mb-10 text-sm font-bold opacity-80 overflow-hidden">
+                <li class="step step-primary">Company Info</li>
+                <li class="step step-primary">Services</li>
+                <li class="step step-primary">Review</li>
+            </ul>
+
+            <h2 class="text-3xl font-black text-center mb-8 border-b border-base-300 pb-4 text-base-content">Review New Listing</h2>
+
+            <div class="space-y-8">
+                <!-- Data will be injected here by renderReview() -->
+                <div id="review-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8"></div>
+            </div>
+
+            <div class="bg-base-200 border border-base-300 rounded-lg p-5 mt-8 flex gap-4 items-center">
+                <i class="fas fa-info-circle text-base-content/50 text-2xl"></i>
+                <p class="text-sm font-medium text-base-content">
+                    This provider will be auto-verified and published out into the live directory immediately after submission.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-between mt-8 pt-6 border-t border-base-200">
+                <button onclick="goToFormFromReview()" class="btn btn-outline font-bold"><i class="fas fa-edit mr-2"></i> Back to Edit</button>
+                <button onclick="finalSubmit()" class="btn btn-success text-white font-bold px-10 shadow-lg hover:scale-105 transition-transform">
+                    <i class="fas fa-bolt mr-2"></i> Publish Verified Listing
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- ========================================== -->
+<!-- SCRIPTS                                    -->
+<!-- ========================================== -->
+<script>
+    // State
+    let offeredServicesTags = [];
+    let categoriesTags = []; // NEW
+    let selectedAreas = []; 
+    let formCache = {};
+
+    // Initialization
+    window.onload = () => {
+        startApplication();
+        document.body.style.opacity = "1";
+    };
+
+    function startApplication() {
+        formCache = {}; 
+        offeredServicesTags = [];
+        categoriesTags = [];
+        selectedAreas = [];
+        renderForm();
+    }
+
+    // Form Logic
+    function renderForm() {
+        const container = document.getElementById('main-container');
+        container.innerHTML = '';
+        container.appendChild(document.getElementById('tmpl-form').content.cloneNode(true));
+        
+        setupTagInput();
+        setupAreaSearch();
+        setupCategorySearch();
+        
+        // Pre-fill form if editing
+        if(Object.keys(formCache).length > 0) {
+            // Part 1
+            const typeRadios = document.querySelectorAll('input[name="providerType"]');
+            typeRadios.forEach(r => { if(r.value === formCache.type) r.checked = true; });
+            document.getElementById('f_businessName').value = formCache.businessName || '';
+            document.getElementById('f_phone').value = formCache.phone || '';
+            document.getElementById('f_email').value = formCache.email || '';
+            document.getElementById('f_about').value = formCache.about || '';
+            updateCharCount('f_about', 'wordCountLabel', 300);
+            
+            // Part 2
+            if (formCache.workDays) {
+                const dayChecks = document.querySelectorAll('input[name="workDay"]');
+                dayChecks.forEach(chk => {
+                    chk.checked = formCache.workDays.includes(chk.value);
+                });
+            }
+            if (formCache.workTimeStart) document.getElementById('f_workTimeStart').value = formCache.workTimeStart;
+            if (formCache.workTimeEnd) document.getElementById('f_workTimeEnd').value = formCache.workTimeEnd;
+            document.getElementById('f_priceConsult').value = formCache.priceConsult || '';
+            document.getElementById('f_priceHourly').value = formCache.priceHourly || '';
+            
+            // Areas
+            selectedAreas = [...(formCache.areas || [])];
+            refreshAreaSelection();
+
+            // Categories
+            categoriesTags = [...(formCache.categories || [])];
+            refreshCategoryTags();
+            
+            // Why Choose us
+            if(formCache.whyChooseUs) {
+                const checkboxes = document.querySelectorAll('input[name="chkWhy"]');
+                checkboxes.forEach(chk => { chk.checked = formCache.whyChooseUs.includes(chk.value); });
+            }
+            
+            refreshTags();
+        }
+    }
+
+    // Navigation and Logic blocks are in provider-form-core.js (Tag Input, Area Search)
+    
+
+    // Form Navigation & Validation
+    function goToStep(step) {
+        if(step === 2) {
+            // Validate Part 1
+            const biz = document.getElementById('f_businessName').value.trim();
+            const phone = document.getElementById('f_phone').value.trim();
+            const email = document.getElementById('f_email').value.trim();
+            const about = document.getElementById('f_about').value.trim();
+            const aboutWordCount = about ? about.length : 0;
+
+            if(!biz || !phone || !email || !about) {
+                Swal.fire({icon:'warning', title:'Required Fields', text:'Please fill all required fields.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
+                return;
+            }
+            if(aboutWordCount > 300) {
+                 Swal.fire({icon:'warning', title:'Limit Exceeded', text:'About section cannot exceed 300 characters.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
+                 return;
+            }
+
+            // Save Part 1 to cache
+            formCache.type = document.querySelector('input[name="providerType"]:checked').value;
+            formCache.businessName = biz;
+            formCache.phone = phone;
+            formCache.email = email;
+            formCache.about = about;
+
+            document.getElementById('form-part-1').classList.add('hidden');
+            document.getElementById('form-part-2').classList.remove('hidden');
+            
+            // update steps visual
+            const steps = document.querySelectorAll('.step');
+            steps[1].classList.add('step-primary');
+            window.scrollTo(0,0);
+        } else if (step === 1) {
+            document.getElementById('form-part-2').classList.add('hidden');
+            document.getElementById('form-part-1').classList.remove('hidden');
+            const steps = document.querySelectorAll('.step');
+            steps[1].classList.remove('step-primary');
+            window.scrollTo(0,0);
+        }
+    }
+
+    function goToReview() {
+        const dayChecks = document.querySelectorAll('input[name="workDay"]:checked');
+        const wStart = document.getElementById('f_workTimeStart').value;
+        const wEnd = document.getElementById('f_workTimeEnd').value;
+        const pc = document.getElementById('f_priceConsult').value.trim();
+        const ph = document.getElementById('f_priceHourly').value.trim();
+        const whyBoxes = document.querySelectorAll('input[name="chkWhy"]:checked');
+
+        if(dayChecks.length === 0 || !wStart || !wEnd || !pc || !ph || selectedAreas.length === 0 || categoriesTags.length === 0) {
+            Swal.fire({icon:'warning', title:'Required Fields', text:'Please fill all fields (Days, Hours, Pricing, Areas, Categories).', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
+            return;
+        }
+
+        if(offeredServicesTags.length === 0) {
+            Swal.fire({icon:'warning', title:'No Services', text:'Add at least one offered service.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
+            return;
+        }
+
+        // Save Part 2
+        formCache.workDays = Array.from(dayChecks).map(chk => chk.value);
+        formCache.workTimeStart = wStart;
+        formCache.workTimeEnd = wEnd;
+        formCache.priceConsult = pc;
+        formCache.priceHourly = ph;
+        formCache.areas = [...selectedAreas];
+        formCache.offeredServices = [...offeredServicesTags];
+        formCache.categories = [...categoriesTags];
+        formCache.whyChooseUs = Array.from(whyBoxes).map(chk => chk.value);
+
+        // Render Review
+        const container = document.getElementById('main-container');
+        container.innerHTML = '';
+        container.appendChild(document.getElementById('tmpl-review').content.cloneNode(true));
+        renderReviewContent();
+        window.scrollTo(0,0);
+    }
+
+    function renderReviewContent() {
+        const c = document.getElementById('review-content');
+        const data = formCache;
+        
+        c.innerHTML = `
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest opacity-40 mb-3">Business Information</h3>
+                    <div class="space-y-4">
+                        <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Entity Type</p><p class="font-bold text-lg">${data.type}</p></div>
+                        <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Business Name</p><p class="font-bold text-lg">${data.businessName}</p></div>
+                        <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Contact</p><p class="font-bold">${data.phone} | ${data.email}</p></div>
+                        <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter mb-1">About</p><p class="text-sm bg-base-200 p-4 rounded-lg border border-base-300 italic">${data.about}</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest opacity-40 mb-3">Service Details</h3>
+                    <div class="space-y-6">
+                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Categories</p><div class="flex flex-wrap gap-2 mt-1">${data.categories.map(cat => `<span class="badge badge-primary text-white font-bold">${cat}</span>`).join('')}</div></div>
+                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Areas</p><div class="flex flex-wrap gap-2 mt-1">${data.areas.map(a => `<span class="badge badge-outline font-bold border-base-300">${a}</span>`).join('')}</div></div>
+                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Services</p><div class="flex flex-wrap gap-2 mt-1">${data.offeredServices.map(s => `<span class="badge badge-ghost font-bold border-base-300"># ${s}</span>`).join('')}</div></div>
+                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Availability / Pricing</p><p class="font-bold mt-1">${data.workDays.join(', ')} (${data.workTimeStart}-${data.workTimeEnd})<br>৳ ${data.priceConsult} Consult / ৳ ${data.priceHourly} Hourly</p></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function goToFormFromReview() {
+        renderForm();
+        // Skip right to part 2 visually
+        document.getElementById('form-part-1').classList.add('hidden');
+        document.getElementById('form-part-2').classList.remove('hidden');
+        const steps = document.querySelectorAll('.step');
+        steps[1].classList.add('step-primary');
+    }
+
+    function finalSubmit() {
+        Swal.fire({
+            title: 'Verified Listing Publishing',
+            text: "You are about to publish a pre-verified provider. It will be live immediately.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Publish Live',
+            customClass: { confirmButton: 'btn btn-success text-white ml-2', cancelButton: 'btn btn-ghost' },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Published Successfully!',
+                    text: 'The provider is now auto-verified and live on the website.',
+                    icon: 'success',
+                    customClass: { confirmButton: 'btn btn-primary text-white' },
+                    buttonsStyling: false
+                }).then(() => {
+                    window.location.href = 'manage-providers.html';
+                });
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

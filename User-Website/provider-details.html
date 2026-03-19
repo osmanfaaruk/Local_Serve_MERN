@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Plumbing Solutions | LocalServe Modern</title>
+    
+    <!-- DaisyUI & Tailwind core -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    
+    <!-- Icons & Third-party -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet.js for Interactive Area Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Theme Overrides (High Specificity) -->
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important; /* Dark Blue (blue-700) */
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .badge-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        
+        /* Consistent Navbar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200 relative overflow-x-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-top pointer-events-none"></div>
+
+    <!-- Navbar -->
+     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="index.html" >Home</a></li>
+                <li><a href="search-providers.html" >All Providers</a></li>
+                <li><a href="request-to-serve.html">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+        </div>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="max-w-7xl mx-auto px-4 py-8 relative z-10">
+        <div class="text-sm breadcrumbs bg-base-100/50 backdrop-blur-md px-6 py-4 rounded-3xl border border-base-300 shadow-sm inline-block">
+            <ul class="font-medium text-base-content/60">
+                <li><a href="index.html" class="hover:text-primary transition-colors">Home</a></li>
+                <li><a href="search-providers.html" class="hover:text-primary transition-colors">Providers</a></li>
+                <li class="font-black text-primary">Elite Plumbing Solutions</li>
+            </ul>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left: Main Content -->
+            <div class="lg:col-span-2 space-y-8 relative z-10">
+                <!-- Profile Header -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden leading-tight">
+                    <figure class="h-80 relative bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,transparent,white)]"></div>
+                        <i class="fas fa-building text-9xl text-primary/10"></i>
+                        <div
+                            class="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row items-start md:items-end gap-6 text-white bg-black/40 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl">
+                            <div class="avatar placeholder">
+                                <div class="w-24 rounded-2xl border-4 border-white shadow-2xl bg-primary text-white">
+                                    <i class="fas fa-user-tie text-4xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <div class="badge badge-primary font-bold shadow-lg border-none px-3">Company</div>
+                                    <div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">Plumbing</div>
+                                    <div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">Home Repairs</div>
+                                </div>
+                                <h1 class="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">Elite Plumbing Solutions</h1>
+                                <p class="flex items-center gap-2 opacity-90 mt-1 font-medium">
+                                    <i class="fas fa-map-marker-alt text-primary"></i> GEC Circle, Chittagong
+                                </p>
+                            </div>
+                        </div>
+                    </figure>
+                    <div class="card-body p-8 pt-10">
+                        <div class="flex flex-wrap gap-4 items-center justify-between border-b pb-6 border-base-200">
+                            <div class="flex items-center gap-6">
+                                <div class="flex flex-col">
+                                    <span
+                                        class="text-sm opacity-50 font-bold uppercase tracking-wider">Experience</span>
+                                    <span class="font-bold">15+ Years</span>
+                                </div>
+                                <div class="divider divider-horizontal"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Status</span>
+                                    <div class="badge badge-success text-white font-bold badge-sm">Verified</div>
+                                </div>
+                                <div class="divider divider-horizontal"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Member Since</span>
+                                    <span class="font-bold">Feb 2026</span>
+                                </div>
+                                <div class="divider divider-horizontal"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Fee Range</span>
+                                    <span class="font-bold text-primary text-xl">45 TK - 90 TK/hr</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 prose max-w-none">
+                            <h3 class="text-2xl font-bold mb-4">About the Provider</h3>
+                            <p class="text-lg leading-relaxed text-base-content/70">
+                                Elite Plumbing Solutions has been the cornerstone of residential and commercial plumbing
+                                in Central City since 2011. Our team consists of master plumbers with a collective
+                                experience of over 40 years. We pride ourselves on transparent pricing, punctual
+                                service, and doing the job right the first time.
+                            </p>
+
+                            <h3 class="text-2xl font-bold mt-10 mb-6">Services Offered</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
+                                    <i class="fas fa-check-circle text-primary"></i>
+                                    <span class="font-bold">Emergency Leak Repairs</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
+                                    <i class="fas fa-check-circle text-primary"></i>
+                                    <span class="font-bold">Water Heater Installation</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
+                                    <i class="fas fa-check-circle text-primary"></i>
+                                    <span class="font-bold">Drain Cleaning</span>
+                                </div>
+                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
+                                    <i class="fas fa-check-circle text-primary"></i>
+                                    <span class="font-bold">Kitchen Remodeling</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Why Choose Us Section -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden rounded-3xl">
+                    <div class="card-body p-8">
+                        <h3 class="text-2xl font-black mb-8 flex items-center gap-3">
+                            <i class="fas fa-star text-warning"></i> Why Choose Us
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-primary/5 transition-all border border-transparent hover:border-primary/10 group">
+                                <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-tools text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Professional Grade</h4>
+                                    <p class="text-base-content/60 text-sm leading-relaxed">We use industrial-standard tools for long-lasting results.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-success/5 transition-all border border-transparent hover:border-success/10 group">
+                                <div class="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center text-success shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-hand-holding-usd text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Fixed Pricing</h4>
+                                    <p class="text-base-content/60 text-sm leading-relaxed">No hidden charges. Clear quotes before we start.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-info/5 transition-all border border-transparent hover:border-info/10 group">
+                                <div class="w-14 h-14 rounded-2xl bg-info/10 flex items-center justify-center text-info shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-shield-alt text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Guaranteed Quality</h4>
+                                    <p class="text-base-content/60 text-sm leading-relaxed">100% satisfaction guarantee on all our work.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-error/5 transition-all border border-transparent hover:border-error/10 group">
+                                <div class="w-14 h-14 rounded-2xl bg-error/10 flex items-center justify-center text-error shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fas fa-user-clock text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">Fast Response</h4>
+                                    <p class="text-base-content/60 text-sm leading-relaxed">Punctual arrivals and efficient job completion.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Secondary Info -->
+            <div class="space-y-6 relative z-10">
+                <!-- Contact Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 rounded-3xl overflow-hidden leading-tight">
+                    <div class="card-body p-8">
+                        <h3 class="card-title text-xl font-bold border-b border-base-200 pb-4 mb-4">Professional Contact
+                        </h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="btn btn-circle btn-primary btn-sm pointer-events-none"><i
+                                        class="fas fa-phone"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold text-base-content/40 uppercase">Business Phone</div>
+                                    <div class="text-lg font-bold text-primary">+880 1711-223344</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="btn btn-circle btn-primary btn-sm pointer-events-none"><i
+                                        class="fas fa-envelope"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold text-base-content/40 uppercase">Email Address</div>
+                                    <div class="font-bold">contact@eliteplumbing.com</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="btn btn-circle btn-primary btn-sm pointer-events-none"><i
+                                        class="fas fa-clock"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold text-base-content/40 uppercase">Working Hours</div>
+                                    <div class="font-bold">Mon - Fri, 8AM - 6PM</div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Service Area Map -->
+                            <div class="space-y-4 pt-4 border-t border-base-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-xs font-bold text-base-content/40 uppercase">Service Coverage</div>
+                                        <div class="font-bold text-primary">GEC Circle & Surrounding Areas</div>
+                                    </div>
+                                    <i class="fas fa-map-marked-alt text-2xl text-primary/30"></i>
+                                </div>
+                                <div class="rounded-2xl overflow-hidden border border-base-300 shadow-inner h-64 bg-base-200 relative group z-0">
+                                    <div id="coverage-map" class="w-full h-full"></div>
+                                    <div class="absolute bottom-3 left-3 z-[1000]">
+                                        <div class="badge badge-primary font-bold shadow-lg">Service Radius: 2KM</div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+                        
+
+                        <a href="tel:+8801841483138" class="btn btn-primary w-full mt-6 shadow-2xl shadow-primary/40 text-white font-black text-lg py-4 h-auto rounded-2xl group transition-all hover:scale-[1.02] active:scale-[0.98]">
+                            <i class="fas fa-phone-alt group-hover:rotate-12 transition-transform"></i> Call Provider
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pricing Insights Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden">
+                    <div class="h-2 bg-primary"></div>
+                    <div class="card-body p-8">
+                        <h3 class="card-title text-xl font-bold mb-4 flex items-center gap-2">
+                             <i class="fas fa-tag text-primary"></i> Est. Pricing Guide
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center bg-base-200 p-3 rounded-xl border border-base-300/50">
+                                <span class="text-sm font-semibold opacity-70">Consultation Fee</span>
+                                <span class="font-bold">25.00 TK</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-base-200 p-3 rounded-xl border border-base-300/50">
+                                <span class="text-sm font-semibold opacity-70">Hourly Labor</span>
+                                <span class="font-bold">45 TK - 90 TK</span>
+                            </div>
+                            
+                        </div>
+
+                        <p class="text-[10px] uppercase font-black text-base-content/30 mt-6 tracking-widest text-center">
+                            * FEE'S MAY VARY AFTER INSPECTION
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Minimal Trusted Seal -->
+                <div class="p-6 bg-success/5 border border-success/20 rounded-2xl flex flex-col gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="badge badge-success text-white gap-2 p-3 font-bold border-none">
+                            <i class="fas fa-check-circle"></i> VERIFIED
+                        </div>
+                        <span class="font-bold text-success-content">Identified & Licensed</span>
+                    </div>
+                    <p class="text-xs text-success-content/70 leading-relaxed">
+                        This business has provided valid licensing documentation and insurance coverage details to the LocalServe administration team.
+                    </p>
+                </div>
+                
+                <!-- Report Provider Card -->
+                <div class="card bg-base-100 shadow-sm border border-base-300">
+                    <div class="card-body p-6">
+                        <div class="flex items-center gap-3 text-error mb-4">
+                            <i class="fas fa-flag"></i>
+                            <h3 class="font-bold">Report Provider</h3>
+                        </div>
+                        <p class="text-xs text-base-content/60 leading-relaxed mb-4">
+                            Encountered an issue? If this provider is fraudulent, provides poor service, or lists inaccurate info, please let us know.
+                        </p>
+                        <button onclick="openReportModal()" class="btn btn-outline btn-error btn-sm w-full font-bold">Report an Issue</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="js/footer-loader.js"></script>
+
+    <script>
+        function openReportModal() {
+            Swal.fire({
+                title: 'Report Provider',
+                html: `
+                    <div class="text-left space-y-4 pt-4">
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold">Reason for reporting</span></label>
+                            <select id="reportReason" class="select select-bordered w-full">
+                                <option disabled selected>Select a reason</option>
+                                <option>Fraud or Scam</option>
+                                <option>Poor Service Quality</option>
+                                <option>Inaccurate Information</option>
+                                <option>Unprofessional Behavior</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold">Details</span></label>
+                            <textarea id="reportDetails" class="textarea textarea-bordered h-32 w-full" placeholder="Tell us more about the issue..."></textarea>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Submit Report',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    confirmButton: 'btn btn-error text-white',
+                    cancelButton: 'btn btn-ghost'
+                },
+                buttonsStyling: false,
+                preConfirm: () => {
+                    const reason = document.getElementById('reportReason').value;
+                    const details = document.getElementById('reportDetails').value;
+                    
+                    if (reason === 'Select a reason' || !details.trim()) {
+                        Swal.showValidationMessage('Please select a reason and provide details');
+                        return false;
+                    }
+                    return { reason, details };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Report Submitted',
+                        text: 'Thank you for your feedback. Our team will investigate this provider.',
+                        confirmButtonText: 'Close',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            });
+        }
+
+        // ─── Interactive Map Initialization ───
+        function initCoverageMap() {
+            const lat = 22.3592;
+            const lng = 91.8219;
+            const map = L.map('coverage-map', {
+                center: [lat, lng],
+                zoom: 14,
+                zoomControl: false,
+                dragging: false,
+                scrollWheelZoom: false
+            });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            L.circle([lat, lng], {
+                color: '#74b9ff',
+                fillColor: '#74b9ff',
+                fillOpacity: 0.2,
+                radius: 1500
+            }).addTo(map);
+            L.circleMarker([lat, lng], {
+                radius: 6,
+                color: '#fff',
+                weight: 2,
+                fillColor: '#74b9ff',
+                fillOpacity: 1
+            }).addTo(map);
+        }
+        document.addEventListener('DOMContentLoaded', initCoverageMap);
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+

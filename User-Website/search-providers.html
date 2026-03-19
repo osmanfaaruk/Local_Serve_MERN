@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Providers | LocalServe Modern</title>
+    
+    <!-- DaisyUI & Tailwind core -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    
+    <!-- Icons & Third-party -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Theme Overrides (High Specificity) -->
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important; /* Dark Blue (blue-700) */
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .badge-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        
+        /* Consistent Navbar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200 relative overflow-x-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-top pointer-events-none"></div>
+
+     <!-- Navbar -->
+     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="index.html" >Home</a></li>
+                <li><a href="search-providers.html" class="active">All Providers</a></li>
+                <li><a href="request-to-serve.html">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+        </div>
+    </div>
+
+
+
+    <div class="max-w-7xl mx-auto px-4 py-8 relative z-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Filter Sidebar -->
+            <aside class="w-full lg:w-80 space-y-6">
+                <div class="card bg-base-100 shadow-sm border border-base-300 sticky top-24 rounded-3xl">
+                    <div class="card-body p-8">
+                        <h2 class="card-title text-xl font-black mb-6">Filter Results</h2>
+
+                        <!-- Search Within -->
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Search</span></label>
+                            <div class="relative">
+                                <i
+                                    class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40"></i>
+                                <input type="text" id="sidebarSearch" placeholder="e.g. Plumber"
+                                    class="input input-bordered w-full pl-10" />
+                            </div>
+                        </div>
+
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Category</span></label>
+                            <select id="categoryFilter" class="select select-bordered w-full">
+                                <option>All Categories</option>
+                            </select>
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="form-control mb-4">
+                            <label class="label"><span class="label-text font-bold">Location</span></label>
+                            <select id="locationFilter" class="select select-bordered w-full">
+                                <option>All Chittagong</option>
+                                <option>GEC Circle</option>
+                                <option>Agrabad</option>
+                                <option>Nasirabad</option>
+                                <option>Halishahar</option>
+                                <option>Chawkbazar</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter Action -->
+                        <div class="mt-6">
+                            <button onclick="handleFilter()" class="btn btn-primary w-full rounded-xl shadow-lg shadow-primary/20 font-bold">
+                                <i class="fas fa-filter mr-2"></i> Filter Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Listing Area -->
+            <main class="flex-1">
+                <!-- Results Section -->
+                <div class="mb-4">
+                    <p class="text-sm font-bold opacity-50">Showing best matches for your search</p>
+                </div>
+
+                <!-- Grid of Results -->
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Provider 1 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 transition-all cursor-pointer group rounded-3xl overflow-hidden"
+                        onclick="window.location.href='provider-details.html'">
+                        <div class="card-body p-0 flex-row">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center transition-colors">
+                                <i class="fas fa-wrench text-5xl text-primary/20 transition-transform"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Plumbing</div>
+                                <h3 class="text-xl font-bold transition-colors">Elite Plumbing Solutions</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> GEC Circle, CTG
+                                </p>
+                                <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
+                                <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
+                                    <div class="font-bold text-primary text-lg">45 - 90 TK <span class="text-xs opacity-50 font-normal">/hr</span></div>
+                                    <button class="btn btn-primary btn-circle btn-sm shadow-lg shadow-primary/20"><i class="fas fa-chevron-right text-xs"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Provider 2 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 transition-all cursor-pointer group rounded-3xl overflow-hidden"
+                        onclick="window.location.href='provider-details.html'">
+                        <div class="card-body p-0 flex-row">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center transition-colors">
+                                <i class="fas fa-broom text-5xl text-primary/20 transition-transform"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Cleaning</div>
+                                <h3 class="text-xl font-bold transition-colors">Sparkle Clean Co.</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Agrabad, CTG
+                                </p>
+                                <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
+                                <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
+                                    <div class="font-bold text-primary text-lg">30 - 60 TK <span class="text-xs opacity-50 font-normal">/hr</span></div>
+                                    <button class="btn btn-primary btn-circle btn-sm shadow-lg shadow-primary/20"><i class="fas fa-chevron-right text-xs"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Provider 3 -->
+                    <div class="card bg-base-100 shadow-sm border border-base-300 transition-all cursor-pointer group rounded-3xl overflow-hidden"
+                        onclick="window.location.href='provider-details.html'">
+                        <div class="card-body p-0 flex-row">
+                            <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center transition-colors">
+                                <i class="fas fa-plug text-5xl text-primary/20 transition-transform"></i>
+                            </div>
+                            <div class="w-2/3 p-6">
+                                <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Electrical</div>
+                                <h3 class="text-xl font-bold transition-colors">Pro Circuit Electrical</h3>
+                                <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Nasirabad, CTG
+                                </p>
+                                <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
+                                <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
+                                    <div class="font-bold text-primary text-lg">50 - 110 TK <span class="text-xs opacity-50 font-normal">/hr</span></div>
+                                    <button class="btn btn-primary btn-circle btn-sm shadow-lg shadow-primary/20"><i class="fas fa-chevron-right text-xs"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12 pb-12">
+                    <div class="join shadow-xl rounded-2xl bg-base-100 p-2 border border-base-300">
+                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">«</button>
+                        <button class="join-item btn btn-primary btn-sm px-6 rounded-xl shadow-lg shadow-primary/20">1</button>
+                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">2</button>
+                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">3</button>
+                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">»</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="js/footer-loader.js"></script>
+
+    <script>
+        // Fetch and populate categories
+        async function loadCategoryOptions() {
+            const categorySelect = document.getElementById('categoryFilter');
+            try {
+                const response = await fetch('../Admin-Dashboard/data/categories.json');
+                const categories = await response.json();
+                
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.textContent = cat.name;
+                    categorySelect.appendChild(option);
+                });
+                console.log('Category filter populated');
+            } catch (error) {
+                console.error('Error loading category filter:', error);
+            }
+        }
+
+        // Initialize
+        loadCategoryOptions();
+
+        /**
+         * Handle result filtering
+         * This function will be the entry point for API calls when the backend is ready.
+         */
+        function handleFilter() {
+            // 1. Get filter values
+            const searchQuery = document.getElementById('sidebarSearch').value;
+            const category = document.getElementById('categoryFilter').value;
+            const location = document.getElementById('locationFilter').value;
+
+            console.log('Filtering providers with:', { searchQuery, category, location });
+
+            // 2. SHOW LOADING STATE (Simulated)
+            // Example: document.getElementById('resultsGrid').innerHTML = '<div class="loading">...</div>';
+
+            // 3. API CALL (Future-proof)
+            /*
+            fetch(`/api/providers?search=${searchQuery}&category=${category}&location=${location}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update UI with data
+                    renderProviders(data);
+                })
+                .catch(err => console.error('Filter error:', err));
+            */
+
+            // 4. UI FEEDBACK (SweetAlert for now)
+            if (window.Swal) {
+                Swal.fire({
+                    title: 'Filtering...',
+                    text: `Searching for ${category || 'all'} providers in ${location}`,
+                    icon: 'info',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    toast: true
+                });
+            } else {
+                alert(`Filtering: ${category} in ${location}`);
+            }
+        }
+    </script>
+</body>
+
+</html>

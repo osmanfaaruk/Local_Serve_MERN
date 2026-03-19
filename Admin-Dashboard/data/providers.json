@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "name": "Elite Plumbing Solutions",
+        "category": "Plumbing",
+        "location": "GEC Circle",
+        "phone": "+880 1812-345678",
+        "experience": "15 Years Experience",
+        "verified": true,
+        "icon": "fas fa-faucet",
+        "iconBg": "bg-blue-100",
+        "iconColor": "text-blue-600",
+        "description": "Professional plumbing services for residential and commercial properties."
+    },
+    {
+        "id": 2,
+        "name": "Sparkle Clean Co.",
+        "category": "Cleaning",
+        "location": "Agrabad",
+        "phone": "+880 1898-765432",
+        "experience": "Commercial Specialist",
+        "verified": true,
+        "icon": "fas fa-broom",
+        "iconBg": "bg-purple-100",
+        "iconColor": "text-purple-600",
+        "description": "Top-rated cleaning service for offices and homes."
+    },
+    {
+        "id": 3,
+        "name": "Pro Circuit Electrical",
+        "category": "Electrical",
+        "location": "Nasirabad",
+        "phone": "+880 1755-112233",
+        "experience": "10 Years Experience",
+        "verified": true,
+        "icon": "fas fa-bolt",
+        "iconBg": "bg-yellow-100",
+        "iconColor": "text-yellow-600",
+        "description": "Licensed electricians for wiring, installations, and repairs."
+    },
+    {
+        "id": 4,
+        "name": "Green Thumb Gardens",
+        "category": "Gardening",
+        "location": "Khulshi",
+        "phone": "+880 1911-223344",
+        "experience": "8 Years Experience",
+        "verified": false,
+        "icon": "fas fa-leaf",
+        "iconBg": "bg-green-100",
+        "iconColor": "text-green-600",
+        "description": "Landscape design, garden maintenance, and tree services."
+    },
+    {
+        "id": 5,
+        "name": "ColorCraft Painters",
+        "category": "Painting",
+        "location": "Halishahar",
+        "phone": "+880 1833-445566",
+        "experience": "12 Years Experience",
+        "verified": true,
+        "icon": "fas fa-paint-roller",
+        "iconBg": "bg-pink-100",
+        "iconColor": "text-pink-600",
+        "description": "Interior and exterior painting with premium quality paints."
+    },
+    {
+        "id": 6,
+        "name": "Master Woodworks",
+        "category": "Carpentry",
+        "location": "Chawkbazar",
+        "phone": "+880 1677-889900",
+        "experience": "20 Years Experience",
+        "verified": true,
+        "icon": "fas fa-hammer",
+        "iconBg": "bg-orange-100",
+        "iconColor": "text-orange-600",
+        "description": "Custom furniture, door fitting, and wood restoration."
+    },
+    {
+        "id": 7,
+        "name": "AquaFix Plumbing",
+        "category": "Plumbing",
+        "location": "Pahartali",
+        "phone": "+880 1522-334455",
+        "experience": "5 Years Experience",
+        "verified": false,
+        "icon": "fas fa-faucet",
+        "iconBg": "bg-blue-100",
+        "iconColor": "text-blue-600",
+        "description": "Emergency plumbing repairs and bathroom installations."
+    }
+]

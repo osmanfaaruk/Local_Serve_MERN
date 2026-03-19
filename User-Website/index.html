@@ -1,53 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="emerald">
+<html lang="en" data-theme="sky">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalServe | Modern Local Service Directory</title>
-    <!-- Tailwind CSS & DaisyUI via CDN for easy implementation -->
+    <title>LocalServe | Find Trusted Local Professionals</title>
+    <!-- DaisyUI & Tailwind core -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <!-- Icons & Third-party -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Theme Overrides (High Specificity) -->
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important;
+            /* Dark Blue (blue-700) */
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+
+        .text-primary {
+            color: hsl(var(--p)) !important;
+        }
+
+        .btn-primary {
+            background-color: hsl(var(--p)) !important;
+            border-color: hsl(var(--p)) !important;
+            color: white !important;
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(var(--pf)) !important;
+        }
+
+        /* Consistent Navbar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen bg-base-200">
+<body class="min-h-screen bg-base-100">
 
     <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-sm sticky top-0 z-50 px-4 md:px-20">
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
-            <div class="dropdown">
-                <label tabindex="0" class="btn btn-ghost lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
-                </label>
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="providers.html">All Providers</a></li>
-                    <li><a href="admin/index.html">Admin Dashboard</a></li>
-                </ul>
-            </div>
-            <a href="index.html" class="btn btn-ghost normal-case text-2xl font-bold text-primary">LocalServe</a>
+            <a href="index.html"
+                class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
         </div>
         <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal px-1 font-medium">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="providers.html">All Providers</a></li>
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="search-providers.html">All Providers</a></li>
+                <li><a href="request-to-serve.html">Become a Provider</a></li>
             </ul>
         </div>
         <div class="navbar-end">
-            <a href="admin/index.html" class="btn btn-primary btn-sm md:btn-md outline-none">Admin Area</a>
+            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
         </div>
     </div>
 
     <!-- Hero Section -->
-    <div class="hero min-h-[60vh] bg-base-100 border-b border-base-300">
-        <div class="hero-content text-center">
+    <div class="hero min-h-[70vh] bg-base-200 relative overflow-hidden">
+        <div
+            class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-top">
+        </div>
+        <div class="hero-content text-center relative z-10">
             <div class="max-w-3xl">
+                <div class="badge badge-primary badge-outline font-bold mb-6 p-4">#1 Neighborhood Service Platform</div>
                 <h1 class="text-5xl font-extrabold mb-4 leading-tight">Find Trusted <span
                         class="text-primary italic">Local Professionals</span></h1>
                 <p class="text-xl text-base-content/70 mb-8">The most reliable way to discover high-quality services in
@@ -55,18 +90,35 @@
 
                 <!-- Advanced Search Box -->
                 <div
-                    class="flex flex-col md:flex-row gap-2 bg-base-200 p-3 rounded-2xl shadow-lg border border-base-300">
-                    <div class="relative flex-1">
+                    class="flex flex-col md:flex-row gap-2 bg-base-200 p-3 rounded-2xl shadow-lg border border-base-300 relative">
+                    <div class="relative flex-1" id="searchContainer">
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40"></i>
-                        <input type="text" placeholder="What service are you looking for?"
-                            class="input input-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100" />
+                        <input type="text" id="categorySearch" placeholder="What service are you looking for?"
+                            class="input input-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-medium"
+                            autocomplete="off" />
+
+                        <!-- Searchable Dropdown -->
+                        <div id="categoryDropdown"
+                            class="hidden absolute top-full left-0 right-0 mt-2 bg-base-100 rounded-2xl shadow-2xl border border-base-200 z-[100] overflow-hidden max-h-80 overflow-y-auto anima-fade-in">
+                            <div class="p-2 space-y-1" id="dropdownList">
+                                <!-- Top Categories (Initial 2) -->
+                                <div class="dropdown-item flex items-center gap-3 p-4 hover:bg-primary/5 cursor-pointer rounded-xl transition-all group"
+                                    data-value="Home Repairs">
+                                    <span class="font-bold">Home Repairs</span>
+                                </div>
+                                <div class="dropdown-item flex items-center gap-3 p-4 hover:bg-primary/5 cursor-pointer rounded-xl transition-all group"
+                                    data-value="Cleaning">
+                                    <span class="font-bold">Cleaning</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="relative flex-1 md:max-w-[200px]">
                         <i
                             class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 z-10"></i>
                         <select
                             class="select select-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-bold appearance-none">
-                            <option disabled selected>All Chittagong</option>
+                            <option disabled selected>CTG Metropolitan Area</option>
                             <option>GEC Circle</option>
                             <option>Agrabad</option>
                             <option>Nasirabad</option>
@@ -74,10 +126,8 @@
                             <option>Chawkbazar</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold"
-                        onclick="window.location.href='providers.html'">
-                        Search Now
-                    </button>
+                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold text-white" required
+                        onclick="window.location.href='search-providers.html'">Search Now</button>
                 </div>
             </div>
         </div>
@@ -92,9 +142,8 @@
             <p class="text-base-content/60 mb-10">Select a service to see verified providers near you.</p>
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <!-- Category Card -->
                 <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='providers.html?cat=home'">
+                    onclick="window.location.href='search-providers.html'">
                     <div class="card-body items-center text-center p-8">
                         <div
                             class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -103,9 +152,8 @@
                         <h3 class="font-bold text-lg">Home Repairs</h3>
                     </div>
                 </div>
-                <!-- Category Card -->
                 <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='providers.html?cat=cleaning'">
+                    onclick="window.location.href='search-providers.html'">
                     <div class="card-body items-center text-center p-8">
                         <div
                             class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -114,9 +162,8 @@
                         <h3 class="font-bold text-lg">Cleaning</h3>
                     </div>
                 </div>
-                <!-- Category Card -->
                 <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='providers.html?cat=plumbing'">
+                    onclick="window.location.href='search-providers.html'">
                     <div class="card-body items-center text-center p-8">
                         <div
                             class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -125,9 +172,8 @@
                         <h3 class="font-bold text-lg">Plumbing</h3>
                     </div>
                 </div>
-                <!-- Category Card -->
                 <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='providers.html?cat=electrical'">
+                    onclick="window.location.href='search-providers.html'">
                     <div class="card-body items-center text-center p-8">
                         <div
                             class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -136,9 +182,8 @@
                         <h3 class="font-bold text-lg">Electrical</h3>
                     </div>
                 </div>
-                <!-- Category Card -->
                 <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='providers.html?cat=landscaping'">
+                    onclick="window.location.href='search-providers.html'">
                     <div class="card-body items-center text-center p-8">
                         <div
                             class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -157,41 +202,35 @@
                     <h2 class="text-3xl font-bold">Featured Professionals</h2>
                     <p class="text-base-content/60">Top-rated providers in your area this month.</p>
                 </div>
-                <a href="providers.html" class="link link-primary font-bold decoration-2 underline-offset-4">Explore All
-                    &rarr;</a>
+                <a href="search-providers.html"
+                    class="link link-primary font-bold decoration-2 underline-offset-4">Explore All &rarr;</a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Provider Card -->
                 <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='detail.html'">
+                    onclick="window.location.href='provider-details.html'">
                     <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
                         <i class="fas fa-tools text-6xl text-primary/20"></i>
                         <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Plumbing</div>
-                        <div
-                            class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 badge-sm md:badge-md border-none">
+                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
                             Verified</div>
                     </figure>
                     <div class="card-body">
                         <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Elite
                             Plumbing Solutions</h3>
                         <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> 123 Main St, Downtown
-                        </p>
-                        <p class="text-base-content/60 flex items-center gap-2">
                             <i class="fas fa-map-marker-alt text-primary"></i> 123 Main St, GEC Circle
                         </p>
+                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
+                            Since: Feb 2026</p>
                         <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">$45/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm">
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
+                            <div class="text-lg font-bold">From <span class="text-primary">45 TK/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
-                <!-- Provider Card -->
                 <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='detail.html'">
+                    onclick="window.location.href='provider-details.html'">
                     <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
                         <i class="fas fa-soap text-6xl text-primary/20"></i>
                         <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Cleaning</div>
@@ -202,22 +241,18 @@
                         <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Sparkle
                             Clean Co.</h3>
                         <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> Uptown Commercial Area
-                        </p>
-                        <p class="text-base-content/60 flex items-center gap-2">
                             <i class="fas fa-map-marker-alt text-primary"></i> Agrabad Commercial Area
                         </p>
+                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
+                            Since: Jan 2026</p>
                         <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">$35/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm">
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
+                            <div class="text-lg font-bold">From <span class="text-primary">35 TK/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
-                <!-- Provider Card -->
                 <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='detail.html'">
+                    onclick="window.location.href='provider-details.html'">
                     <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
                         <i class="fas fa-bolt text-6xl text-primary/20"></i>
                         <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Electrical</div>
@@ -230,14 +265,11 @@
                         <p class="text-base-content/60 flex items-center gap-2">
                             <i class="fas fa-map-marker-alt text-primary"></i> West Side Districts
                         </p>
-                        <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> West Side Districts
-                        </p>
+                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
+                            Since: Mar 2026</p>
                         <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">$60/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm">
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
+                            <div class="text-lg font-bold">From <span class="text-primary">60 TK/hr</span></div>
+                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -245,46 +277,88 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer p-10 bg-neutral text-neutral-content py-20 px-4 md:px-20">
-        <div>
-            <span class="text-2xl font-bold text-white mb-4 block">LocalServe</span>
-            <p>Providing the easiest way to connect<br />with local professionals since 2026.</p>
-        </div>
-        <div>
-            <span class="footer-title">Services</span>
-            <a class="link link-hover">Home Repairs</a>
-            <a class="link link-hover">Cleaning</a>
-            <a class="link link-hover">Plumbing</a>
-            <a class="link link-hover">Electrical</a>
-        </div>
-        <div>
-            <span class="footer-title">Company</span>
-            <a class="link link-hover">About us</a>
-            <a class="link link-hover">Contact</a>
-            <a class="link link-hover">Privacy Policy</a>
-        </div>
-        <div>
-            <span class="footer-title">Newsletter</span>
-            <div class="form-control w-80">
-                <label class="label">
-                    <span class="label-text text-neutral-content">Enter your email address</span>
-                </label>
-                <div class="relative">
-                    <input type="text" placeholder="username@site.com"
-                        class="input input-bordered w-full pr-16 bg-white text-black rounded-lg" />
-                    <button
-                        class="btn btn-primary absolute top-0 right-0 rounded-l-none rounded-r-lg">Subscribe</button>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <div class="footer footer-center p-4 bg-neutral border-t border-neutral-content/10 text-neutral-content/60">
-        <div>
-            <p>Copyright © 2026 - All right reserved by LocalServe Directory</p>
-        </div>
-    </div>
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="js/footer-loader.js"></script>
 
+    <script>
+        let categories = [];
+
+        // Fetch categories from the centralized JSON file
+        async function loadCategories() {
+            try {
+                const response = await fetch('../Admin-Dashboard/data/categories.json');
+                categories = await response.json();
+                console.log('Categories loaded:', categories.length);
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                // Fallback for demo
+                categories = [
+                    { name: 'Home Repairs' },
+                    { name: 'Cleaning' }
+                ];
+            }
+        }
+
+        // Initialize loading
+        loadCategories();
+
+        const searchInput = document.getElementById('categorySearch');
+        const dropdown = document.getElementById('categoryDropdown');
+        const dropdownList = document.getElementById('dropdownList');
+
+        function renderDropdown(filterValue = '') {
+            const filtered = categories.filter(cat =>
+                cat.name.toLowerCase().includes(filterValue.toLowerCase())
+            );
+
+            // Limit to 2 if empty, otherwise show all matches
+            const displayList = filterValue === '' ? filtered.slice(0, 2) : filtered;
+
+            dropdownList.innerHTML = displayList.map(cat => `
+                <div class="dropdown-item flex items-center gap-3 p-4 hover:bg-primary/5 cursor-pointer rounded-xl transition-all group" data-value="${cat.name}">
+                    <span class="font-bold">${cat.name}</span>
+                </div>
+            `).join('');
+
+            // Attach click listeners to new items
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.getAttribute('data-value');
+                    dropdown.classList.add('hidden');
+                });
+            });
+
+            if (displayList.length > 0) {
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        searchInput.addEventListener('focus', () => renderDropdown(searchInput.value));
+        searchInput.addEventListener('input', () => renderDropdown(searchInput.value));
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            .anima-fade-in {
+                animation: fadeIn 0.15s ease-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 
 </html>

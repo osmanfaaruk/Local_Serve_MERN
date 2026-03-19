@@ -1,0 +1,11 @@
+[
+    { "id": 1, "name": "Home Repairs", "icon": "fa-tools" },
+    { "id": 2, "name": "Cleaning", "icon": "fa-broom" },
+    { "id": 3, "name": "Plumbing", "icon": "fa-faucet" },
+    { "id": 4, "name": "Electrical", "icon": "fa-bolt" },
+    { "id": 5, "name": "Salon & Beauty", "icon": "fa-spa" },
+    { "id": 6, "name": "AC & Appliance", "icon": "fa-fan" },
+    { "id": 7, "name": "Pest Control", "icon": "fa-bug" },
+    { "id": 8, "name": "Moving & Shifting", "icon": "fa-truck" },
+    { "id": 9, "name": "Painting Services", "icon": "fa-paint-roller" }
+]
