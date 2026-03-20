@@ -50,5 +50,4 @@ To help maintain a clean workflow:
 3.  Add your changes and commit with descriptive messages.
 4.  Push your changes: `git push origin main`.
 
----
-*Created with ❤️ for LocalServe.*
+
