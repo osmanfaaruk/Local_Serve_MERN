@@ -1,22 +1,18 @@
 
-# LocalServe - Service Provider Directory
 
-A local service provider directory connecting Chittagong's professionals with residents.
-
-## Project Structure
+## 📂 Project Structure
 
 ```text
 .
 ├── Admin-Dashboard/           # Administrative portal for managing the platform
-│   ├── data/                 # JSON data stores (categories, locations, providers)
+│   ├── data/                 # JSON data stores (categories, locations, etc.)
+│   ├── js/                   # Dashboard-specific logic
 │   ├── manage-providers.html # Provider approval & management
 │   ├── manage-categories.html# Service category management
-│   ├── manage-locations.html # Location management
-│   ├── add-provider.html     # Add new provider form
-│   ├── settings.html         # Admin settings & password
 │   └── index.html            # Admin main dashboard
 ├── User-Website/              # Public-facing portal for customers
 │   ├── company-terms/        # Legal and information pages (About, Privacy, etc.)
+│   ├── js/                   # Frontend dynamic logic (footer, categories, etc.)
 │   ├── user-provider/        # Provider registration & login
 │   ├── search-providers.html # Main search & listing interface
 │   ├── provider-details.html # Detailed profile view for professionals
@@ -24,14 +20,7 @@ A local service provider directory connecting Chittagong's professionals with re
 └── README.md                  # Project documentation
 ```
 
-## How to Run
-
-1. **Clone the Repository**:
-    ```bash
-    git clone https://github.com/osmanfaaruk/Main_Local_Serve_Share.git
-    cd Main_Local_Serve_Share
-    ```
-2. **Open with Live Server**:
+3. **Explore**:
    - **Customer Portal**: `User-Website/index.html`
    - **Admin Portal**: `Admin-Dashboard/index.html`
 
@@ -45,9 +34,3 @@ A local service provider directory connecting Chittagong's professionals with re
 - Vanilla JavaScript
 - LocalStorage for state
 - JSON files for data
-
-## For Contributors
-
-1. Always pull the latest changes before starting: `git pull origin main`
-2. Add your changes and commit with descriptive messages
-3. Push your changes: `git push origin main`
