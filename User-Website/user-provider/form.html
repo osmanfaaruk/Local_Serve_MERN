@@ -33,29 +33,11 @@
         .badge-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
         
         .step-primary::before, .step-primary::after { background-color: hsl(var(--p)) !important; color: white !important; }
-
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(12px) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-            position: sticky !important;
-            top: 0 !important;
-            z-index: 50 !important;
-        }
-
-        #areaDropdown, #categoryDropdown {
-            border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
-        .dropdown-item { padding: 0.75rem 1rem; cursor: pointer; transition: background 0.2s; font-weight: 500; }
-        .dropdown-item:hover { background: #f3f4f6; color: hsl(var(--p)); }
     </style>
 
+
+    <!-- Light Mode -->
     <meta name="color-scheme" content="light">
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root { color-scheme: light !important; }
-        }
-    </style>
 </head>
 
 <body class="min-h-screen bg-base-200">
@@ -82,9 +64,7 @@
         </div>
     </div>
 
-<!-- ========================================== -->
-<!-- TEMPLATES                                  -->
-<!-- ========================================== -->
+
 
 <!-- Sidebar Layout Wrapper -->
 <template id="tmpl-provider-layout">
@@ -209,11 +189,11 @@
 
                         <!-- Pricing -->
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Pricing - Consultation Fee (৳) <span class="text-error">*</span></span></label>
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Consultation Fee (TK) <span class="text-error">*</span></span></label>
                             <input type="text" id="f_priceConsult" placeholder="e.g. Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Pricing - Hourly Labor Fee (৳) <span class="text-error">*</span></span></label>
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Hourly Labor Fee (TK) <span class="text-error">*</span></span></label>
                             <input type="text" id="f_priceHourly" placeholder="e.g. 500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
 
@@ -319,10 +299,168 @@
     </div>
 </template>
 
-<!-- ========================================== -->
-<!-- SCRIPTS                                    -->
-<!-- ========================================== -->
+
 <script>
+
+
+function updateCharCount(inputId, labelId, maxChars = 300) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const charCount = input.value.length;
+    const label = document.getElementById(labelId);
+    if (label) {
+        label.innerText = `${charCount} / ${maxChars} characters`;
+        if (charCount > maxChars) label.classList.add('text-error', 'font-bold');
+        else label.classList.remove('text-error', 'font-bold');
+    }
+}
+
+// area search
+function setupAreaSearch() {
+    const input = document.getElementById('areaSearchInput');
+    const dropdown = document.getElementById('areaDropdown');
+    const section = document.getElementById('areaSearchSection');
+    if(!input || !dropdown || !section) return;
+    input.onfocus = () => renderAreaDropdown(input.value);
+    input.oninput = () => renderAreaDropdown(input.value);
+    if (!window._hasAreaSearchListener) {
+        document.addEventListener('click', (e) => {
+            const d = document.getElementById('areaDropdown');
+            const s = document.getElementById('areaSearchSection');
+            if (d && s && !s.contains(e.target)) d.classList.add('hidden');
+        });
+        window._hasAreaSearchListener = true;
+    }
+}
+function toggleAreaDropdown() { const d = document.getElementById('areaDropdown'); if (d) d.classList.toggle('hidden'); }
+function renderAreaDropdown(query = '') {
+    const dropdown = document.getElementById('areaDropdown'); if (!dropdown) return;
+    dropdown.innerHTML = '';
+    const filtered = allAvailableAreas.filter(a => a.toLowerCase().includes(query.toLowerCase())).sort((a, b) => {
+        const am = a.toLowerCase().startsWith(query.toLowerCase()), bm = b.toLowerCase().startsWith(query.toLowerCase());
+        if (am && !bm) return -1; if (!am && bm) return 1; return a.localeCompare(b);
+    });
+    if (filtered.length === 0) { dropdown.innerHTML = '<div class="p-4 text-center text-sm opacity-50 italic">No locations found</div>'; } 
+    else {
+        filtered.slice(0, 6).forEach(area => {
+            const isSel = selectedAreas.includes(area);
+            const div = document.createElement('div');
+            div.className = `dropdown-item ${isSel ? 'opacity-30 pointer-events-none' : 'cursor-pointer'}`;
+            div.innerHTML = `<div class="px-1"><span class="${isSel ? 'line-through opacity-50' : 'font-medium'}">${area}</span></div>`;
+            if (!isSel) div.onclick = () => selectArea(area);
+            dropdown.appendChild(div);
+        });
+    }
+    dropdown.classList.remove('hidden');
+}
+function selectArea(area) { if (!selectedAreas.includes(area)) { selectedAreas.push(area); refreshAreaSelection(); renderAreaDropdown(document.getElementById('areaSearchInput').value); } }
+function removeArea(area) { selectedAreas = selectedAreas.filter(a => a !== area); refreshAreaSelection(); if (document.getElementById('areaSearchInput')) renderAreaDropdown(document.getElementById('areaSearchInput').value); }
+function refreshAreaSelection() {
+    const container = document.getElementById('selectedAreasContainer'); if (!container) return;
+    container.innerHTML = '';
+    if (selectedAreas.length === 0) { container.innerHTML = '<span class="text-xs opacity-50 italic py-2">No areas selected yet.</span>'; return; }
+    selectedAreas.forEach(area => {
+        const badge = document.createElement('div');
+        badge.className = 'badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
+        badge.innerHTML = `<i class="fas fa-map-marker-alt text-xs opacity-70"></i> ${area} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeArea('${area}')"></i>`;
+        container.appendChild(badge);
+    });
+    if (typeof saveDraft === 'function') saveDraft();
+}
+
+// tag input
+function setupTagInput() {
+    const input = document.getElementById('tagInput'); if(!input) return;
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); processTagInput(); } });
+}
+function processTagInput() {
+    const input = document.getElementById('tagInput'); if (!input) return;
+    const values = input.value.split(','); let hasError = false;
+    const errorLabel = document.getElementById('tagError');
+    values.forEach(val => {
+        val = val.trim(); if (!val) return;
+        if (val.split(/\s+/).length > 6) hasError = true;
+        else if (!offeredServicesTags.includes(val)) offeredServicesTags.push(val);
+    });
+    if (errorLabel) { if (hasError) errorLabel.classList.remove('hidden'); else errorLabel.classList.add('hidden'); }
+    if (!hasError) input.value = '';
+    refreshTags();
+    if (typeof saveDraft === 'function') saveDraft();
+}
+function removeTag(index) { offeredServicesTags.splice(index, 1); refreshTags(); if (typeof saveDraft === 'function') saveDraft(); }
+function refreshTags() {
+    const container = document.getElementById('tagContainer'); if (!container) return;
+    container.innerHTML = '';
+    if (offeredServicesTags.length === 0) { container.innerHTML = '<span class="text-sm opacity-50 italic py-2">No services added yet.</span>'; return; }
+    offeredServicesTags.forEach((t, i) => {
+        const badge = document.createElement('div');
+        badge.className = 'badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
+        badge.innerHTML = `<i class="fas fa-tag text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeTag(${i})"></i>`;
+        container.appendChild(badge);
+    });
+}
+
+
+async function fetchCategories(pathPrefix = '') {
+    if (window.allAvailableCategories && window.allAvailableCategories.length > 0) return window.allAvailableCategories;
+    try {
+        const response = await fetch(`${pathPrefix}../Admin-Dashboard/data/categories.json`);
+        window.allAvailableCategories = await response.json();
+        return window.allAvailableCategories;
+    } catch (error) {
+        window.allAvailableCategories = [{ name: "Home Repairs" }, { name: "Cleaning" }, { name: "Plumbing" }, { name: "Electrical" }];
+        return window.allAvailableCategories;
+    }
+}
+async function setupCategorySearch(pathPrefix = '') {
+    const input = document.getElementById('categorySearchInput');
+    const dropdown = document.getElementById('categoryDropdown');
+    const section = document.getElementById('categorySearchSection');
+    if(!input || !dropdown || !section) return;
+    await fetchCategories(pathPrefix);
+    input.onfocus = () => renderCategoryDropdown(input.value);
+    input.oninput = () => renderCategoryDropdown(input.value);
+    if (!window._hasCategorySearchListener) {
+        document.addEventListener('click', (e) => {
+            const d = document.getElementById('categoryDropdown');
+            const s = document.getElementById('categorySearchSection');
+            if (d && s && !s.contains(e.target)) d.classList.add('hidden');
+        });
+        window._hasCategorySearchListener = true;
+    }
+}
+function toggleCategoryDropdown() { const d = document.getElementById('categoryDropdown'); if (d) d.classList.toggle('hidden'); }
+function renderCategoryDropdown(query = '') {
+    const dropdown = document.getElementById('categoryDropdown'); if (!dropdown) return;
+    dropdown.innerHTML = '';
+    const filtered = window.allAvailableCategories.filter(c => c.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name));
+    if (filtered.length === 0) { dropdown.innerHTML = '<div class="p-4 text-center text-sm opacity-50 italic">No categories found</div>'; }
+    else {
+        filtered.slice(0, 6).forEach(cat => {
+            const isSel = categoriesTags.includes(cat.name); const div = document.createElement('div');
+            div.className = `dropdown-item ${isSel ? 'opacity-30 pointer-events-none' : 'cursor-pointer'}`;
+            div.innerHTML = `<div class="px-1"><span class="${isSel ? 'line-through opacity-50' : 'font-medium'}">${cat.name}</span></div>`;
+            if (!isSel) div.onclick = () => selectCategory(cat.name);
+            dropdown.appendChild(div);
+        });
+    }
+    dropdown.classList.remove('hidden');
+}
+function selectCategory(c) { if (!categoriesTags.includes(c)) { categoriesTags.push(c); refreshCategoryTags(); renderCategoryDropdown(document.getElementById('categorySearchInput').value); } }
+function removeCategoryTag(c) { categoriesTags = categoriesTags.filter(x => x !== c); refreshCategoryTags(); if (document.getElementById('categorySearchInput')) renderCategoryDropdown(document.getElementById('categorySearchInput').value); if (typeof saveDraft === 'function') saveDraft(); }
+function refreshCategoryTags() {
+    const container = document.getElementById('categoryTagContainer'); if (!container) return;
+    container.innerHTML = '';
+    if (categoriesTags.length === 0) { container.innerHTML = '<span class="text-xs opacity-50 italic py-2">No categories selected yet.</span>'; return; }
+    categoriesTags.forEach(t => {
+        const badge = document.createElement('div');
+        badge.className = 'badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
+        badge.innerHTML = `<i class="fas fa-th-large text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeCategoryTag('${t}')"></i>`;
+        container.appendChild(badge);
+    });
+    if (typeof saveDraft === 'function') saveDraft();
+}
+
 // --- SHARED DATA ---
 const allAvailableAreas = [
     "CTG Metropolitan Area", "GEC Circle", "Agrabad", "Halishahar", "Nasirabad", 
@@ -489,152 +627,10 @@ function saveDraft() {
 document.addEventListener('input', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
 document.addEventListener('change', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
 
-// --- Character Count ---
-function updateCharCount(inputId, labelId, maxChars = 300) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-    const charCount = input.value.length;
-    const label = document.getElementById(labelId);
-    if (label) {
-        label.innerText = `${charCount} / ${maxChars} characters`;
-        if (charCount > maxChars) label.classList.add('text-error', 'font-bold');
-        else label.classList.remove('text-error', 'font-bold');
-    }
-}
-
-// --- Area Search ---
-function setupAreaSearch() {
-    const input = document.getElementById('areaSearchInput');
-    const dropdown = document.getElementById('areaDropdown');
-    const section = document.getElementById('areaSearchSection');
-    if(!input || !dropdown || !section) return;
-    input.onfocus = () => renderAreaDropdown(input.value);
-    input.oninput = () => renderAreaDropdown(input.value);
-    if (!window._hasAreaSearchListener) {
-        document.addEventListener('click', (e) => {
-            const d = document.getElementById('areaDropdown');
-            const s = document.getElementById('areaSearchSection');
-            if (d && s && !s.contains(e.target)) d.classList.add('hidden');
-        });
-        window._hasAreaSearchListener = true;
-    }
-}
-
-function toggleAreaDropdown() { const d = document.getElementById('areaDropdown'); if(d) d.classList.toggle('hidden'); }
-
-function renderAreaDropdown(query = '') {
-    const dropdown = document.getElementById('areaDropdown');
-    if (!dropdown) return;
-    dropdown.innerHTML = '';
-    const filtered = allAvailableAreas.filter(a => a.toLowerCase().includes(query.toLowerCase())).sort((a,b) => {
-        const am = a.toLowerCase().startsWith(query.toLowerCase()), bm = b.toLowerCase().startsWith(query.toLowerCase());
-        if(am && !bm) return -1; if(!am && bm) return 1; return a.localeCompare(b);
-    });
-    if (filtered.length === 0) { dropdown.innerHTML = '<div class="p-4 text-center text-sm opacity-50 italic">No locations found</div>'; }
-    else { filtered.slice(0,6).forEach(area => {
-        const isSel = selectedAreas.includes(area); const div = document.createElement('div');
-        div.className = `dropdown-item ${isSel ? 'opacity-30 pointer-events-none' : 'cursor-pointer'}`;
-        div.innerHTML = `<div class="flex justify-between items-center px-1"><span class="${isSel ? 'line-through text-base-content/50' : 'font-medium'}">${area}</span></div>`;
-        if (!isSel) div.onclick = () => selectArea(area);
-        dropdown.appendChild(div);
-    }); }
-    dropdown.classList.remove('hidden');
-}
-
-function selectArea(area) { if(!selectedAreas.includes(area)){selectedAreas.push(area);refreshAreaSelection();renderAreaDropdown(document.getElementById('areaSearchInput').value);} }
-function removeArea(area) { selectedAreas=selectedAreas.filter(a=>a!==area);refreshAreaSelection();renderAreaDropdown(document.getElementById('areaSearchInput').value); }
-
-function refreshAreaSelection() {
-    const container = document.getElementById('selectedAreasContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    if (selectedAreas.length === 0) { container.innerHTML = '<span class="text-sm opacity-40 italic py-2">No areas selected yet.</span>'; return; }
-    selectedAreas.forEach(area => {
-        const badge = document.createElement('div');
-        badge.className = 'badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
-        badge.innerHTML = `<i class="fas fa-map-marker-alt text-xs opacity-70"></i> ${area} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeArea('${area}')"></i>`;
-        container.appendChild(badge);
-    });
-    if (typeof saveDraft === 'function') saveDraft();
-}
-
-// --- Tag Input (Services) ---
-function setupTagInput() {
-    const input = document.getElementById('tagInput');
-    if(!input) return;
-    input.addEventListener('keydown', (e) => { if(e.key==='Enter'||e.key===','){e.preventDefault();processTagInput();} });
-}
-
-function processTagInput() {
-    const input = document.getElementById('tagInput'); if(!input) return;
-    const values = input.value.split(','); let hasError = false;
-    const errorLabel = document.getElementById('tagError');
-    values.forEach(val => { val=val.trim(); if(!val)return; if(val.split(/\s+/).length>6){hasError=true;}else{if(!offeredServicesTags.includes(val))offeredServicesTags.push(val);} });
-    if(errorLabel){if(hasError)errorLabel.classList.remove('hidden');else errorLabel.classList.add('hidden');}
-    if(!hasError) input.value='';
-    refreshTags(); if(typeof saveDraft==='function')saveDraft();
-}
-function removeTag(index) { offeredServicesTags.splice(index,1); refreshTags(); if(typeof saveDraft==='function')saveDraft(); }
-
-function refreshTags() {
-    const container = document.getElementById('tagContainer'); if(!container)return;
-    container.innerHTML = '';
-    if(offeredServicesTags.length===0){container.innerHTML='<span class="text-sm opacity-50 italic py-2">No services added yet.</span>';return;}
-    offeredServicesTags.forEach((t,i)=>{
-        const badge=document.createElement('div');
-        badge.className='badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
-        badge.innerHTML=`<i class="fas fa-tag text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeTag(${i})"></i>`;
-        container.appendChild(badge);
-    });
-}
-
-// --- Category Search ---
-async function fetchCategories() {
-    if(allAvailableCategories.length>0) return allAvailableCategories;
-    try { const r=await fetch('../../Admin-Dashboard/data/categories.json'); allAvailableCategories=await r.json(); return allAvailableCategories; }
-    catch(e) { allAvailableCategories=[{name:"Home Repairs"},{name:"Cleaning"},{name:"Plumbing"},{name:"Electrical"}]; return allAvailableCategories; }
-}
-
-async function setupCategorySearch() {
-    const input=document.getElementById('categorySearchInput'),dropdown=document.getElementById('categoryDropdown'),section=document.getElementById('categorySearchSection');
-    if(!input||!dropdown||!section) return;
-    await fetchCategories();
-    input.onfocus=()=>renderCategoryDropdown(input.value);
-    input.oninput=()=>renderCategoryDropdown(input.value);
-    if(!window._hasCategorySearchListener){
-        document.addEventListener('click',(e)=>{const d=document.getElementById('categoryDropdown'),s=document.getElementById('categorySearchSection');if(d&&s&&!s.contains(e.target))d.classList.add('hidden');});
-        window._hasCategorySearchListener=true;
-    }
-}
-function toggleCategoryDropdown(){const d=document.getElementById('categoryDropdown');if(d)d.classList.toggle('hidden');}
-
-function renderCategoryDropdown(query=''){
-    const dropdown=document.getElementById('categoryDropdown');if(!dropdown)return;dropdown.innerHTML='';
-    const filtered=allAvailableCategories.filter(c=>c.name.toLowerCase().includes(query.toLowerCase())).sort((a,b)=>a.name.localeCompare(b.name));
-    if(filtered.length===0){dropdown.innerHTML='<div class="p-4 text-center text-sm opacity-50 italic">No categories found</div>';}
-    else{filtered.slice(0,6).forEach(cat=>{
-        const isSel=categoriesTags.includes(cat.name);const div=document.createElement('div');
-        div.className=`dropdown-item ${isSel?'opacity-30 pointer-events-none':'cursor-pointer'}`;
-        div.innerHTML=`<div class="flex justify-between items-center px-1"><span class="${isSel?'line-through text-base-content/50':'font-medium'}">${cat.name}</span></div>`;
-        if(!isSel)div.onclick=()=>selectCategory(cat.name);
-        dropdown.appendChild(div);
-    });}
-    dropdown.classList.remove('hidden');
-}
-function selectCategory(c){if(!categoriesTags.includes(c)){categoriesTags.push(c);refreshCategoryTags();renderCategoryDropdown(document.getElementById('categorySearchInput').value);}}
-function removeCategoryTag(c){categoriesTags=categoriesTags.filter(x=>x!==c);refreshCategoryTags();if(document.getElementById('categorySearchInput'))renderCategoryDropdown(document.getElementById('categorySearchInput').value);if(typeof saveDraft==='function')saveDraft();}
-
-function refreshCategoryTags(){
-    const container=document.getElementById('categoryTagContainer');if(!container)return;container.innerHTML='';
-    if(categoriesTags.length===0){container.innerHTML='<span class="text-xs opacity-50 italic py-2">No categories selected yet.</span>';return;}
-    categoriesTags.forEach(t=>{
-        const badge=document.createElement('div');
-        badge.className='badge bg-blue-700 text-white border-none badge-lg py-4 px-4 gap-2 font-bold shadow-sm';
-        badge.innerHTML=`<i class="fas fa-th-large text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeCategoryTag('${t}')"></i>`;
-        container.appendChild(badge);
-    });
-    if(typeof saveDraft==='function')saveDraft();
-}
+    // Initialize form utilities
+    setupTagInput();
+    setupAreaSearch();
+    setupCategorySearch('../'); 
 
 // --- Form Navigation ---
 function goToStep(step) {
@@ -681,7 +677,7 @@ function renderReviewContent() {
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Categories</p><div class="flex flex-wrap gap-2 mt-1">${data.categories.map(cat=>`<span class="badge badge-primary text-white font-bold">${cat}</span>`).join('')}</div></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Areas</p><div class="flex flex-wrap gap-2 mt-1">${data.areas.map(a=>`<span class="badge badge-outline font-bold border-base-300">${a}</span>`).join('')}</div></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Services</p><div class="flex flex-wrap gap-2 mt-1">${data.offeredServices.map(s=>`<span class="badge badge-ghost font-bold border-base-300"># ${s}</span>`).join('')}</div></div>
-            <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Availability / Pricing</p><p class="font-bold mt-1">${data.workDays.join(', ')} (${data.workTimeStart}-${data.workTimeEnd})<br>৳ ${data.priceConsult} Consult / ৳ ${data.priceHourly} Hourly</p></div>
+            <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Availability / Pricing</p><p class="font-bold mt-1">${data.workDays.join(', ')} (${data.workTimeStart}-${data.workTimeEnd})<br>${data.priceConsult} TK Consult / ${data.priceHourly} TK Hourly</p></div>
         </div></div></div>`;
 }
 

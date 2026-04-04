@@ -93,27 +93,28 @@
                 <p class="text-base-content/60">Manage your administrative preferences.</p>
             </div>
 
-            <div class="card bg-base-100 shadow-md border border-base-300 max-w-xl">
-                <div class="card-body">
-                    <h2 class="card-title text-xl mb-4 border-b border-base-200 pb-2"><i class="fas fa-lock text-primary"></i> Change Admin Password</h2>
+            <div class="card bg-base-100 shadow-xl border border-base-300 max-w-2xl">
+                <div class="card-body p-6 md:p-10">
+                    <h2 class="text-2xl font-extrabold mb-1 border-b pb-4 flex items-center gap-3">
+                        <i class="fas fa-lock text-primary"></i> Change Admin Password
+                    </h2>
                     
-                    <form onsubmit="handlePasswordChange(event)" class="space-y-4">
+                    <form id="changePasswordForm" class="space-y-6 mt-4" onsubmit="handlePasswordChange(event)">
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Current Password</span></label>
-                            <input type="password" id="currentPass" class="input input-bordered w-full focus:outline-primary" placeholder="Enter current password" required />
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Current Password <span class="text-error">*</span></span></label>
+                            <input type="password" id="cp_current" class="input input-bordered w-full md:w-2/3" required />
                         </div>
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">New Password</span></label>
-                            <input type="password" id="newPass" class="input input-bordered w-full focus:outline-primary" placeholder="Enter new password" required minlength="4" />
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">New Password <span class="text-error">*</span></span></label>
+                            <input type="password" id="cp_new" class="input input-bordered w-full md:w-2/3" required />
                         </div>
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-semibold">Confirm New Password</span></label>
-                            <input type="password" id="confirmPass" class="input input-bordered w-full focus:outline-primary" placeholder="Re-enter new password" required minlength="4"/>
-                            <label class="label hidden" id="passError"><span class="label-text-alt text-error font-medium">Passwords do not match!</span></label>
+                            <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Confirm New Password <span class="text-error">*</span></span></label>
+                            <input type="password" id="cp_confirm" class="input input-bordered w-full md:w-2/3" required />
                         </div>
                         
-                        <div class="mt-6 flex justify-end">
-                            <button type="submit" class="btn btn-primary px-8">Save Password</button>
+                        <div class="pt-4">
+                            <button type="submit" class="btn btn-primary font-bold shadow-lg px-8">Save Password</button>
                         </div>
                     </form>
                 </div>
@@ -123,48 +124,31 @@
         <script>
             function handlePasswordChange(e) {
                 e.preventDefault();
-                const newPass = document.getElementById('newPass').value;
-                const confirmPass = document.getElementById('confirmPass').value;
-                const errorLabel = document.getElementById('passError');
-                
-                if (newPass !== confirmPass) {
-                    errorLabel.classList.remove('hidden');
+                const current = document.getElementById('cp_current').value;
+                const newPass = document.getElementById('cp_new').value;
+                const confirm = document.getElementById('cp_confirm').value;
+
+                if (newPass !== confirm) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
                     return;
                 }
-                errorLabel.classList.add('hidden');
-                
-                // Simulate AJAX delay
-                const btn = e.target.querySelector('button[type="submit"]');
-                const origText = btn.innerHTML;
-                btn.innerHTML = '<span class="loading loading-spinner loading-xs"></span> Saving...';
-                btn.disabled = true;
-                
-                setTimeout(() => {
-                    btn.innerHTML = origText;
-                    btn.disabled = false;
-                    Swal.fire({
-                        title: 'Password Updated',
-                        text: 'Your admin password has been changed successfully.',
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        customClass: { confirmButton: 'btn btn-primary text-white px-8' },
-                        buttonsStyling: false
-                    }).then(() => {
-                        e.target.reset();
-                    });
-                }, 800);
-            }
-            
-            // Basic Real-time Check
-            document.getElementById('confirmPass').addEventListener('input', function() {
-                const newPass = document.getElementById('newPass').value;
-                const errorLabel = document.getElementById('passError');
-                if (this.value && newPass !== this.value) {
-                    errorLabel.classList.remove('hidden');
-                } else {
-                    errorLabel.classList.add('hidden');
+
+                // Match user's hardcoded demo logic
+                if (current !== '1') {
+                    Swal.fire({ icon: 'error', title: 'Auth Error', text: 'Current password is incorrect.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+                    return;
                 }
-            });
+
+                Swal.fire({
+                    icon: 'success', 
+                    title: 'Success!', 
+                    text: 'Admin password changed successfully.', 
+                    customClass: { confirmButton: 'btn btn-primary text-white' }, 
+                    buttonsStyling: false
+                }).then(() => {
+                    document.getElementById('changePasswordForm').reset();
+                });
+            }
         </script>
 
     </div>

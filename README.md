@@ -1,51 +1,36 @@
-# LocalServe - Service Discovery Platform
 
-Welcome to the **LocalServe** repository! LocalServe is a platform that connects local service providers with users in their area.
-
-This project is built using modern web fundamentals (HTML/CSS/JS) to ensure speed and accessibility.
-
-## 🚀 Key Features
-
-*   **User Interface**: Clear, responsive website for users to discover services.
-*   **Admin Dashboard**: Manage providers, categories, and locations with ease.
-*   **Provider Onboarding**: Simple workflow for local businesses to register their services.
-*   **Clean Design**: Beautifully styled with a premium aesthetic and smooth user experience.
 
 ## 📂 Project Structure
 
 ```text
 .
-├── Admin-Dashboard/      # Management interface for administrators
-│   ├── index.html        # Dashboard Home
-│   ├── manage-providers.html
-│   ├── manage-categories.html
-│   └── manage-locations.html
-├── User-Website/         # Main portal for users to find services
-│   ├── index.html        # Home / Landing Page
-│   ├── search-providers.html
-│   ├── provider-details.html
-│   └── request-to-serve.html
-├── assets/               # Shared icons, images, and core JS logic
-└── README.md             # You are here!
+├── Admin-Dashboard/           # Administrative portal for managing the platform
+│   ├── data/                 # JSON data stores (categories, locations, etc.)
+│   ├── js/                   # Dashboard-specific logic
+│   ├── manage-providers.html # Provider approval & management
+│   ├── manage-categories.html# Service category management
+│   └── index.html            # Admin main dashboard
+├── User-Website/              # Public-facing portal for customers
+│   ├── company-terms/        # Legal and information pages (About, Privacy, etc.)
+│   ├── js/                   # Frontend dynamic logic (footer, categories, etc.)
+│   ├── user-provider/        # Provider registration & login
+│   ├── search-providers.html # Main search & listing interface
+│   ├── provider-details.html # Detailed profile view for professionals
+│   └── index.html            # Main landing page
+└── README.md                  # Project documentation
 ```
 
-## 🛠️ Getting Started
+3. **Explore**:
+   - **Customer Portal**: `User-Website/index.html`
+   - **Admin Portal**: `Admin-Dashboard/index.html`
 
-For you or your collaborators to run this project locally:
+## Technology Stack
 
-1.  **Clone the Repository**:
-    ```bash
-    git clone [your-github-repo-link]
-    cd Main-LocalServe-Website
-    ```
-2.  **Run with Local Server**:
-    We recommend using the **Live Server** extension for VS Code or any simple HTTP server (like `npx serve .`) to avoid CORS issues for local development.
-
-## 🤝 For Contributors (Friends)
-
-To help maintain a clean workflow:
-
-1.  Always ensure you are on the `main` branch: `git checkout main`.
-2.  Pull the latest changes before starting: `git pull origin main`.
-3.  Add your changes and commit with descriptive messages.
-4.  Push your changes: `git push origin main`.
+- HTML5, CSS
+- Tailwind CSS (CDN)
+- DaisyUI 3.1.0
+- Font Awesome 6.4.0
+- SweetAlert2
+- Vanilla JavaScript
+- LocalStorage for state
+- JSON files for data

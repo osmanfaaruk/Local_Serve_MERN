@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Providers | LocalServe Modern</title>
     
-    <!-- DaisyUI & Tailwind core -->
+
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script>
         tailwind.config = {
@@ -20,10 +20,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     
-    <!-- Icons & Third-party -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Theme Overrides (High Specificity) -->
+
     <style>
         [data-theme] {
             --p: 221 70% 41% !important; /* Dark Blue (blue-700) */
@@ -46,7 +46,7 @@
         }
     </style>
 
-    <!-- Forcibly disable dark mode OS preferences -->
+    <!-- Light Theme -->
     <meta name="color-scheme" content="light">
     <style>
         @media (prefers-color-scheme: dark) {
@@ -57,10 +57,10 @@
 </head>
 
 <body class="min-h-screen bg-base-200 relative overflow-x-hidden">
-    <!-- Background Pattern -->
+
     <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-top pointer-events-none"></div>
 
-     <!-- Navbar -->
+
      <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
@@ -147,9 +147,9 @@
                             </div>
                             <div class="w-2/3 p-6">
                                 <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Plumbing</div>
-                                <h3 class="text-xl font-bold transition-colors">Elite Plumbing Solutions</h3>
+                                <h3 class="text-xl font-bold transition-colors">Chittagong Plumbing Point</h3>
                                 <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
-                                    <i class="fas fa-map-marker-alt text-primary/50"></i> GEC Circle, CTG
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> GEC, Chittagong
                                 </p>
                                 <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
                                 <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
@@ -168,9 +168,9 @@
                             </div>
                             <div class="w-2/3 p-6">
                                 <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Cleaning</div>
-                                <h3 class="text-xl font-bold transition-colors">Sparkle Clean Co.</h3>
+                                <h3 class="text-xl font-bold transition-colors">Kamal Cleaning BD</h3>
                                 <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
-                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Agrabad, CTG
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Agrabad, Chittagong
                                 </p>
                                 <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
                                 <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
@@ -189,9 +189,9 @@
                             </div>
                             <div class="w-2/3 p-6">
                                 <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">Electrical</div>
-                                <h3 class="text-xl font-bold transition-colors">Pro Circuit Electrical</h3>
+                                <h3 class="text-xl font-bold transition-colors">Active Electric Group</h3>
                                 <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
-                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Nasirabad, CTG
+                                    <i class="fas fa-map-marker-alt text-primary/50"></i> Nasirabad, Chittagong
                                 </p>
                                 <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Active Member</p>
                                 <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
@@ -240,33 +240,20 @@
         // Initialize
         loadCategoryOptions();
 
-        /**
-         * Handle result filtering
-         * This function will be the entry point for API calls when the backend is ready.
-         */
+
         function handleFilter() {
             // 1. Get filter values
             const searchQuery = document.getElementById('sidebarSearch').value;
             const category = document.getElementById('categoryFilter').value;
             const location = document.getElementById('locationFilter').value;
 
-            console.log('Filtering providers with:', { searchQuery, category, location });
 
-            // 2. SHOW LOADING STATE (Simulated)
-            // Example: document.getElementById('resultsGrid').innerHTML = '<div class="loading">...</div>';
 
-            // 3. API CALL (Future-proof)
-            /*
-            fetch(`/api/providers?search=${searchQuery}&category=${category}&location=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Update UI with data
-                    renderProviders(data);
-                })
-                .catch(err => console.error('Filter error:', err));
-            */
 
-            // 4. UI FEEDBACK (SweetAlert for now)
+
+
+
+
             if (window.Swal) {
                 Swal.fire({
                     title: 'Filtering...',
