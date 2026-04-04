@@ -2,41 +2,41 @@
     {
         "id": 1,
         "name": "GEC Circle",
-        "providers": 342
+        "providers": 1
     },
     {
         "id": 2,
         "name": "Agrabad",
-        "providers": 128
+        "providers": 1
     },
     {
         "id": 3,
         "name": "Halishahar",
-        "providers": 64
+        "providers": 1
     },
     {
         "id": 4,
         "name": "Nasirabad",
-        "providers": 95
+        "providers": 1
     },
     {
         "id": 5,
         "name": "Chawkbazar",
-        "providers": 210
+        "providers": 1
     },
     {
         "id": 6,
         "name": "Pahartali",
-        "providers": 47
+        "providers": 1
     },
     {
         "id": 7,
         "name": "Bayezid Bostami",
-        "providers": 38
+        "providers": 1
     },
     {
         "id": 8,
         "name": "Khulshi",
-        "providers": 72
+        "providers": 1
     }
 ]

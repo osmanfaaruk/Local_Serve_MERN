@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="sky">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,6 @@
     
     <!-- DaisyUI & Tailwind core -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -18,6 +17,8 @@
             }
         }
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     
     <!-- Icons & Third-party -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -44,6 +45,15 @@
             z-index: 50 !important;
         }
     </style>
+
+    <!-- Forcibly disable dark mode OS preferences -->
+    <meta name="color-scheme" content="light">
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root { color-scheme: light !important; }
+        }
+        html { theme-transition: none; }
+    </style>
 </head>
 
 <body class="min-h-screen bg-base-200 relative overflow-x-hidden">
@@ -59,7 +69,7 @@
             <ul class="menu menu-horizontal px-1 font-semibold gap-2">
                 <li><a href="index.html" >Home</a></li>
                 <li><a href="search-providers.html" class="active">All Providers</a></li>
-                <li><a href="request-to-serve.html">Become a Provider</a></li>
+                <li><a href="user-provider/login.html">Become a Provider</a></li>
             </ul>
         </div>
         <div class="navbar-end">
@@ -206,10 +216,7 @@
             </main>
         </div>
     </div>
-
-    <!-- Footer Placeholder -->
-    <div id="footer-placeholder"></div>
-    <script src="js/footer-loader.js"></script>
+    
 
     <script>
         // Fetch and populate categories

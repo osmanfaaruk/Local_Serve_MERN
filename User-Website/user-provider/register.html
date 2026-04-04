@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important; /* Dark Blue */
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        body { opacity: 0; transition: opacity 0.3s ease; color: #1a1a1a; }
+        
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+    <!-- Forcibly disable dark mode OS preferences -->
+    <meta name="color-scheme" content="light">
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root { color-scheme: light !important; }
+        }
+        html { theme-transition: none; }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="login.html">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <a href="login.html" class="btn btn-primary btn-sm text-white px-6">Login</a>
+        </div>
+    </div>
+
+    <!-- Hero Header -->
+    <div class="bg-base-100 border-b border-base-300 py-12">
+        <div class="max-w-3xl mx-auto text-center px-4">
+            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-user-plus text-primary text-3xl"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Create your Account</h1>
+            <p class="text-lg text-base-content/60 max-w-xl mx-auto">
+                Join our growing network of trusted local professionals in Chittagong. 
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="card bg-base-100 shadow-xl border border-base-300 max-w-md mx-auto">
+            <div class="card-body">
+                <h2 class="card-title justify-center text-2xl font-bold mb-6">Register</h2>
+                
+                <form id="registerForm" class="space-y-4">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Email Address</span></label>
+                        <input type="email" id="regEmail" class="input input-bordered w-full" placeholder="you@example.com" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Username</span></label>
+                        <input type="text" id="regUsername" class="input input-bordered w-full" placeholder="Choose a username" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Password</span></label>
+                        <input type="password" id="regPassword" class="input input-bordered w-full" placeholder="Create a password" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full text-white font-bold mt-4 shadow-lg">Sign Up</button>
+                </form>
+                
+                <div class="divider text-xs opacity-50">OR</div>
+                <p class="text-center text-sm">Already have an account? <a href="login.html" class="text-primary font-bold hover:underline">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.body.style.opacity = "1";
+
+        // Handle Registration Form Submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('regEmail').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+
+            // TODO: I am saving this in localStorage temporarily as our database.
+            // When the senior backend dev finishes the real API, I will just swap it out like this:
+            // fetch('/api/register', { method: 'POST', body: JSON.stringify({ email, username, password }) })
+            
+            let users = JSON.parse(localStorage.getItem('localserve_users') || '[]');
+            
+            // Check if username already exists in our mock db
+            const exists = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+            if (exists) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'That username is already taken! Try another one.',
+                    confirmButtonColor: '#1d4ed8'
+                });
+                return;
+            }
+
+            // Save to our "database" (localStorage for now)
+            users.push({
+                email: email,
+                username: username,
+                password: password, // Note for future self: Never save plain text password in DB like this! We have to hash it with bcrypt before inserting.
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem('localserve_users', JSON.stringify(users));
+
+            // Success feedback
+            Swal.fire({
+                icon: 'success',
+                title: 'Account Created!',
+                text: 'Registration successful! You can now login with your new account.',
+                confirmButtonColor: '#1d4ed8'
+            }).then(() => {
+                // Redirect user back to login page
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

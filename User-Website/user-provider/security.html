@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Security | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important;
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        body { opacity: 0; transition: opacity 0.3s ease; color: #1a1a1a; }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="login.html" class="active">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Sidebar -->
+            <div class="md:w-1/4 w-full">
+                <div class="bg-base-100 rounded-xl shadow-sm border border-base-300 overflow-hidden sticky top-[90px]">
+                    <div class="p-6 border-b border-base-200 bg-primary/5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold opacity-50 uppercase tracking-widest">Logged In As</p>
+                            <h3 class="font-black text-lg" id="profile-username-display">User</h3>
+                        </div>
+                    </div>
+                    <ul class="menu p-4 w-full bg-base-100 text-base-content gap-2">
+                        <li><a href="dashboard.html" class="font-bold py-3"><i class="fas fa-clipboard-list w-5"></i> Your Application</a></li>
+                        <li><a href="security.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-shield-alt w-5"></i> Account Security</a></li>
+                        <div class="divider my-1"></div>
+                        <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Security Content -->
+            <div class="md:w-3/4 w-full">
+                <div class="card bg-base-100 shadow-xl border border-base-300">
+                    <div class="card-body p-6 md:p-10">
+                        <h2 class="text-2xl font-extrabold mb-1 border-b pb-4 flex items-center gap-3">
+                            <i class="fas fa-key text-primary"></i> Change Password
+                        </h2>
+                        
+                        <form id="changePasswordForm" class="space-y-6 mt-4" onsubmit="handleChangePassword(event)">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Current Password <span class="text-error">*</span></span></label>
+                                <input type="password" id="cp_current" class="input input-bordered w-full md:w-2/3" required />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">New Password <span class="text-error">*</span></span></label>
+                                <input type="password" id="cp_new" class="input input-bordered w-full md:w-2/3" required />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Confirm New Password <span class="text-error">*</span></span></label>
+                                <input type="password" id="cp_confirm" class="input input-bordered w-full md:w-2/3" required />
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button type="submit" class="btn btn-primary font-bold shadow-lg px-8">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let currentUser = null;
+
+    window.onload = () => {
+        const storedUser = localStorage.getItem('ls_currentUser');
+        if (!storedUser) {
+            window.location.href = 'login.html';
+            return;
+        }
+        currentUser = JSON.parse(storedUser);
+        document.getElementById('profile-username-display').innerText = currentUser.username;
+        document.body.style.opacity = "1";
+    };
+
+    function logout() {
+        localStorage.removeItem('ls_currentUser');
+        window.location.href = 'login.html';
+    }
+
+    function handleChangePassword(e) {
+        e.preventDefault();
+        const current = document.getElementById('cp_current').value;
+        const newPass = document.getElementById('cp_new').value;
+        const confirm = document.getElementById('cp_confirm').value;
+
+        if (newPass !== confirm) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+            return;
+        }
+
+        if (current !== '1') {
+            Swal.fire({ icon: 'error', title: 'Auth Error', text: 'Current password is incorrect.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+            return;
+        }
+
+        Swal.fire({
+            icon: 'success', 
+            title: 'Success!', 
+            text: 'Password changed successfully.', 
+            customClass: { confirmButton: 'btn btn-primary text-white' }, 
+            buttonsStyling: false
+        }).then(() => {
+            document.getElementById('changePasswordForm').reset();
+        });
+    }
+</script>
+
+</body>
+</html>

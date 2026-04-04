@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | LocalServe Provider</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important;
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        body { opacity: 0; transition: opacity 0.3s ease; color: #1a1a1a; }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="login.html" class="active">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end"></div>
+    </div>
+
+    <!-- Hero Header -->
+    <div class="bg-base-100 border-b border-base-300 py-12">
+        <div class="max-w-3xl mx-auto text-center px-4">
+            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-handshake text-primary text-3xl"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Provider <span class="text-primary italic">Portal Login</span></h1>
+            <p class="text-lg text-base-content/60 max-w-xl mx-auto">Login to manage your business profile and service requests.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 py-12" id="main-container">
+        <!-- Login Card -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 max-w-md mx-auto">
+            <div class="card-body">
+                <h2 class="card-title justify-center text-2xl font-bold mb-6">Login to Continue</h2>
+                <div class="alert alert-info shadow-none bg-blue-50 text-blue-700 mb-6 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i> For demo, use Username: <strong>Osman</strong>, Password: <strong>1</strong>
+                </div>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Username</span></label>
+                        <input type="text" id="loginUsername" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Password</span></label>
+                        <input type="password" id="loginPassword" class="input input-bordered w-full" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full text-white font-bold mt-4 shadow-lg">Login</button>
+                </form>
+                <div class="divider text-xs opacity-50">OR</div>
+                <p class="text-center text-sm">Don't have an account? <a href="register.html" class="text-primary font-bold hover:underline">Register Now</a></p>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const DEMO_USER = "Osman";
+    const DEMO_PASS = "1";
+    let currentUser = null;
+
+    window.onload = () => {
+        const storedUser = localStorage.getItem('ls_currentUser');
+        if (storedUser) {
+            window.location.href = 'dashboard.html';
+        } else {
+            document.body.style.opacity = "1";
+        }
+    };
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const u = document.getElementById('loginUsername').value;
+        const p = document.getElementById('loginPassword').value;
+
+        if (u === DEMO_USER && p === DEMO_PASS) {
+            currentUser = { username: u };
+            localStorage.setItem('ls_currentUser', JSON.stringify(currentUser));
+            window.location.href = 'dashboard.html';
+        } else {
+            Swal.fire({
+                icon: 'error', 
+                title: 'Login Failed', 
+                text: 'Invalid credentials. Use Osman / 1.', 
+                customClass: { confirmButton: 'btn btn-primary text-white' }, 
+                buttonsStyling: false
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

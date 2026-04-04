@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Dashboard | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        [data-theme] {
+            --p: 221 70% 41% !important;
+            --pf: 221 70% 31% !important;
+            --pc: 0 0% 100% !important;
+        }
+        body { opacity: 0; transition: opacity 0.3s ease; color: #1a1a1a; }
+        
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .badge-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+
+    <meta name="color-scheme" content="light">
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root { color-scheme: light !important; }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+        <div class="navbar-start">
+            <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 font-semibold gap-2">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../search-providers.html">All Providers</a></li>
+                <li><a href="login.html" class="active">Become a Provider</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-6xl mx-auto px-4 py-8" id="main-container">
+        <div class="flex justify-center p-12">
+            <span class="loading loading-spinner text-primary loading-lg"></span>
+        </div>
+    </div>
+
+<!-- ========================================== -->
+<!-- TEMPLATES                                  -->
+<!-- ========================================== -->
+
+<!-- Sidebar Layout Wrapper -->
+<template id="tmpl-provider-layout">
+    <div class="flex flex-col md:flex-row gap-6">
+        <div class="md:w-1/4 w-full">
+            <div class="bg-base-100 rounded-xl shadow-sm border border-base-300 overflow-hidden sticky top-[90px]">
+                <div class="p-6 border-b border-base-200 bg-primary/5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold opacity-50 uppercase tracking-widest">Logged In As</p>
+                        <h3 class="font-black text-lg" id="profile-username-display">User</h3>
+                    </div>
+                </div>
+                <ul class="menu p-4 w-full bg-base-100 text-base-content gap-2">
+                    <li><a id="menu-app" href="dashboard.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-clipboard-list w-5"></i> Your Application</a></li>
+                    <li><a id="menu-sec" href="security.html" class="font-bold py-3"><i class="fas fa-shield-alt w-5"></i> Account Security</a></li>
+                    <div class="divider my-1"></div>
+                    <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="md:w-3/4 w-full" id="dashboard-content-area">
+        </div>
+    </div>
+</template>
+
+<!-- Apply Gateway (Before any application has been submitted) -->
+<template id="tmpl-apply-gateway">
+    <div class="text-center py-12">
+        <div class="mb-8">
+            <i class="fas fa-clipboard-list text-6xl text-base-content/20"></i>
+        </div>
+        <h2 class="text-2xl font-bold mb-4">Start Your Application</h2>
+        <p class="text-base-content/60 max-w-md mx-auto mb-8">
+            You haven't submitted a provider profile yet. Create one now to start receiving requests from local customers.
+        </p>
+        <a href="form.html" class="btn btn-primary btn-lg text-white shadow-xl hover:-translate-y-1 transition-transform">
+            Apply to Become a Service Provider <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+    </div>
+</template>
+
+<!-- Provider Dashboard (Already Applied - Status View) -->
+<template id="tmpl-dashboard">
+    <div class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden">
+        <div class="bg-primary/10 p-8 text-center border-b border-base-300">
+            <div class="avatar placeholder mb-4">
+                <div class="bg-primary text-primary-content rounded-full w-24 outline outline-4 outline-base-100 shadow-sm">
+                    <span class="text-3xl font-bold" id="dash-initial"></span>
+                </div>
+            </div>
+            <h2 class="text-3xl font-extrabold" id="dash-company-name"></h2>
+            <p class="opacity-70 mt-1 flex items-center justify-center gap-2">
+                <i class="fas fa-tag"></i> <span id="dash-type"></span> &bull; <i class="fas fa-clock"></i> Status: <span class="badge badge-warning badge-sm font-bold">Under Review</span>
+            </p>
+        </div>
+        <div class="card-body p-8">
+            <div class="alert bg-base-200 border-none mb-6">
+                <i class="fas fa-check-circle text-success text-2xl"></i>
+                <div>
+                    <h3 class="font-bold">Application Received</h3>
+                    <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+                <button onclick="editApplication()" class="btn btn-outline btn-primary shadow-sm hover:shadow-md flex-1 sm:flex-none">
+                    <i class="fas fa-edit"></i> Edit Information
+                </button>
+                <button onclick="terminateService()" class="btn btn-outline btn-error shadow-sm hover:shadow-md flex-1 sm:flex-none">
+                    <i class="fas fa-trash-alt"></i> Service Termination
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- ========================================== -->
+<!-- SCRIPTS (Lightweight - no form logic!)     -->
+<!-- ========================================== -->
+<script>
+    // State
+    const DEMO_USER = "Osman";
+    const DEMO_PASS = "1";
+    let currentUser = null;
+    let providerData = null;
+
+    // Init
+    window.onload = () => {
+        loadState();
+        renderRouter();
+        document.body.style.opacity = "1";
+    };
+
+    function loadState() {
+        const storedUser = localStorage.getItem('ls_currentUser');
+        if (storedUser) currentUser = JSON.parse(storedUser);
+        const storedData = localStorage.getItem('ls_providerData');
+        if (storedData) providerData = JSON.parse(storedData);
+    }
+
+    function saveState() {
+        if (currentUser) localStorage.setItem('ls_currentUser', JSON.stringify(currentUser));
+        else localStorage.removeItem('ls_currentUser');
+        if (providerData) localStorage.setItem('ls_providerData', JSON.stringify(providerData));
+        else localStorage.removeItem('ls_providerData');
+    }
+
+    function logout() {
+        currentUser = null;
+        saveState();
+        window.location.href = 'login.html';
+    }
+
+    // Router - decides what to show in the content area
+    function renderRouter() {
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const container = document.getElementById('main-container');
+        container.innerHTML = '';
+        container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
+        document.getElementById('profile-username-display').innerText = currentUser.username;
+
+        const contentArea = document.getElementById('dashboard-content-area');
+
+        if (providerData) {
+            // User already submitted - show status
+            contentArea.appendChild(document.getElementById('tmpl-dashboard').content.cloneNode(true));
+            hydrateDashboard();
+        } else if (localStorage.getItem('ls_formDraft')) {
+            // Has an ongoing draft - send them to form page to continue
+            window.location.href = 'form.html';
+        } else {
+            // Fresh user - show gateway
+            contentArea.appendChild(document.getElementById('tmpl-apply-gateway').content.cloneNode(true));
+        }
+    }
+
+    // Dashboard hydration
+    function hydrateDashboard() {
+        if (!providerData) return;
+        document.getElementById('dash-company-name').innerText = providerData.businessName;
+        document.getElementById('dash-type').innerText = providerData.type;
+        document.getElementById('dash-initial').innerText = providerData.businessName.charAt(0).toUpperCase();
+    }
+
+    // Edit Application - sets a flag and redirects to form page
+    function editApplication() {
+        localStorage.setItem('ls_editMode', 'edit');
+        window.location.href = 'form.html';
+    }
+
+    // Terminate Service
+    function terminateService() {
+        Swal.fire({
+            title: 'Terminate Service?',
+            text: "Are you sure you want to stop providing services? This will remove your listing.",
+            icon: 'warning',
+            input: 'textarea',
+            inputLabel: 'Reason for deletion (Optional)',
+            inputPlaceholder: 'Tell us why you are leaving...',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Terminate',
+            customClass: { confirmButton: 'btn btn-error text-white ml-2', cancelButton: 'btn btn-ghost' },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                providerData = null;
+                saveState();
+                Swal.fire({
+                    title: 'Terminated!',
+                    text: 'Your service provider account has been deleted.',
+                    icon: 'success',
+                    customClass: { confirmButton: 'btn btn-primary text-white' },
+                    buttonsStyling: false
+                }).then(() => {
+                    renderRouter();
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>
