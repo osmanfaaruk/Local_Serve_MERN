@@ -54,7 +54,6 @@
                 <li><a href="login.html" class="active">Become a Provider</a></li>
             </ul>
         </div>
-        <div class="navbar-end"></div>
     </div>
 
     <!-- Main Content Container -->
@@ -626,11 +625,6 @@ function saveDraft() {
 
 document.addEventListener('input', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
 document.addEventListener('change', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
-
-    // Initialize form utilities
-    setupTagInput();
-    setupAreaSearch();
-    setupCategorySearch('../'); 
 
 // --- Form Navigation ---
 function goToStep(step) {
