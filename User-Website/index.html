@@ -274,21 +274,27 @@
                         return;
                     }
                     featuredGrid.innerHTML = featured.map(p => `
-                        <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
+                        <div class="card bg-base-100 border border-base-200 cursor-pointer overflow-hidden rounded-[2rem]"
                             onclick="window.location.href='provider-details.html?id=${p._id}'">
-                            <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
-                                <i class="fas fa-user-tie text-6xl text-primary/20"></i>
-                                <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">${p.categories[0] || 'Service'}</div>
-                                <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">Verified</div>
+                            <figure class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                                <i class="fas fa-user-tie text-5xl text-primary/10"></i>
+                                <div class="absolute top-4 left-4 badge badge-primary font-black text-xs py-4 px-5 border-none shadow-xl shadow-primary/20">${p.categories[0] || 'Service'}</div>
+                                <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-base-100 to-transparent"></div>
                             </figure>
-                            <div class="card-body">
-                                <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">${p.businessName}</h3>
-                                <p class="text-base-content/60 flex items-center gap-2">
-                                    <i class="fas fa-map-marker-alt text-primary"></i> ${p.areas[0] || 'Chittagong'}
+                            <div class="card-body p-8 pt-0 -mt-8 relative">
+                                <div class="w-16 h-16 rounded-2xl bg-base-100 shadow-xl border border-base-200 flex items-center justify-center mb-4">
+                                    <i class="fas fa-building text-2xl text-primary/40"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-base-content leading-tight mb-2">${p.businessName}</h3>
+                                <p class="text-sm text-base-content/60 flex items-center gap-2 mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary/40"></i> ${p.areas[0] || 'Chittagong'}
                                 </p>
-                                <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                                    <div class="text-lg font-bold">From <span class="text-primary">${p.priceConsult || p.priceHourly || 'N/A'} TK</span></div>
-                                    <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
+                                <div class="flex items-center justify-between border-t border-base-100 pt-5 mt-auto">
+                                    <div class="leading-none">
+                                        <span class="text-[10px] uppercase font-bold text-base-content/30 tracking-widest block mb-1">Starting from</span>
+                                        <div class="text-lg font-black text-primary">${p.priceConsult || p.priceHourly || 'N/A'} <span class="text-xs font-normal opacity-50">TK</span></div>
+                                    </div>
+                                    <button class="btn btn-primary btn-sm px-5 rounded-xl font-bold">View</button>
                                 </div>
                             </div>
                         </div>

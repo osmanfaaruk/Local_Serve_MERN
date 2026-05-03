@@ -78,35 +78,37 @@
                         <h2 class="card-title text-xl font-black mb-6">Filter Results</h2>
 
                         <!-- Search Within -->
-                        <div class="form-control mb-4">
-                            <label class="label"><span class="label-text font-bold">Search</span></label>
+                        <div class="form-control mb-5">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Search Keywords</span></label>
                             <div class="relative">
-                                <i
-                                    class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40"></i>
-                                <input type="text" id="sidebarSearch" placeholder="e.g. Plumber"
-                                    class="input input-bordered w-full pl-10" />
+                                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary/40"></i>
+                                <input type="text" id="sidebarSearch" placeholder="e.g. Electrician, Plumbing"
+                                    class="input input-bordered w-full pl-12 h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-medium" />
                             </div>
                         </div>
 
-                        <div class="form-control mb-4">
-                            <label class="label"><span class="label-text font-bold">Category</span></label>
-                            <select id="categoryFilter" class="select select-bordered w-full">
-                                <option>All Categories</option>
+                        <div class="form-control mb-5">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Service Category</span></label>
+                            <select id="categoryFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
+                                <option value="">All Categories</option>
                             </select>
                         </div>
 
                         <!-- Location Filter -->
-                        <div class="form-control mb-4">
-                            <label class="label"><span class="label-text font-bold">Location</span></label>
-                            <select id="locationFilter" class="select select-bordered w-full">
+                        <div class="form-control mb-5">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Service Area</span></label>
+                            <select id="locationFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
                                 <option value="">All Locations</option>
                             </select>
                         </div>
 
                         <!-- Filter Action -->
-                        <div class="mt-6">
-                            <button onclick="handleFilter()" class="btn btn-primary w-full rounded-xl shadow-lg shadow-primary/20 font-bold">
-                                <i class="fas fa-filter mr-2"></i> Filter Results
+                        <div class="mt-8 space-y-3">
+                            <button onclick="handleFilter()" class="btn btn-primary w-full h-12 rounded-2xl shadow-xl shadow-primary/20 font-black tracking-tight">
+                                <i class="fas fa-sliders-h mr-2"></i> Apply Filters
+                            </button>
+                            <button onclick="clearFilters()" class="btn btn-ghost btn-sm w-full font-bold opacity-50 hover:opacity-100">
+                                Clear All Filters
                             </button>
                         </div>
                     </div>
@@ -200,6 +202,13 @@
             }
         }
 
+        function clearFilters() {
+            document.getElementById('sidebarSearch').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('locationFilter').value = '';
+            handleFilter();
+        }
+
         function handleFilter() {
             const serviceQuery = document.getElementById('sidebarSearch').value.toLowerCase().trim();
             const category = document.getElementById('categoryFilter').value;
@@ -238,7 +247,16 @@
             grid.innerHTML = '';
 
             if (providers.length === 0) {
-                grid.innerHTML = '<div class="text-center p-10 text-base-content/50">No providers found matching your criteria.</div>';
+                grid.innerHTML = `
+                    <div class="flex flex-col items-center justify-center p-20 text-center bg-base-100 rounded-[3rem] border border-dashed border-base-300">
+                        <div class="w-24 h-24 rounded-full bg-base-200 flex items-center justify-center mb-6">
+                            <i class="fas fa-search text-4xl opacity-20"></i>
+                        </div>
+                        <h3 class="text-2xl font-black mb-2">No Professionals Found</h3>
+                        <p class="text-base-content/50 max-w-xs mx-auto">We couldn't find any providers matching your current filters. Try adjusting your search or clear all filters.</p>
+                        <button onclick="clearFilters()" class="btn btn-primary btn-outline rounded-xl mt-8 px-8">Clear All Filters</button>
+                    </div>
+                `;
                 return;
             }
 
@@ -248,23 +266,37 @@
                 const price = p.priceConsult || p.priceHourly || 'Contact for price';
 
                 const card = document.createElement('div');
-                card.className = "card bg-base-100 shadow-sm border border-base-300 transition-all cursor-pointer group rounded-3xl overflow-hidden";
+                card.className = "card bg-base-100 border border-base-200 cursor-pointer rounded-3xl overflow-hidden";
                 card.onclick = () => window.location.href = `provider-details.html?id=${p._id}`;
+                
+                const aboutText = p.about || 'No description available.';
+                const expHtml = p.experience ? `<span class="flex items-center gap-1"><i class="fas fa-briefcase text-primary/50"></i> ${p.experience}</span>` : '';
+                
                 card.innerHTML = `
-                    <div class="card-body p-0 flex-row">
-                        <div class="w-1/3 min-w-[120px] bg-primary/5 flex items-center justify-center transition-colors group-hover:bg-primary group-hover:text-white">
-                            <i class="fas fa-user-tie text-5xl text-primary/20 group-hover:text-white transition-colors"></i>
+                    <div class="card-body p-6 flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shrink-0 border border-primary/10">
+                            <i class="fas fa-user-tie text-3xl text-primary/40"></i>
                         </div>
-                        <div class="w-2/3 p-6">
-                            <div class="badge badge-primary badge-outline font-bold text-[10px] py-2 px-3 mb-2">${categoryBadge}</div>
-                            <h3 class="text-xl font-bold transition-colors group-hover:text-primary">${p.businessName}</h3>
-                            <p class="text-sm text-base-content/60 mt-1 flex items-center gap-1">
-                                <i class="fas fa-map-marker-alt text-primary/50"></i> ${areaText}
-                            </p>
-                            <p class="text-[10px] uppercase font-bold text-base-content/20 mt-1 tracking-widest">Verified Provider</p>
-                            <div class="mt-4 flex items-center justify-between border-t border-base-200 pt-4">
-                                <div class="font-bold text-primary text-lg">${price} <span class="text-xs opacity-50 font-normal"></span></div>
-                                <button class="btn btn-primary btn-circle btn-sm shadow-lg shadow-primary/20"><i class="fas fa-chevron-right text-xs"></i></button>
+                        <div class="flex-1 w-full">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="badge badge-primary font-black text-xs py-3 px-4 shadow-sm border-none">${categoryBadge}</div>
+                                <div class="badge badge-ghost text-xs font-bold gap-1 py-3 px-4"><i class="fas fa-check-circle text-success"></i> Verified</div>
+                            </div>
+                            <h3 class="text-xl font-bold text-base-content mb-1">${p.businessName}</h3>
+                            
+                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-base-content/60 mb-3">
+                                <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt text-primary/50"></i> ${areaText}</span>
+                                ${expHtml}
+                            </div>
+                            
+                            <p class="text-sm text-base-content/70 line-clamp-2 mb-4 italic">"${aboutText}"</p>
+                            
+                            <div class="flex items-center justify-between border-t border-base-200 pt-4 mt-auto">
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold tracking-wider text-base-content/40 block mb-0.5">Consultation Fee</span>
+                                    <div class="font-black text-primary text-lg">${price === 'Free' || price === '0' ? 'Free' : price + ' TK'}</div>
+                                </div>
+                                <button class="btn btn-primary btn-sm px-6 rounded-xl font-bold">View Profile</button>
                             </div>
                         </div>
                     </div>
