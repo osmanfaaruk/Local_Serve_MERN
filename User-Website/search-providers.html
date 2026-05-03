@@ -117,7 +117,7 @@
             <main class="flex-1">
                 <!-- Results Section -->
                 <div class="mb-4">
-                    <p class="text-sm font-bold opacity-50">Showing best matches for your search</p>
+                <p class="text-sm font-bold opacity-50" id="results-count">Showing all providers</p>
                 </div>
 
                 <!-- Grid of Results -->
@@ -172,34 +172,63 @@
                 const data = await provRes.json();
                 allProviders = data.filter(p => p.status === 'Approved');
 
-                // Check URL for category pre-selection
+                // Read URL params from homepage search and pre-fill sidebar
                 const urlParams = new URLSearchParams(window.location.search);
-                const initialCategory = urlParams.get('category');
+                const initialService = urlParams.get('service') || '';
+                const initialCategory = urlParams.get('category') || '';
+                const initialArea = urlParams.get('area') || '';
+
+                if (initialService) {
+                    document.getElementById('sidebarSearch').value = initialService;
+                }
                 if (initialCategory) {
                     categorySelect.value = initialCategory;
                 }
+                if (initialArea) {
+                    document.getElementById('locationFilter').value = initialArea;
+                }
 
-                renderProviders(allProviders);
+                // Auto-run filter if any param is present
+                if (initialService || initialCategory || initialArea) {
+                    handleFilter();
+                } else {
+                    renderProviders(allProviders);
+                    document.getElementById('results-count').textContent = `Showing all ${allProviders.length} providers`;
+                }
             } catch (error) {
                 console.error('Error initializing page:', error);
             }
         }
 
         function handleFilter() {
-            const searchQuery = document.getElementById('sidebarSearch').value.toLowerCase();
+            const serviceQuery = document.getElementById('sidebarSearch').value.toLowerCase().trim();
             const category = document.getElementById('categoryFilter').value;
             const location = document.getElementById('locationFilter').value;
 
             const filtered = allProviders.filter(p => {
-                const matchesSearch = p.businessName.toLowerCase().includes(searchQuery) || 
-                                      p.about.toLowerCase().includes(searchQuery) ||
-                                      (p.offeredServices && p.offeredServices.join(' ').toLowerCase().includes(searchQuery));
-                
-                const matchesCategory = category === 'All Categories' || category === '' || (p.categories && p.categories.includes(category));
-                const matchesLocation = location === 'All Locations' || location === '' || (p.areas && p.areas.includes(location));
+                // Multi-field service match: checks categories, offeredServices, businessName, about
+                const serviceMatch = !serviceQuery || (
+                    (p.categories && p.categories.some(c => c.toLowerCase().includes(serviceQuery))) ||
+                    (p.offeredServices && p.offeredServices.some(s => s.toLowerCase().includes(serviceQuery))) ||
+                    (p.businessName && p.businessName.toLowerCase().includes(serviceQuery)) ||
+                    (p.about && p.about.toLowerCase().includes(serviceQuery))
+                );
 
-                return matchesSearch && matchesCategory && matchesLocation;
+                const matchesCategory = !category || category === 'All Categories' || 
+                    (p.categories && p.categories.some(c => c.toLowerCase() === category.toLowerCase()));
+
+                const matchesLocation = !location || location === 'All Locations' || 
+                    (p.areas && p.areas.some(a => a.toLowerCase() === location.toLowerCase()));
+
+                return serviceMatch && matchesCategory && matchesLocation;
             });
+
+            const count = document.getElementById('results-count');
+            if (filtered.length === allProviders.length && !serviceQuery && !category && !location) {
+                count.textContent = `Showing all ${filtered.length} providers`;
+            } else {
+                count.textContent = `Found ${filtered.length} result${filtered.length !== 1 ? 's' : ''} for your search`;
+            }
 
             renderProviders(filtered);
         }

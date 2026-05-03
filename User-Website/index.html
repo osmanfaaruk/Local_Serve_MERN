@@ -111,18 +111,12 @@
                     <div class="relative flex-1 md:max-w-[200px]">
                         <i
                             class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 z-10"></i>
-                        <select
+                        <select id="areaSelect"
                             class="select select-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-bold appearance-none">
-                            <option disabled selected>CTG Metropolitan Area</option>
-                            <option>GEC Circle</option>
-                            <option>Agrabad</option>
-                            <option>Nasirabad</option>
-                            <option>Halishahar</option>
-                            <option>Chawkbazar</option>
+                            <option value="">All Areas</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold text-white" required
-                        onclick="window.location.href='search-providers.html'">Search Now</button>
+                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold text-white" onclick="doSearch()">Search Now</button>
                 </div>
             </div>
         </div>
@@ -307,6 +301,32 @@
 
         loadCategories();
         loadFeatured();
+        loadLocations();
+
+        async function loadLocations() {
+            try {
+                const response = await fetch('http://localhost:5000/api/locations');
+                const locations = await response.json();
+                const areaSelect = document.getElementById('areaSelect');
+                locations.forEach(loc => {
+                    const option = document.createElement('option');
+                    option.value = loc.name;
+                    option.textContent = loc.name;
+                    areaSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading locations:', error);
+            }
+        }
+
+        function doSearch() {
+            const service = document.getElementById('categorySearch').value.trim();
+            const area = document.getElementById('areaSelect').value.trim();
+            const params = new URLSearchParams();
+            if (service) params.set('service', service);
+            if (area) params.set('area', area);
+            window.location.href = 'search-providers.html?' + params.toString();
+        }
 
         const searchInput = document.getElementById('categorySearch');
         const dropdown = document.getElementById('categoryDropdown');
