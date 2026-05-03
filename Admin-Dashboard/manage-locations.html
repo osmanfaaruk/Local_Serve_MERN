@@ -182,18 +182,19 @@
         }
 
         let locations = [];
-        let nextId = 1;
+        let providers = [];
 
         async function loadLocations() {
             try {
-                const response = await fetch('data/locations.json');
-                locations = await response.json();
-                if (locations.length > 0) {
-                    nextId = Math.max(...locations.map(l => l.id)) + 1;
-                }
+                const [locRes, provRes] = await Promise.all([
+                    fetch('http://localhost:5000/api/locations'),
+                    fetch('http://localhost:5000/api/providers')
+                ]);
+                locations = await locRes.json();
+                providers = await provRes.json();
                 renderTable();
             } catch (error) {
-                console.error('Failed to load locations:', error);
+                console.error('Failed to load data:', error);
             }
         }
 
@@ -205,32 +206,53 @@
                 return;
             }
 
-            tbody.innerHTML = locations.map(loc => `
-                <tr>
-                    <td class="font-bold">${loc.name}</td>
-                    <td class="font-bold text-primary">${loc.providers}</td>
-                    <td class="text-right">
-                        <button onclick="deleteLocation(${loc.id})" class="btn btn-ghost btn-xs text-error font-bold">
-                            <i class="fas fa-trash mr-1"></i> Delete
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = locations.map(loc => {
+                const count = providers.filter(p => p.areas && p.areas.includes(loc.name)).length;
+                return `
+                    <tr>
+                        <td class="font-bold">${loc.name}</td>
+                        <td class="font-bold text-primary">${count}</td>
+                        <td class="text-right">
+                            <button onclick="deleteLocation('${loc._id}')" class="btn btn-ghost btn-xs text-error font-bold">
+                                <i class="fas fa-trash mr-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function promptNewLocation() {
-            confirmAdd('newLocationInput', 'Location', (name) => {
-                locations.push({ id: nextId++, name: name, providers: 0 });
-                renderTable();
+            confirmAdd('newLocationInput', 'Location', async (name) => {
+                try {
+                    const res = await fetch('http://localhost:5000/api/locations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: name })
+                    });
+                    if (res.ok) {
+                        loadLocations();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             });
         }
 
         function deleteLocation(id) {
-            const loc = locations.find(l => l.id === id);
+            const loc = locations.find(l => l._id === id);
             if (!loc) return;
-            confirmDelete(loc.name, 'Location', () => {
-                locations = locations.filter(l => l.id !== id);
-                renderTable();
+            confirmDelete(loc.name, 'Location', async () => {
+                try {
+                    const res = await fetch(`http://localhost:5000/api/locations/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        loadLocations();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             });
         }
 

@@ -26,6 +26,7 @@
             --error: 0 84% 60%;
             --neutral: 0 0% 10%;
         }
+        body { font-family: 'Inter', sans-serif; }
         .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
         .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
         .text-primary { color: hsl(var(--p)) !important; }
@@ -38,25 +39,27 @@
             top: 0 !important;
             z-index: 50 !important;
         }
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
         .swal2-actions { display: flex !important; margin-top: 1.5rem !important; gap: 0.5rem !important; }
-        .swal2-popup { padding-bottom: 2rem !important; overflow-y: visible !important; }
-        .swal2-confirm, .swal2-cancel { margin: 0 !important; }
+        .swal2-popup { padding-bottom: 2rem !important; overflow-y: visible !important; border-radius: 1.5rem !important; }
     </style>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <meta name="color-scheme" content="light">
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root { color-scheme: light !important; }
-        }
-        html { theme-transition: none; }
-    </style>
 </head>
 
-<body class="min-h-screen bg-base-200">
+<body class="min-h-screen bg-base-200/50">
 
-    <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
+    <div class="navbar bg-base-100 shadow-sm px-4 md:px-20">
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
@@ -64,161 +67,142 @@
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
-        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
+        <!-- Sidebar -->
+        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
-            <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+            <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
             <a href="manage-providers.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
                 <i class="fas fa-users"></i> Providers
             </a>
-            <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+            <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-th-large"></i> Categories
             </a>
-            <a href="manage-locations.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+            <a href="manage-locations.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-map-marker-alt"></i> Locations
             </a>
             <div class="divider"></div>
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">System</div>
-            <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+            <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-cog"></i> Settings
             </a>
         </aside>
 
-        <main class="flex-1 p-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                <h1 class="text-3xl font-extrabold">Provider Management</h1>
-                <a href="add-provider.html" class="btn btn-primary text-white"><i class="fas fa-plus"></i> Add Provider</a>
+        <main class="flex-1 p-4 md:p-10">
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+                <div>
+                    <h1 class="text-3xl font-black tracking-tight">Provider Management</h1>
+                    <p class="text-base-content/60 mt-1">Manage, verify, and monitor all service providers.</p>
+                </div>
+                <a href="add-provider.html" class="btn btn-primary text-white shadow-lg hover:shadow-xl px-8">
+                    <i class="fas fa-plus"></i> Add Provider
+                </a>
             </div>
 
-            <div class="mb-8">
-                <h2 class="text-xl font-bold mb-4">Admin Added Providers</h2>
-                <div class="card bg-base-100 shadow-sm border border-base-300">
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra table-fixed w-full">
-                            <thead class="bg-base-200">
-                                <tr>
-                                    <th class="w-1/2">Name</th>
-                                    <th>Verification</th>
-                                    <th class="text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar placeholder">
-                                                <div class="bg-blue-100 text-blue-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
-                                                    <i class="fas fa-faucet text-sm"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Chittagong Plumbing Point</div>
-                                                <div class="text-xs opacity-50">10 Years Experience</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="badge badge-success text-white badge-sm font-bold">Verified</div>
-                                    </td>
-                                    <td class="text-right flex justify-end gap-2">
-                                        <button class="btn btn-square btn-ghost btn-sm text-primary" onclick="editAdminProvider('provider_123')"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-square btn-ghost btn-sm text-error" onclick="confirmDeleteProvider('Chittagong Plumbing Point', this)"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar placeholder">
-                                                <div class="bg-purple-100 text-purple-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
-                                                    <i class="fas fa-broom text-sm"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Kamal Cleaning BD</div>
-                                                <div class="text-xs opacity-50">5 Years Experience</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="badge badge-success text-white badge-sm font-bold">Verified</div>
-                                    </td>
-                                    <td class="text-right flex justify-end gap-2">
-                                        <button class="btn btn-square btn-ghost btn-sm text-primary" onclick="editAdminProvider('provider_124')"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-square btn-ghost btn-sm text-error" onclick="confirmDeleteProvider('Kamal Cleaning BD', this)"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
+                    <div class="card-body p-6 flex-row items-center gap-4">
+                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Total Providers</div>
+                            <div class="text-2xl font-black" id="stat-total">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
+                    <div class="card-body p-6 flex-row items-center gap-4">
+                        <div class="w-12 h-12 bg-success/10 text-success rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Live & Verified</div>
+                            <div class="text-2xl font-black text-success" id="stat-live">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
+                    <div class="card-body p-6 flex-row items-center gap-4">
+                        <div class="w-12 h-12 bg-warning/10 text-warning rounded-xl flex items-center justify-center text-xl">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Pending Apps</div>
+                            <div class="text-2xl font-black text-warning" id="stat-pending">0</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12">
-                <h2 class="text-xl font-bold mb-4">Applied Providers</h2>
-                <div class="card bg-base-100 shadow-sm border border-base-300">
-                    <div class="overflow-x-auto">
-                        <table class="table table-zebra table-fixed w-full">
-                            <thead class="bg-base-200">
-                                <tr>
-                                    <th class="w-1/2">Name</th>
-                                    <th>Status</th>
-                                    <th class="text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar placeholder">
-                                                <div class="bg-indigo-100 text-indigo-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
-                                                    <span class="text-sm font-bold">RG</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Rofikul G.</div>
-                                                <div class="text-xs opacity-50">Applied Date: 12 Oct 2026</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="status-badge-1" class="badge bg-warning text-warning-content border-none badge-sm font-bold cursor-pointer hover:opacity-80 transition-opacity" 
-                                             data-reason="Trade license scan copy lagbe check korar jonno." 
-                                             onclick="viewStatusReason(this)">Under Review</div>
-                                    </td>
-                                    <td class="text-right flex justify-end gap-2">
-                                        <button class="btn btn-sm btn-outline btn-primary" onclick="changeProviderStatus('status-badge-1', 'Rofikul G.')">
-                                            <i class="fas fa-sync-alt mr-2"></i> Change Status
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar placeholder">
-                                                <div class="bg-green-100 text-green-600 mask mask-squircle w-10 h-10 flex items-center justify-center">
-                                                    <span class="text-sm font-bold">J</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Karim's Green View</div>
-                                                <div class="text-xs opacity-50">Applied Date: 15 Oct 2026</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="status-badge-2" class="badge bg-error text-white border-none badge-sm font-bold cursor-pointer hover:opacity-80 transition-opacity" 
-                                             data-reason="Application rejected due to incomplete service list." 
-                                             onclick="viewStatusReason(this)">Rejected</div>
-                                    </td>
-                                    <td class="text-right flex justify-end gap-2">
-                                        <button class="btn btn-sm btn-outline btn-primary" onclick="changeProviderStatus('status-badge-2', 'Karim\'s Green View')">
-                                            <i class="fas fa-sync-alt mr-2"></i> Change Status
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <!-- Search and Filters -->
+            <div class="card bg-base-100 shadow-sm border border-base-300 mb-10">
+                <div class="card-body p-4 flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 join shadow-sm">
+                        <span class="join-item bg-base-200 flex items-center px-4 border border-base-300 border-r-0"><i class="fas fa-search opacity-40"></i></span>
+                        <input type="text" id="providerSearch" class="input input-bordered join-item w-full focus:outline-none" placeholder="Search by name, email, or phone..." oninput="handleFilterChange()" />
+                    </div>
+                    <select id="statusFilter" class="select select-bordered w-full md:w-48 shadow-sm focus:outline-none" onchange="handleFilterChange()">
+                        <option value="All">All Statuses</option>
+                        <option value="Approved">Live / Approved</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sections Container -->
+            <div id="providers-container" class="space-y-12">
+                <!-- Admin Added Section -->
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <h2 class="text-xl font-black tracking-tight">Admin Added Providers</h2>
+                        <div class="badge badge-primary badge-sm font-bold" id="badge-admin-count">0</div>
+                    </div>
+                    <div class="card bg-base-100 shadow-md border border-base-300 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="table w-full">
+                                <thead class="bg-base-200/50">
+                                    <tr class="text-xs uppercase tracking-widest opacity-60">
+                                        <th class="py-4">Provider / Business</th>
+                                        <th>Verification</th>
+                                        <th>Added On</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-providers-body">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Applied Section -->
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <h2 class="text-xl font-black tracking-tight text-indigo-900">Applied Providers</h2>
+                        <div class="badge badge-ghost border-base-300 badge-sm font-bold" id="badge-applied-count">0</div>
+                    </div>
+                    <div class="card bg-base-100 shadow-md border border-base-300 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="table w-full">
+                                <thead class="bg-base-200/50">
+                                    <tr class="text-xs uppercase tracking-widest opacity-60">
+                                        <th class="py-4">Applicant Detail</th>
+                                        <th>Status</th>
+                                        <th>Applied On</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="applied-providers-body">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -226,97 +210,335 @@
     </div>
 
     <script>
+        let providersList = [];
+        let filteredList = [];
+        
+        async function loadProviders() {
+            try {
+                const response = await fetch('http://localhost:5000/api/providers');
+                providersList = await response.json();
+                handleFilterChange(); // Initial render
+            } catch (err) {
+                console.error('Error loading providers:', err);
+                Swal.fire('Error', 'Could not load providers from server.', 'error');
+            }
+        }
+
+        function handleFilterChange() {
+            const searchTerm = document.getElementById('providerSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            filteredList = providersList.filter(p => {
+                const matchesSearch = p.businessName.toLowerCase().includes(searchTerm) || 
+                                     p.email.toLowerCase().includes(searchTerm) || 
+                                     p.phone.includes(searchTerm);
+                const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
+                return matchesSearch && matchesStatus;
+            });
+
+            updateStats();
+            renderTables();
+        }
+
+        function updateStats() {
+            const total = providersList.length;
+            const live = providersList.filter(p => p.status === 'Approved').length;
+            const pending = providersList.filter(p => p.status === 'Under Review').length;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-live').innerText = live;
+            document.getElementById('stat-pending').innerText = pending;
+        }
+
+        function renderTables() {
+            const adminBody = document.getElementById('admin-providers-body');
+            const appliedBody = document.getElementById('applied-providers-body');
+            
+            adminBody.innerHTML = '';
+            appliedBody.innerHTML = '';
+
+            let adminCount = 0;
+            let appliedCount = 0;
+
+            filteredList.forEach(p => {
+                const dateStr = new Date(p.createdAt).toLocaleDateString();
+                // Strictly use the flag: If it's explicitly marked as NOT applied (isApplied: false), it's Admin-added.
+                // If it's missing the flag (old data), we use status as fallback for grouping.
+                const isApplied = p.isApplied === true || (p.isApplied !== false && (p.status === 'Under Review' || p.status === 'Rejected'));
+                const iconClass = p.type === 'Company' ? 'fa-building' : 'fa-user';
+                
+                const row = document.createElement('tr');
+                row.className = 'table-row-hover transition-colors border-b border-base-200 last:border-0';
+
+                if (isApplied) {
+                    appliedCount++;
+                    row.innerHTML = `
+                        <td class="py-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="avatar placeholder">
+                                    <div class="bg-primary/10 text-primary rounded-xl w-11 h-11 flex items-center justify-center">
+                                        <i class="fas ${iconClass} text-lg"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">${p.businessName}</div>
+                                    <div class="text-[10px] opacity-40 uppercase font-black tracking-widest mt-0.5">${p.type}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="badge ${getStatusClass(p.status)} border-none badge-sm font-bold py-3 px-3">${p.status}</div>
+                        </td>
+                        <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
+                        <td class="text-right">
+                            <button class="btn btn-sm btn-primary text-white shadow-sm" onclick="reviewProvider('${p._id}')">
+                                <i class="fas fa-clipboard-check mr-2"></i> Review
+                            </button>
+                        </td>
+                    `;
+                    appliedBody.appendChild(row);
+                } else {
+                    adminCount++;
+                    row.innerHTML = `
+                        <td class="py-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="avatar placeholder">
+                                    <div class="bg-info/10 text-info rounded-xl w-11 h-11 flex items-center justify-center">
+                                        <i class="fas ${iconClass} text-lg"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-sm">${p.businessName}</div>
+                                    <div class="text-[10px] opacity-40 uppercase font-black tracking-widest mt-0.5">${p.type}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            ${p.status === 'Approved' 
+                                ? '<div class="badge badge-success text-white badge-sm font-bold py-3 px-3">Verified & Live</div>' 
+                                : `<div class="badge ${getStatusClass(p.status)} border-none badge-sm font-bold py-3 px-3">${p.status}</div>`
+                            }
+                        </td>
+                        <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
+                        <td class="text-right">
+                            <div class="flex justify-end gap-1">
+                                <button class="btn btn-square btn-ghost btn-sm text-primary hover:bg-primary/10 tooltip tooltip-left" data-tip="Change Status" onclick="reviewProvider('${p._id}')">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </button>
+                                <button class="btn btn-square btn-ghost btn-sm text-info hover:bg-info/10 tooltip tooltip-left" data-tip="Edit Info" onclick="editAdminProvider('${p._id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-square btn-ghost btn-sm text-error hover:bg-error/10 tooltip tooltip-left" data-tip="Remove" onclick="confirmDeleteProvider('${p.businessName}', '${p._id}', this)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    adminBody.appendChild(row);
+                }
+            });
+
+            document.getElementById('badge-admin-count').innerText = adminCount;
+            document.getElementById('badge-applied-count').innerText = appliedCount;
+
+            if (adminCount === 0) {
+                adminBody.innerHTML = `<tr><td colspan="4" class="text-center py-12 opacity-30 italic text-sm">No admin-added providers found.</td></tr>`;
+            }
+            if (appliedCount === 0) {
+                appliedBody.innerHTML = `<tr><td colspan="4" class="text-center py-12 opacity-30 italic text-sm">No user applications found.</td></tr>`;
+            }
+        }
+
+        function getStatusClass(status) {
+            if (status === 'Approved') return 'bg-success text-white';
+            if (status === 'Rejected') return 'bg-error text-white';
+            if (status === 'Need More Info') return 'bg-info text-white';
+            return 'bg-warning text-warning-content';
+        }
+
         function editAdminProvider(providerId) {
             window.location.href = `add-provider.html?edit=${providerId}`;
         }
 
-        function confirmDeleteProvider(providerName, btnElement) {
-            Swal.fire({
+        async function confirmDeleteProvider(providerName, providerId, btnElement) {
+            const result = await Swal.fire({
                 title: 'Delete Provider?',
                 text: `Are you sure you want to remove "${providerName}"? This action cannot be undone.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes, delete it!',
-                customClass: {
-                    confirmButton: 'btn btn-error text-white ml-2',
-                    cancelButton: 'btn btn-ghost'
-                },
+                customClass: { confirmButton: 'btn btn-error text-white ml-2', cancelButton: 'btn btn-ghost' },
                 buttonsStyling: false,
                 reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const row = btnElement.closest('tr');
-                    if (row) row.remove();
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: `"${providerName}" has been removed.`,
-                        icon: 'success',
-                        customClass: { confirmButton: 'btn btn-primary text-white' },
-                        buttonsStyling: false
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/providers/${providerId}`, {
+                        method: 'DELETE'
                     });
+
+                    if (response.ok) {
+                        Swal.fire({ title: 'Deleted!', text: `"${providerName}" has been removed.`, icon: 'success', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+                        loadProviders();
+                    } else {
+                        throw new Error('Delete failed');
+                    }
+                } catch (err) {
+                    Swal.fire('Error', 'Failed to delete provider.', 'error');
                 }
-            });
+            }
         }
 
-        function changeProviderStatus(badgeId, providerName) {
-            const badgeElement = document.getElementById(badgeId);
-            if (!badgeElement) return;
-            const currentReason = badgeElement.getAttribute('data-reason') || '';
-            
-            Swal.fire({
-                title: `Update Status:<br><span class="text-lg font-normal text-gray-500">${providerName}</span>`,
-                html: `
-                    <div class="text-left mt-4">
-                        <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs opacity-60">Select Status</span></label>
-                        <select id="swal-status-select" class="select select-bordered w-full focus:outline-primary">
-                            <option value="Under Review">Under Review</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                            <option value="Need More Info">Need More Info</option>
-                        </select>
-                        <label class="label mt-4"><span class="label-text font-bold uppercase tracking-wider text-xs opacity-60">Reason (Required)</span></label>
-                        <textarea id="swal-reason-input" class="textarea textarea-bordered w-full h-24 focus:outline-primary" placeholder="Briefly explain the status update...">${currentReason}</textarea>
+        function reviewProvider(id) {
+            const p = providersList.find(x => x._id === id);
+            if (!p) return;
+
+            const isAdminAdded = p.isApplied !== true;
+
+            const content = `
+                <div class="text-left space-y-4 text-sm mt-4 bg-base-200 p-6 rounded-2xl max-h-[60vh] overflow-y-auto custom-scrollbar">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div class="col-span-2 md:col-span-1"><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Business Name</span><br><span class="font-bold text-lg text-primary">${p.businessName}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Type</span><br><span class="font-bold">${p.type}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Experience</span><br><span class="font-bold">${p.experience || 'Not Specified'}</span></div>
+                        
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Contact</span><br><span class="font-bold">${p.phone}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Email</span><br><span class="font-bold text-xs">${p.email}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Categories</span><br><span class="font-bold text-xs">${p.categories ? p.categories.join(', ') : 'None'}</span></div>
                     </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Save Update',
-                customClass: { confirmButton: 'btn btn-primary text-white ml-2', cancelButton: 'btn btn-ghost' },
-                buttonsStyling: false,
-                reverseButtons: true,
-                preConfirm: () => {
-                    const status = document.getElementById('swal-status-select').value;
-                    const reason = document.getElementById('swal-reason-input').value.trim();
-                    if (!reason) { Swal.showValidationMessage('A reason is required.'); return false; }
-                    return { status, reason };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const data = result.value;
-                    badgeElement.setAttribute('data-reason', data.reason);
-                    badgeElement.innerText = data.status;
-                    badgeElement.classList.remove('bg-warning', 'text-warning-content', 'bg-success', 'text-white', 'bg-error', 'bg-info', 'text-info-content');
-                    if (data.status === 'Approved') badgeElement.classList.add('bg-success', 'text-white');
-                    else if (data.status === 'Rejected') badgeElement.classList.add('bg-error', 'text-white');
-                    else if (data.status === 'Need More Info') badgeElement.classList.add('bg-info', 'text-info-content');
-                    else badgeElement.classList.add('bg-warning', 'text-warning-content');
-                    Swal.fire({ title: 'Updated!', icon: 'success', timer: 2000, showConfirmButton: false });
-                }
-            });
+
+                    <div class="divider opacity-10 my-0"></div>
+                    
+                    <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">About / Bio</span><br><p class="text-base-content/80 mt-1 italic">${p.about}</p></div>
+                    
+                    <div class="divider opacity-10 my-0"></div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div class="col-span-2 md:col-span-1"><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Working Days</span><br><span class="font-bold text-xs">${p.workDays ? p.workDays.join(', ') : 'Not set'}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Working Hours</span><br><span class="font-bold">${p.workTimeStart || '--'} to ${p.workTimeEnd || '--'}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Consultation Fee</span><br><span class="font-bold text-success">${p.priceConsult} TK</span></div>
+                    </div>
+
+                    <div class="divider opacity-10 my-0"></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Service Areas</span><br><span class="font-bold text-xs">${p.areas ? p.areas.join(', ') : 'None'}</span></div>
+                        <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Hourly Rate</span><br><span class="font-bold text-success">${p.priceHourly} TK</span></div>
+                    </div>
+
+                    <div class="divider opacity-10 my-0"></div>
+
+                    <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Specific Services Offered</span><br><span class="font-bold text-xs">${p.offeredServices ? p.offeredServices.join(' • ') : 'None'}</span></div>
+                    
+                    <div><span class="opacity-50 text-[10px] font-bold uppercase tracking-widest">Why Choose Us</span><br><span class="font-bold text-xs italic">${p.whyChooseUs ? p.whyChooseUs.join(', ') : 'Not specified'}</span></div>
+                </div>
+                <style>
+                    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+                    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+                    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+                </style>
+            `;
+
+            if (isAdminAdded) {
+                Swal.fire({
+                    title: 'Manage Provider Status',
+                    html: content,
+                    width: '800px',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check-circle mr-2"></i> Make Live',
+                    denyButtonText: '<i class="fas fa-pause-circle mr-2"></i> Not Live',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: 'btn btn-success text-white',
+                        denyButton: 'btn btn-warning text-warning-content ml-2',
+                        cancelButton: 'btn btn-ghost ml-2'
+                    },
+                    buttonsStyling: false
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        await updateProviderStatus(p._id, 'Approved', '');
+                    } else if (result.isDenied) {
+                        await updateProviderStatus(p._id, 'Under Review', 'Admin moved to offline/not live.');
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Review Provider Application',
+                    html: content,
+                    width: '800px',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check mr-2"></i> Approve & Publish',
+                    denyButtonText: '<i class="fas fa-times mr-2"></i> Reject',
+                    cancelButtonText: 'Put Under Review',
+                    customClass: {
+                        confirmButton: 'btn btn-success text-white',
+                        denyButton: 'btn btn-error text-white ml-2',
+                        cancelButton: 'btn btn-warning text-warning-content ml-2'
+                    },
+                    buttonsStyling: false
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        await updateProviderStatus(p._id, 'Approved', '');
+                    } else if (result.isDenied) {
+                        const { value: reason } = await Swal.fire({
+                            title: 'Reject Application',
+                            input: 'textarea',
+                            inputLabel: 'Reason for rejection',
+                            inputPlaceholder: 'Type your message here...',
+                            showCancelButton: true,
+                            inputValidator: (value) => {
+                                if (!value) return 'You need to write a reason!'
+                            },
+                            customClass: { confirmButton: 'btn btn-error text-white', cancelButton: 'btn btn-ghost ml-2' },
+                            buttonsStyling: false
+                        });
+
+                        if (reason) await updateProviderStatus(p._id, 'Rejected', reason);
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        const { value: reviewReason } = await Swal.fire({
+                            title: 'Move to Under Review',
+                            input: 'textarea',
+                            inputLabel: 'Violation / Reason',
+                            inputPlaceholder: 'Type details here...',
+                            showCancelButton: true,
+                            inputValidator: (value) => { if (!value) return 'Reason required!' },
+                            customClass: { confirmButton: 'btn btn-warning text-warning-content', cancelButton: 'btn btn-ghost ml-2' },
+                            buttonsStyling: false
+                        });
+
+                        if (reviewReason) await updateProviderStatus(p._id, 'Under Review', reviewReason);
+                    }
+                });
+            }
         }
 
-        function viewStatusReason(badgeElement) {
-            const status = badgeElement.innerText;
-            const reason = badgeElement.getAttribute('data-reason') || 'No reason provided.';
-            Swal.fire({
-                title: `Status: ${status}`,
-                text: reason,
-                icon: 'info',
-                confirmButtonText: 'Close',
-                customClass: { confirmButton: 'btn btn-primary text-white' },
-                buttonsStyling: false
-            });
+        async function updateProviderStatus(providerId, status, reason) {
+            try {
+                Swal.fire({title: 'Updating...', didOpen: () => { Swal.showLoading() }, allowOutsideClick: false});
+                const response = await fetch(`http://localhost:5000/api/providers/${providerId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: status, statusReason: reason })
+                });
+
+                if (response.ok) {
+                    Swal.fire({ title: 'Success!', text: `Status updated to ${status}.`, icon: 'success', timer: 1500, showConfirmButton: false }).then(() => loadProviders());
+                } else {
+                    throw new Error('Update failed');
+                }
+            } catch (err) {
+                Swal.fire('Error', 'Failed to update status.', 'error');
+            }
         }
+
+        window.onload = () => {
+            loadProviders();
+            document.body.style.opacity = "1";
+        };
     </script>
-    <script>document.body.style.opacity = "1";</script>
 </body>
+
 </html>

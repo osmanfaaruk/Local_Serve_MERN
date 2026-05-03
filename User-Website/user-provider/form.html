@@ -18,7 +18,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <style>
         [data-theme] {
             --p: 221 70% 41% !important;
@@ -100,10 +103,10 @@
             <ul class="steps steps-horizontal w-full mb-10 text-sm font-bold opacity-80 overflow-hidden">
                 <li class="step step-primary">Company Info</li>
                 <li class="step">Services</li>
-                <li class="step">Review</li>
+                <li class="step ">Review</li>
             </ul>
 
-            <form id="providerForm" onsubmit="handleFormNext(event)" class="space-y-8">
+            <form id="providerForm" onsubmit="event.preventDefault();" class="space-y-8">
                 <!-- PART 1: Company Information -->
                 <div id="form-part-1">
                     <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 border-b pb-2 mb-6">
@@ -136,6 +139,13 @@
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Email Address <span class="text-error">*</span></span></label>
                             <input type="email" id="f_email" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-bold uppercase tracking-wider text-xs">Total Experience <span class="text-error">*</span></span>
+                                <span class="label-text-alt text-[10px] opacity-50 uppercase font-black">e.g. 5 Years / 8 Months</span>
+                            </label>
+                            <input type="text" id="f_experience" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
                     </div>
 
@@ -189,11 +199,11 @@
                         <!-- Pricing -->
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Consultation Fee (TK) <span class="text-error">*</span></span></label>
-                            <input type="text" id="f_priceConsult" placeholder="e.g. Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
+                            <input type="text" id="f_priceConsult" placeholder="Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Hourly Labor Fee (TK) <span class="text-error">*</span></span></label>
-                            <input type="text" id="f_priceHourly" placeholder="e.g. 500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
+                            <input type="text" id="f_priceHourly" placeholder="500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
 
                         <!-- Service Areas -->
@@ -401,14 +411,16 @@ function refreshTags() {
 
 
 async function fetchCategories(pathPrefix = '') {
-    if (window.allAvailableCategories && window.allAvailableCategories.length > 0) return window.allAvailableCategories;
+    if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
     try {
-        const response = await fetch(`${pathPrefix}../Admin-Dashboard/data/categories.json`);
-        window.allAvailableCategories = await response.json();
-        return window.allAvailableCategories;
+        const response = await fetch('http://localhost:5000/api/categories');
+        const data = await response.json();
+        allAvailableCategories = Array.isArray(data) ? data : [];
+        return allAvailableCategories;
     } catch (error) {
-        window.allAvailableCategories = [{ name: "Home Repairs" }, { name: "Cleaning" }, { name: "Plumbing" }, { name: "Electrical" }];
-        return window.allAvailableCategories;
+        console.error("Category fetch failed:", error);
+        allAvailableCategories = [{ name: "Home Repairs" }, { name: "Cleaning" }, { name: "Plumbing" }, { name: "Electrical" }];
+        return allAvailableCategories;
     }
 }
 async function setupCategorySearch(pathPrefix = '') {
@@ -428,11 +440,12 @@ async function setupCategorySearch(pathPrefix = '') {
         window._hasCategorySearchListener = true;
     }
 }
+
 function toggleCategoryDropdown() { const d = document.getElementById('categoryDropdown'); if (d) d.classList.toggle('hidden'); }
 function renderCategoryDropdown(query = '') {
     const dropdown = document.getElementById('categoryDropdown'); if (!dropdown) return;
     dropdown.innerHTML = '';
-    const filtered = window.allAvailableCategories.filter(c => c.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name));
+    const filtered = (allAvailableCategories || []).filter(c => c.name.toLowerCase().includes(query.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name));
     if (filtered.length === 0) { dropdown.innerHTML = '<div class="p-4 text-center text-sm opacity-50 italic">No categories found</div>'; }
     else {
         filtered.slice(0, 6).forEach(cat => {
@@ -461,13 +474,7 @@ function refreshCategoryTags() {
 }
 
 // --- SHARED DATA ---
-const allAvailableAreas = [
-    "CTG Metropolitan Area", "GEC Circle", "Agrabad", "Halishahar", "Nasirabad", 
-    "Chawkbazar", "Panchlaish", "Bakalia", "Khulshi", 
-    "Patenga", "Kotwali", "Double Mooring", "EPZ Area",
-    "Muradpur", "Bahaddarhat", "Lalkhan Bazar"
-];
-
+let allAvailableAreas = [];
 let allAvailableCategories = [];
 
 // --- State ---
@@ -481,7 +488,16 @@ let selectedAreas = [];
 let formCache = {};
 
 // --- Init ---
-window.onload = () => {
+window.onload = async () => {
+    try {
+        const locRes = await fetch('http://localhost:5000/api/locations');
+        const locData = await locRes.json();
+        allAvailableAreas = Array.isArray(locData) ? locData.map(l => l.name) : ["Chittagong"];
+    } catch (e) {
+        console.error("Location fetch failed:", e);
+        allAvailableAreas = ["Chittagong"];
+    }
+
     loadState();
     renderRouter();
     document.body.style.opacity = "1";
@@ -550,18 +566,36 @@ function renderForm() {
     const contentArea = document.getElementById('dashboard-content-area');
     if (!contentArea) return;
     contentArea.innerHTML = '';
-    contentArea.appendChild(document.getElementById('tmpl-form').content.cloneNode(true));
+    const template = document.getElementById('tmpl-form');
+    if (!template) return;
+    contentArea.appendChild(template.content.cloneNode(true));
     
+    const p1 = document.getElementById('form-part-1');
+    const p2 = document.getElementById('form-part-2');
+    const steps = document.querySelectorAll('.step');
+
+    // 1. Step Visibility Logic
+    if (formCache && (formCache.currentStep == 2)) {
+        if(p1) p1.classList.add('hidden');
+        if(p2) p2.classList.remove('hidden');
+        if(steps[1]) steps[1].classList.add('step-primary');
+    } else {
+        if(p1) p1.classList.remove('hidden');
+        if(p2) p2.classList.add('hidden');
+        if(steps[1]) steps[1].classList.remove('step-primary');
+    }
+
     setupTagInput();
     setupAreaSearch();
     setupCategorySearch();
     
+    // 2. Pre-fill data safely
     if (formCache && Object.keys(formCache).length > 0) {
         try {
             const typeRadios = document.querySelectorAll('input[name="providerType"]');
             typeRadios.forEach(r => { if(r.value === formCache.type) r.checked = true; });
             
-            ['businessName', 'phone', 'email', 'about', 'priceConsult', 'priceHourly', 'workTimeStart', 'workTimeEnd'].forEach(id => {
+            ['businessName', 'phone', 'email', 'experience', 'about', 'priceConsult', 'priceHourly', 'workTimeStart', 'workTimeEnd'].forEach(id => {
                 const el = document.getElementById('f_' + id);
                 if(el) el.value = formCache[id] || '';
             });
@@ -569,26 +603,23 @@ function renderForm() {
             if(document.getElementById('f_about')) updateCharCount('f_about', 'wordCountLabel', 300);
 
             const dayChecks = document.querySelectorAll('input[name="workDay"]');
-            dayChecks.forEach(chk => { if(formCache.workDays) chk.checked = formCache.workDays.includes(chk.value); });
+            dayChecks.forEach(chk => { 
+                if(Array.isArray(formCache.workDays)) chk.checked = formCache.workDays.includes(chk.value); 
+            });
                 
-            selectedAreas = [...(formCache.areas || [])];
+            selectedAreas = Array.isArray(formCache.areas) ? [...formCache.areas] : [];
             refreshAreaSelection();
 
-            categoriesTags = [...(formCache.categories || [])];
+            categoriesTags = Array.isArray(formCache.categories) ? [...formCache.categories] : [];
             refreshCategoryTags();
 
             const checkboxes = document.querySelectorAll('input[name="chkWhy"]');
-            checkboxes.forEach(chk => { if(formCache.whyChooseUs) chk.checked = formCache.whyChooseUs.includes(chk.value); });
+            checkboxes.forEach(chk => { 
+                if(Array.isArray(formCache.whyChooseUs)) chk.checked = formCache.whyChooseUs.includes(chk.value); 
+            });
             
             refreshTags();
         } catch (err) { console.warn("Pre-fill error:", err); }
-    }
-
-    if (formCache && formCache.currentStep === 2) {
-        document.getElementById('form-part-1').classList.add('hidden');
-        document.getElementById('form-part-2').classList.remove('hidden');
-        const steps = document.querySelectorAll('.step');
-        if(steps[1]) steps[1].classList.add('step-primary');
     }
 }
 
@@ -604,7 +635,7 @@ function saveDraft() {
 
     const typeEl = document.querySelector('input[name="providerType"]:checked');
     if(typeEl) draft.type = typeEl.value;
-    ['businessName', 'phone', 'email', 'about', 'priceConsult', 'priceHourly', 'workTimeStart', 'workTimeEnd'].forEach(id => {
+    ['businessName', 'phone', 'email', 'experience', 'about', 'priceConsult', 'priceHourly', 'workTimeStart', 'workTimeEnd'].forEach(id => {
         const el = document.getElementById('f_' + id);
         if(el) draft[id] = el.value;
     });
@@ -625,15 +656,21 @@ function saveDraft() {
 
 document.addEventListener('input', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
 document.addEventListener('change', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
-
+    
 // --- Form Navigation ---
 function goToStep(step) {
     if(step===2){
-        const biz=document.getElementById('f_businessName').value.trim(),phone=document.getElementById('f_phone').value.trim(),email=document.getElementById('f_email').value.trim(),about=document.getElementById('f_about').value.trim();
-        if(!biz||!phone||!email||!about){Swal.fire({icon:'warning',title:'Required Fields',text:'Please fill all required fields.',customClass:{confirmButton:'btn btn-primary text-white'},buttonsStyling:false});return;}
+        const biz = document.getElementById('f_businessName').value.trim(),
+        phone=document.getElementById('f_phone').value.trim(),
+        email=document.getElementById('f_email').value.trim(),
+        experience=document.getElementById('f_experience').value.trim(),
+        about=document.getElementById('f_about').value.trim();
+
+        if(!biz||!phone||!email||!experience||!about){Swal.fire({icon:'warning',title:'Required Fields',text:'Please fill all required fields.',customClass:{confirmButton:'btn btn-primary text-white'},buttonsStyling:false});return;}
+
         if(about.length>300){Swal.fire({icon:'warning',title:'Limit Exceeded',text:'About section cannot exceed 300 characters.',customClass:{confirmButton:'btn btn-primary text-white'},buttonsStyling:false});return;}
         formCache.type=document.querySelector('input[name="providerType"]:checked').value;
-        formCache.businessName=biz;formCache.phone=phone;formCache.email=email;formCache.about=about;
+        formCache.businessName=biz;formCache.phone=phone;formCache.email=email;formCache.experience=experience;formCache.about=about;
         document.getElementById('form-part-1').classList.add('hidden');
         document.getElementById('form-part-2').classList.remove('hidden');
         document.querySelectorAll('.step')[1].classList.add('step-primary');
@@ -665,6 +702,7 @@ function renderReviewContent() {
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Entity Type</p><p class="font-bold text-lg">${data.type}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Business Name</p><p class="font-bold text-lg">${data.businessName}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Contact</p><p class="font-bold">${data.phone} | ${data.email}</p></div>
+            <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Experience</p><p class="font-bold">${data.experience}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter mb-1">About</p><p class="text-sm bg-base-200 p-4 rounded-lg border border-base-300 italic">${data.about}</p></div>
         </div></div></div>
         <div class="space-y-6"><div><h3 class="text-xs font-bold uppercase tracking-widest opacity-40 mb-3">Service Details</h3><div class="space-y-6">
@@ -685,14 +723,39 @@ function goToFormFromReview() {
 function finalSubmit() {
     Swal.fire({title:'Confirm Submission',text:"Are you sure you want to submit this application?",icon:'question',showCancelButton:true,confirmButtonText:'Yes, Submit',
         customClass:{confirmButton:'btn btn-success text-white ml-2',cancelButton:'btn btn-ghost'},buttonsStyling:false,reverseButtons:true
-    }).then((result) => {
+    }).then(async (result) => {
         if(result.isConfirmed){
-            providerData={...formCache};
-            localStorage.removeItem('ls_formDraft');
-            saveState();
-            Swal.fire({title:'Application Received!',text:'Authority will review your submitted form and contact you in 2/3 business days.',icon:'success',
-                customClass:{confirmButton:'btn btn-primary text-white'},buttonsStyling:false
-            }).then(()=>{ window.location.href='dashboard.html'; });
+            try {
+                // Post to API
+                const payload = { ...formCache, status: 'Under Review', isApplied: true };
+                const isUpdate = !!payload._id;
+                const url = isUpdate ? `http://localhost:5000/api/providers/${payload._id}` : 'http://localhost:5000/api/providers';
+                const method = isUpdate ? 'PUT' : 'POST';
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || 'Submission failed');
+                }
+                
+                const savedData = await res.json();
+                
+                providerData = savedData;
+                localStorage.setItem('ls_providerData', JSON.stringify(providerData));
+                localStorage.removeItem('ls_formDraft');
+                
+                Swal.fire({title:'Application Received!',text:'Authority will review your submitted form and contact you in 2/3 business days.',icon:'success',
+                    customClass:{confirmButton:'btn btn-primary text-white'},buttonsStyling:false
+                }).then(()=>{ window.location.href='dashboard.html'; });
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                Swal.fire('Error', error.message || 'Could not submit application. Ensure the server is running.', 'error');
+            }
         }
     });
 }

@@ -166,6 +166,13 @@
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Email Address <span class="text-error">*</span></span></label>
                             <input type="email" id="f_email" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-bold uppercase tracking-wider text-xs">Total Experience <span class="text-error">*</span></span>
+                                <span class="label-text-alt text-[10px] opacity-50 uppercase font-black">e.g. 5 Years / 8 Months</span>
+                            </label>
+                            <input type="text" id="f_experience" class="input input-bordered w-full focus:outline-primary" required />
+                        </div>
                     </div>
 
                     <div class="form-control">
@@ -402,12 +409,7 @@
 
 <script>
 
-    const allAvailableAreas = [
-        "CTG Metropolitan Area", "GEC Circle", "Agrabad", "Halishahar", "Nasirabad", 
-        "Chawkbazar", "Panchlaish", "Bakalia", "Khulshi", 
-        "Patenga", "Kotwali", "Double Mooring", "EPZ Area",
-        "Muradpur", "Bahaddarhat", "Lalkhan Bazar"
-    ];
+    let allAvailableAreas = [];
     let allAvailableCategories = [];
 
 
@@ -510,10 +512,10 @@
     }
 
     // Locations Logic
-    async function fetchCategories(pathPrefix = '') {
+    async function fetchCategories() {
         if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
         try {
-            const response = await fetch(`${pathPrefix}../Admin-Dashboard/data/categories.json`);
+            const response = await fetch(`http://localhost:5000/api/categories`);
             allAvailableCategories = await response.json();
             return allAvailableCategories;
         } catch (error) {
@@ -577,19 +579,44 @@
     let formCache = {};
 
     // Initialization
-    window.onload = () => {
+    window.onload = async () => {
+        try {
+            const locRes = await fetch('http://localhost:5000/api/locations');
+            const locData = await locRes.json();
+            allAvailableAreas = locData.map(l => l.name);
+        } catch (e) {
+            allAvailableAreas = ["Chittagong"];
+        }
+
         setupTagInput();
         setupAreaSearch();
-        setupCategorySearch('./'); 
+        setupCategorySearch(); 
         startApplication();
         document.body.style.opacity = "1";
     };
 
-    function startApplication() {
-        formCache = {}; 
-        offeredServicesTags = [];
-        categoriesTags = [];
-        selectedAreas = [];
+    async function startApplication() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit');
+
+        if (editId) {
+            try {
+                const res = await fetch(`http://localhost:5000/api/providers/${editId}`);
+                if (res.ok) {
+                    formCache = await res.json();
+                    offeredServicesTags = [...(formCache.offeredServices || [])];
+                    categoriesTags = [...(formCache.categories || [])];
+                    selectedAreas = [...(formCache.areas || [])];
+                }
+            } catch (e) {
+                console.error("Failed to load provider for editing", e);
+            }
+        } else {
+            formCache = {};
+            offeredServicesTags = [];
+            categoriesTags = [];
+            selectedAreas = [];
+        }
         renderForm();
     }
 
@@ -611,6 +638,7 @@
             document.getElementById('f_businessName').value = formCache.businessName || '';
             document.getElementById('f_phone').value = formCache.phone || '';
             document.getElementById('f_email').value = formCache.email || '';
+            if (document.getElementById('f_experience')) document.getElementById('f_experience').value = formCache.experience || '';
             document.getElementById('f_about').value = formCache.about || '';
             updateCharCount('f_about', 'wordCountLabel', 300);
             
@@ -650,14 +678,14 @@
     // Form Navigation & Validation
     function goToStep(step) {
         if(step === 2) {
-            // Validate Part 1
             const biz = document.getElementById('f_businessName').value.trim();
             const phone = document.getElementById('f_phone').value.trim();
             const email = document.getElementById('f_email').value.trim();
+            const experience = document.getElementById('f_experience').value.trim();
             const about = document.getElementById('f_about').value.trim();
             const aboutWordCount = about ? about.length : 0;
 
-            if(!biz || !phone || !email || !about) {
+            if(!biz || !phone || !email || !experience || !about) {
                 Swal.fire({icon:'warning', title:'Required Fields', text:'Please fill all required fields.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
                 return;
             }
@@ -671,6 +699,7 @@
             formCache.businessName = biz;
             formCache.phone = phone;
             formCache.email = email;
+            formCache.experience = experience;
             formCache.about = about;
 
             document.getElementById('form-part-1').classList.add('hidden');
@@ -738,6 +767,7 @@
                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Entity Type</p><p class="font-bold text-lg">${data.type}</p></div>
                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Business Name</p><p class="font-bold text-lg">${data.businessName}</p></div>
                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Contact</p><p class="font-bold">${data.phone} | ${data.email}</p></div>
+                        <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Experience</p><p class="font-bold">${data.experience}</p></div>
                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter mb-1">About</p><p class="text-sm bg-base-200 p-4 rounded-lg border border-base-300 italic">${data.about}</p></div>
                     </div>
                 </div>
@@ -766,8 +796,8 @@
         
     }
 
-    function finalSubmit() {
-        Swal.fire({
+    async function finalSubmit() {
+        const result = await Swal.fire({
             title: 'Verified Listing Publishing',
             text: "You are about to publish a pre-verified provider. It will be live immediately.",
             icon: 'warning',
@@ -776,19 +806,52 @@
             customClass: { confirmButton: 'btn btn-success text-white ml-2', cancelButton: 'btn btn-ghost' },
             buttonsStyling: false,
             reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // Show loading state
                 Swal.fire({
-                    title: 'Published Successfully!',
-                    text: 'The provider is now auto-verified and live on the website.',
-                    icon: 'success',
+                    title: 'Publishing...',
+                    didOpen: () => { Swal.showLoading() },
+                    allowOutsideClick: false
+                });
+
+                const isEdit = !!formCache._id;
+                const url = isEdit ? `http://localhost:5000/api/providers/${formCache._id}` : 'http://localhost:5000/api/providers';
+                const method = isEdit ? 'PUT' : 'POST';
+                
+                formCache.status = 'Approved';
+                formCache.isApplied = false; // Explicitly mark as admin-added
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formCache)
+                });
+
+                if (response.ok) {
+                    await Swal.fire({
+                        title: 'Published Successfully!',
+                        text: 'The provider is now auto-verified and live on the website.',
+                        icon: 'success',
+                        customClass: { confirmButton: 'btn btn-primary text-white' },
+                        buttonsStyling: false
+                    });
+                    window.location.href = 'manage-providers.html';
+                } else {
+                    throw new Error('Failed to publish');
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong while publishing. Please try again.',
+                    icon: 'error',
                     customClass: { confirmButton: 'btn btn-primary text-white' },
                     buttonsStyling: false
-                }).then(() => {
-                    window.location.href = 'manage-providers.html';
                 });
             }
-        });
+        }
     }
 
 </script>

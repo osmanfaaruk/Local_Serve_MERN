@@ -59,6 +59,7 @@
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
+        <!-- Main Menu sidebar -->
         <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
@@ -94,7 +95,6 @@
                     <table class="table table-zebra font-medium">
                         <thead>
                             <tr class="bg-base-200">
-                                <th>Icon</th>
                                 <th>Category Name</th>
                                 <th>Registered Providers</th>
                                 <th class="text-right">Actions</th>
@@ -171,59 +171,105 @@
         }
 
         let categories = [];
-        let nextId = 1;
+        let providers = [];
 
         async function loadCategories() {
             try {
-                const response = await fetch('data/categories.json');
-                categories = await response.json();
-                if (categories.length > 0) {
-                    nextId = Math.max(...categories.map(c => c.id)) + 1;
-                }
-                categories.forEach(c => { c.providers = 1; });
+                const [catRes, provRes] = await Promise.all([
+                    fetch('http://localhost:5000/api/categories'),
+                    fetch('http://localhost:5000/api/providers')
+                ]);
+                categories = await catRes.json();
+                providers = await provRes.json();
                 renderTable();
             } catch (error) {
-                console.error('Failed to load categories:', error);
+                console.error('Failed to load data:', error);
             }
         }
 
         function renderTable() {
             const tbody = document.getElementById('categories-table-body');
             if (categories.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-10 opacity-40 italic">No categories found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-10 opacity-40 italic">No categories found.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = categories.map(cat => `
-                <tr>
-                    <td>
-                        <div class="w-10 h-10 bg-primary/10 flex items-center justify-center rounded-xl text-primary">
-                            <i class="fas ${cat.icon || 'fa-tag'} text-lg"></i>
-                        </div>
-                    </td>
-                    <td class="font-bold">${cat.name}</td>
-                    <td class="font-bold text-primary">${cat.providers} <span class="text-xs font-normal text-base-content/60 ml-1">Providers</span></td>
-                    <td class="text-right">
-                        <button onclick="editCategory(${cat.id})" class="btn btn-ghost btn-xs font-bold text-primary">
-                            <i class="fas fa-edit mr-1"></i> Edit Name
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = categories.map(cat => {
+                const count = providers.filter(p => p.categories && p.categories.includes(cat.name)).length;
+                return `
+                    <tr>
+                        <td class="font-bold">${cat.name}</td>
+                        <td class="font-bold text-primary">${count} <span class="text-xs font-normal text-base-content/60 ml-1">Providers</span></td>
+                        <td class="text-right">
+                            <button onclick="editCategory('${cat._id}')" class="btn btn-ghost btn-xs font-bold text-primary">
+                                <i class="fas fa-edit mr-1"></i> Edit Name
+                            </button>
+                            <button onclick="deleteCategory('${cat._id}', '${cat.name}')" class="btn btn-ghost btn-xs font-bold text-error">
+                                <i class="fas fa-trash mr-1"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function promptNewCategory() {
-            confirmAdd('newCategoryInput', 'Category', (name) => {
-                categories.unshift({ id: nextId++, name: name, icon: 'fa-tag', providers: 0 });
-                renderTable();
+            confirmAdd('newCategoryInput', 'Category', async (name) => {
+                try {
+                    const res = await fetch('http://localhost:5000/api/categories', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: name, icon: 'fa-tag' })
+                    });
+                    if (res.ok) {
+                        loadCategories();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             });
         }
 
         function editCategory(id) {
-            const cat = categories.find(c => c.id === id);
+            const cat = categories.find(c => c._id === id);
             if (!cat) return;
-            confirmEdit(cat.name, 'Category', (newName) => {
-                cat.name = newName;
-                renderTable();
+            confirmEdit(cat.name, 'Category', async (newName) => {
+                try {
+                    const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: newName })
+                    });
+                    if (res.ok) {
+                        loadCategories();
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+        }
+        
+        function deleteCategory(id, name) {
+            Swal.fire({
+                title: `Delete Category?`,
+                text: `Are you sure you want to delete "${name}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                customClass: { confirmButton: SWAL_STYLE.delete, cancelButton: SWAL_STYLE.confirm },
+                buttonsStyling: false, confirmButtonText: 'Yes, Delete', cancelButtonText: 'Cancel'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                            method: 'DELETE'
+                        });
+                        if (res.ok) {
+                            Swal.fire({ title: 'Deleted!', icon: 'success', customClass: { confirmButton: SWAL_STYLE.success }, buttonsStyling: false });
+                            loadCategories();
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
             });
         }
 

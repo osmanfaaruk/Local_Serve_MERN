@@ -136,57 +136,8 @@
             <h2 class="text-3xl font-bold mb-2">Browse by Category</h2>
             <p class="text-base-content/60 mb-10">Select a service to see verified providers near you.</p>
 
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='search-providers.html'">
-                    <div class="card-body items-center text-center p-8">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-hammer text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg">Home Repairs</h3>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='search-providers.html'">
-                    <div class="card-body items-center text-center p-8">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-broom text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg">Cleaning</h3>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='search-providers.html'">
-                    <div class="card-body items-center text-center p-8">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-faucet text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg">Plumbing</h3>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='search-providers.html'">
-                    <div class="card-body items-center text-center p-8">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-bolt text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg">Electrical</h3>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
-                    onclick="window.location.href='search-providers.html'">
-                    <div class="card-body items-center text-center p-8">
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-leaf text-2xl"></i>
-                        </div>
-                        <h3 class="font-bold text-lg">Gardening</h3>
-                    </div>
-                </div>
+            <div id="category-grid" class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                <!-- Data will be injected here -->
             </div>
         </div>
 
@@ -201,75 +152,13 @@
                     class="link link-primary font-bold decoration-2 underline-offset-4">Explore All &rarr;</a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='provider-details.html'">
-                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
-                        <i class="fas fa-tools text-6xl text-primary/20"></i>
-                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Plumbing</div>
-                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
-                            Verified</div>
-                    </figure>
-                    <div class="card-body">
-                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Chittagong Plumbing Point</h3>
-                        <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> 123 Main St, GEC Circle
-                        </p>
-                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
-                            Since: Feb 2026</p>
-                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">45 TK/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='provider-details.html'">
-                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
-                        <i class="fas fa-soap text-6xl text-primary/20"></i>
-                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Cleaning</div>
-                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
-                            Verified</div>
-                    </figure>
-                    <div class="card-body">
-                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Kamal Cleaning BD</h3>
-                        <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> Agrabad, Chattogram
-                        </p>
-                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
-                            Since: Jan 2026</p>
-                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">35 TK/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
-                    onclick="window.location.href='provider-details.html'">
-                    <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
-                        <i class="fas fa-bolt text-6xl text-primary/20"></i>
-                        <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">Electrical</div>
-                        <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">
-                            Verified</div>
-                    </figure>
-                    <div class="card-body">
-                        <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">Active Electric Group</h3>
-                        <p class="text-base-content/60 flex items-center gap-2">
-                            <i class="fas fa-map-marker-alt text-primary"></i> Nasirabad, Chittagong
-                        </p>
-                        <p class="text-[10px] uppercase font-bold text-base-content/40 mt-1 tracking-wider">Member
-                            Since: Mar 2026</p>
-                        <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
-                            <div class="text-lg font-bold">From <span class="text-primary">60 TK/hr</span></div>
-                            <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                </div>
+            <div id="featured-professionals-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Data will be injected here -->
             </div>
         </div>
     </main>
 
-
+<!-- footer ey khan teke shoru hoycee -->
         <footer class="bg-slate-950 text-slate-300 pt-20 pb-10 px-6 md:px-20 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
@@ -355,21 +244,69 @@
 
         async function loadCategories() {
             try {
-                const response = await fetch('../Admin-Dashboard/data/categories.json');
+                const response = await fetch('http://localhost:5000/api/categories');
                 categories = await response.json();
-                console.log('Categories loaded:', categories.length);
+                
+                // Update dropdown and grid
+                const categoryGrid = document.getElementById('category-grid');
+                if (categoryGrid) {
+                    categoryGrid.innerHTML = categories.slice(0, 5).map(cat => `
+                        <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                            onclick="window.location.href='search-providers.html?category=${encodeURIComponent(cat.name)}'">
+                            <div class="card-body items-center text-center p-8">
+                                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <i class="fas ${cat.icon || 'fa-tag'} text-2xl"></i>
+                                </div>
+                                <h3 class="font-bold text-lg">${cat.name}</h3>
+                            </div>
+                        </div>
+                    `).join('');
+                }
             } catch (error) {
                 console.error('Error loading categories:', error);
-                // Fallback for demo
-                categories = [
-                    { name: 'Home Repairs' },
-                    { name: 'Cleaning' }
-                ];
             }
         }
 
+        async function loadFeatured() {
+            try {
+                const response = await fetch('http://localhost:5000/api/providers');
+                const providers = await response.json();
+                const featured = providers.filter(p => p.status === 'Approved').slice(0, 3);
+                
+                const featuredGrid = document.getElementById('featured-professionals-grid');
+                if (featuredGrid) {
+                    if (featured.length === 0) {
+                        featuredGrid.innerHTML = '<p class="text-center col-span-3 opacity-50">No featured professionals yet.</p>';
+                        return;
+                    }
+                    featuredGrid.innerHTML = featured.map(p => `
+                        <div class="card bg-base-100 shadow-sm border border-base-300 hover:shadow-2xl transition-all cursor-pointer overflow-hidden group"
+                            onclick="window.location.href='provider-details.html?id=${p._id}'">
+                            <figure class="relative h-56 bg-primary/5 flex items-center justify-center">
+                                <i class="fas fa-user-tie text-6xl text-primary/20"></i>
+                                <div class="absolute top-4 left-4 badge badge-primary font-bold p-3">${p.categories[0] || 'Service'}</div>
+                                <div class="absolute top-4 right-4 badge badge-success text-white font-bold p-3 border-none">Verified</div>
+                            </figure>
+                            <div class="card-body">
+                                <h3 class="card-title text-xl font-bold group-hover:text-primary transition-colors">${p.businessName}</h3>
+                                <p class="text-base-content/60 flex items-center gap-2">
+                                    <i class="fas fa-map-marker-alt text-primary"></i> ${p.areas[0] || 'Chittagong'}
+                                </p>
+                                <div class="card-actions justify-between items-center mt-6 border-t border-base-200 pt-4">
+                                    <div class="text-lg font-bold">From <span class="text-primary">${p.priceConsult || p.priceHourly || 'N/A'} TK</span></div>
+                                    <button class="btn btn-ghost btn-circle btn-sm"><i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading featured:', error);
+            }
+        }
 
         loadCategories();
+        loadFeatured();
 
         const searchInput = document.getElementById('categorySearch');
         const dropdown = document.getElementById('categoryDropdown');

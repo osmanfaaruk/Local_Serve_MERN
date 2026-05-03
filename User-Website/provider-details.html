@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chittagong Plumbing Point | LocalServe</title>
+    <title id="page-title">Provider Details | LocalServe</title>
     
 
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
@@ -84,119 +84,73 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <div class="flex flex-wrap gap-2 mb-3">
+                                <div id="categoryBadges" class="flex flex-wrap gap-2 mb-3">
                                     <div class="badge badge-primary font-bold shadow-lg border-none px-3">Company</div>
-                                    <div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">Plumbing</div>
-                                    <div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">Home Repairs</div>
                                 </div>
-                                <h1 class="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">Chittagong Plumbing Point</h1>
+                                <h1 id="businessName" class="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">Loading...</h1>
                                 <p class="flex items-center gap-2 opacity-90 mt-1 font-medium">
-                                    <i class="fas fa-map-marker-alt text-primary"></i> GEC Circle, Chittagong
+                                    <i class="fas fa-map-marker-alt text-primary"></i> <span id="locationText">...</span>
                                 </p>
                             </div>
                         </div>
                     </figure>
                     <div class="card-body p-8 pt-10">
-                        <div class="flex flex-wrap gap-4 items-center justify-between border-b pb-6 border-base-200">
-                            <div class="flex items-center gap-6">
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-sm opacity-50 font-bold uppercase tracking-wider">Experience</span>
-                                    <span class="font-bold">15+ Years</span>
+                        <div class="flex flex-wrap gap-4 items-center justify-center border-b pb-6 border-base-200">
+                            <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 w-full">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                        <i class="fas fa-history text-lg"></i>
+                                    </div>
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="text-[10px] opacity-40 font-black uppercase tracking-widest">Experience</span>
+                                        <span id="experienceText" class="font-bold text-base-content/80 truncate max-w-[150px]">...</span>
+                                    </div>
                                 </div>
-                                <div class="divider divider-horizontal"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Status</span>
-                                    <div class="badge badge-success text-white font-bold badge-sm">Verified</div>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-neutral/5 flex items-center justify-center text-neutral/50">
+                                        <i class="fas fa-calendar-alt text-lg"></i>
+                                    </div>
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="text-[10px] opacity-40 font-black uppercase tracking-widest text-nowrap">Member Since</span>
+                                        <span id="memberSinceText" class="font-bold text-base-content/80">...</span>
+                                    </div>
                                 </div>
-                                <div class="divider divider-horizontal"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Member Since</span>
-                                    <span class="font-bold">Feb 2026</span>
-                                </div>
-                                <div class="divider divider-horizontal"></div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm opacity-50 font-bold uppercase tracking-wider">Fee Range</span>
-                                    <span class="font-bold text-primary text-xl">45 TK - 90 TK/hr</span>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                                        <i class="fas fa-hand-holding-usd text-lg"></i>
+                                    </div>
+                                    <div class="flex flex-col leading-tight">
+                                        <span class="text-[10px] opacity-40 font-black uppercase tracking-widest text-nowrap">Fee Range</span>
+                                        <span id="feeRangeText" class="font-bold text-blue-700 text-lg">...</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-8 prose max-w-none">
                             <h3 class="text-2xl font-bold mb-4">About the Provider</h3>
-                            <p class="text-lg leading-relaxed text-base-content/70">
-                                Elite Plumbing Solutions has been the cornerstone of residential and commercial plumbing
-                                in Central City since 2011. Our team consists of master plumbers with a collective
-                                experience of over 40 years. We pride ourselves on transparent pricing, punctual
-                                service, and doing the job right the first time.
+                            <p id="aboutText" class="text-lg leading-relaxed text-base-content/70">
+                                ...
                             </p>
 
                             <h3 class="text-2xl font-bold mt-10 mb-6">Services Offered</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
-                                    <i class="fas fa-check-circle text-primary"></i>
-                                    <span class="font-bold">Emergency Leak Repairs</span>
-                                </div>
-                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
-                                    <i class="fas fa-check-circle text-primary"></i>
-                                    <span class="font-bold">Water Heater Installation</span>
-                                </div>
-                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
-                                    <i class="fas fa-check-circle text-primary"></i>
-                                    <span class="font-bold">Drain Cleaning</span>
-                                </div>
-                                <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
-                                    <i class="fas fa-check-circle text-primary"></i>
-                                    <span class="font-bold">Kitchen Remodeling</span>
-                                </div>
+                            <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Services injected here -->
                             </div>
                         </div>
                     </div>
                 </div>
                 
 
-                <div class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden rounded-3xl">
+                <div id="whyChooseUsSection" class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden rounded-3xl">
                     <div class="card-body p-8">
                         <h3 class="text-2xl font-black mb-8 flex items-center gap-3">
                             <i class="fas fa-star text-warning"></i> Why Choose Us
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-primary/5 transition-all border border-transparent hover:border-primary/10 group">
-                                <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-tools text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg">Professional Grade</h4>
-                                    <p class="text-base-content/60 text-sm leading-relaxed">We use industrial-standard tools for long-lasting results.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-success/5 transition-all border border-transparent hover:border-success/10 group">
-                                <div class="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center text-success shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-hand-holding-usd text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg">Fixed Pricing</h4>
-                                    <p class="text-base-content/60 text-sm leading-relaxed">No hidden charges. Clear quotes before we start.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-info/5 transition-all border border-transparent hover:border-info/10 group">
-                                <div class="w-14 h-14 rounded-2xl bg-info/10 flex items-center justify-center text-info shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-shield-alt text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg">Guaranteed Quality</h4>
-                                    <p class="text-base-content/60 text-sm leading-relaxed">100% satisfaction guarantee on all our work.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-error/5 transition-all border border-transparent hover:border-error/10 group">
-                                <div class="w-14 h-14 rounded-2xl bg-error/10 flex items-center justify-center text-error shrink-0 group-hover:scale-110 transition-transform">
-                                    <i class="fas fa-user-clock text-2xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg">Fast Response</h4>
-                                    <p class="text-base-content/60 text-sm leading-relaxed">Punctual arrivals and efficient job completion.</p>
-                                </div>
-                            </div>
+                        <div id="whyChooseUsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Injected dynamically -->
                         </div>
                     </div>
                 </div>
@@ -216,7 +170,7 @@
                                         class="fas fa-phone"></i></div>
                                 <div>
                                     <div class="text-xs font-bold text-base-content/40 uppercase">Business Phone</div>
-                                    <div class="text-lg font-bold text-primary">+880 1711-223344</div>
+                                    <div id="phoneText" class="text-lg font-bold text-primary">...</div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
@@ -224,7 +178,7 @@
                                         class="fas fa-envelope"></i></div>
                                 <div>
                                     <div class="text-xs font-bold text-base-content/40 uppercase">Email Address</div>
-                                    <div class="font-bold">contact@ctgplumbing.com</div>
+                                    <div id="emailText" class="font-bold">...</div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
@@ -232,7 +186,7 @@
                                         class="fas fa-clock"></i></div>
                                 <div>
                                     <div class="text-xs font-bold text-base-content/40 uppercase">Working Hours</div>
-                                    <div class="font-bold">Mon - Fri, 8AM - 6PM</div>
+                                    <div id="workingHoursText" class="font-bold">...</div>
                                 </div>
                             </div>
 
@@ -241,11 +195,11 @@
                                 <h4 class="font-bold flex items-center gap-2"><i class="fas fa-tag text-primary"></i> Est. Pricing Guide</h4>
                                 <div class="flex justify-between items-center bg-base-200 p-3 rounded-xl border border-base-300/50">
                                     <span class="text-sm font-semibold opacity-70">Consultation Fee</span>
-                                    <span class="font-bold">25.00 TK</span>
+                                    <span id="consultFeeText" class="font-bold">...</span>
                                 </div>
                                 <div class="flex justify-between items-center bg-base-200 p-3 rounded-xl border border-base-300/50">
                                     <span class="text-sm font-semibold opacity-70">Hourly Labor</span>
-                                    <span class="font-bold">45 TK - 90 TK</span>
+                                    <span id="hourlyLaborText" class="font-bold">...</span>
                                 </div>
                                 <p class="text-[10px] uppercase font-black text-base-content/30 tracking-widest text-center pt-2">
                                     * FEE'S MAY VARY AFTER INSPECTION
@@ -255,7 +209,7 @@
 
                         
 
-                        <a href="tel:+8801841483138" class="btn btn-primary w-full mt-6 shadow-2xl shadow-primary/40 text-white font-black text-lg py-4 h-auto rounded-2xl group transition-all hover:scale-[1.02] active:scale-[0.98]">
+                        <a id="callBtn" href="#" class="btn btn-primary w-full mt-6 shadow-2xl shadow-primary/40 text-white font-black text-lg py-4 h-auto rounded-2xl group transition-all hover:scale-[1.02] active:scale-[0.98]">
                             <i class="fas fa-phone-alt group-hover:rotate-12 transition-transform"></i> Call Provider
                         </a>
                     </div>
@@ -433,6 +387,105 @@
 
     </script>
 
+    <script>
+        // Fetch data on load
+        async function loadProviderDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (!id) {
+                document.getElementById('businessName').innerText = "Provider Not Found";
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/providers/${id}`);
+                if (!response.ok) throw new Error("Provider not found");
+                const p = await response.json();
+
+                document.getElementById('page-title').innerText = `${p.businessName} | LocalServe`;
+                document.getElementById('businessName').innerText = p.businessName;
+                document.getElementById('locationText').innerText = p.areas && p.areas.length > 0 ? p.areas.join(', ') : 'Chittagong';
+                document.getElementById('experienceText').innerText = p.experience || 'N/A';
+                
+                const date = new Date(p.createdAt || Date.now());
+                document.getElementById('memberSinceText').innerText = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+                
+                document.getElementById('feeRangeText').innerText = `${p.priceConsult || p.priceHourly || 'N/A'} TK`;
+                document.getElementById('aboutText').innerText = p.about || 'No description provided.';
+                
+                document.getElementById('phoneText').innerText = p.phone || 'N/A';
+                document.getElementById('emailText').innerText = p.email || 'N/A';
+                
+                let workDaysStr = p.workDays && p.workDays.length > 0 ? p.workDays.join(', ') : 'N/A';
+                let timeStr = (p.workTimeStart && p.workTimeEnd) ? `${p.workTimeStart} - ${p.workTimeEnd}` : 'N/A';
+                document.getElementById('workingHoursText').innerText = workDaysStr !== 'N/A' || timeStr !== 'N/A' ? `${workDaysStr} | ${timeStr}` : 'N/A';
+                
+                document.getElementById('consultFeeText').innerText = p.priceConsult ? `${p.priceConsult} TK` : 'N/A';
+                document.getElementById('hourlyLaborText').innerText = p.priceHourly ? `${p.priceHourly} TK` : 'N/A';
+                
+                if (p.phone) {
+                    document.getElementById('callBtn').href = `tel:${p.phone}`;
+                }
+
+                // Render Category Badges
+                if (p.categories && p.categories.length > 0) {
+                    const badgeContainer = document.getElementById('categoryBadges');
+                    badgeContainer.innerHTML = p.categories.map(cat => 
+                        `<div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">${cat}</div>`
+                    ).join('');
+                }
+
+                // Render Services Grid
+                if (p.offeredServices && p.offeredServices.length > 0) {
+                    const servicesGrid = document.getElementById('servicesGrid');
+                    servicesGrid.innerHTML = p.offeredServices.map(service => `
+                        <div class="flex items-center gap-3 p-4 bg-base-200 rounded-xl ">
+                            <i class="fas fa-check-circle text-primary"></i>
+                            <span class="font-bold">${service}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('servicesGrid').innerHTML = '<p class="opacity-50 italic">No specific services listed.</p>';
+                }
+
+                // Render Why Choose Us
+                const whyChooseUsData = {
+                    "Professional Grade": { icon: "fa-tools", color: "primary", desc: "We use industrial-standard tools for long-lasting results." },
+                    "Fixed Pricing": { icon: "fa-hand-holding-usd", color: "success", desc: "No hidden charges. Clear quotes before we start." },
+                    "Guaranteed Quality": { icon: "fa-shield-alt", color: "info", desc: "100% satisfaction guarantee on all our work." },
+                    "Fast Response": { icon: "fa-user-clock", color: "error", desc: "Punctual arrivals and efficient job completion." }
+                };
+
+                const whySection = document.getElementById('whyChooseUsSection');
+                if (p.whyChooseUs && p.whyChooseUs.length > 0) {
+                    const whyGrid = document.getElementById('whyChooseUsGrid');
+                    whyGrid.innerHTML = p.whyChooseUs.map(item => {
+                        const data = whyChooseUsData[item] || { icon: "fa-star", color: "neutral", desc: "A top reason to choose this provider." };
+                        return `
+                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-${data.color}/5 transition-all border border-transparent hover:border-${data.color}/10 group">
+                                <div class="w-14 h-14 rounded-2xl bg-${data.color}/10 flex items-center justify-center text-${data.color} shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="fas ${data.icon} text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg">${item}</h4>
+                                    <p class="text-base-content/60 text-sm leading-relaxed">${data.desc}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    if (whySection) whySection.classList.add('hidden');
+                }
+
+            } catch (error) {
+                console.error("Error fetching provider details:", error);
+                document.getElementById('businessName').innerText = "Error loading provider details";
+            }
+        }
+
+        window.onload = loadProviderDetails;
+    </script>
 </body>
 
 </html>

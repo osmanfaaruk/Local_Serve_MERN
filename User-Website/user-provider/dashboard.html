@@ -64,10 +64,6 @@
         </div>
     </div>
 
-<!-- ========================================== -->
-<!-- TEMPLATES                                  -->
-<!-- ========================================== -->
-
 <!-- Sidebar Layout Wrapper -->
 <template id="tmpl-provider-layout">
     <div class="flex flex-col md:flex-row gap-6">
@@ -117,22 +113,18 @@
     <div class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden">
         <div class="bg-primary/10 p-8 text-center border-b border-base-300">
             <div class="avatar placeholder mb-4">
-                <div class="bg-primary text-primary-content rounded-full w-24 outline outline-4 outline-base-100 shadow-sm">
-                    <span class="text-3xl font-bold" id="dash-initial"></span>
+                <div class="bg-primary text-primary-content rounded-full w-24 h-24 outline outline-4 outline-base-100 shadow-lg flex items-center justify-center">
+                    <i class="fas fa-user text-3xl" id="dash-icon"></i>
                 </div>
             </div>
             <h2 class="text-3xl font-extrabold" id="dash-company-name"></h2>
             <p class="opacity-70 mt-1 flex items-center justify-center gap-2">
-                <i class="fas fa-tag"></i> <span id="dash-type"></span> &bull; <i class="fas fa-clock"></i> Status: <span class="badge badge-warning badge-sm font-bold">Under Review</span>
+                <i class="fas fa-tag"></i> <span id="dash-type"></span> &bull; <i class="fas fa-clock"></i> Status: <span id="dash-status-badge" class="badge badge-warning badge-sm font-bold">Loading...</span>
             </p>
         </div>
         <div class="card-body p-8">
-            <div class="alert bg-base-200 border-none mb-6">
-                <i class="fas fa-check-circle text-success text-2xl"></i>
-                <div>
-                    <h3 class="font-bold">Application Received</h3>
-                    <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
-                </div>
+            <div id="dash-alert-container">
+                <div class="flex justify-center p-4 opacity-50"><span class="loading loading-spinner"></span></div>
             </div>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
@@ -212,11 +204,76 @@
     }
 
     // Dashboard hydration
-    function hydrateDashboard() {
+    async function hydrateDashboard() {
         if (!providerData) return;
         document.getElementById('dash-company-name').innerText = providerData.businessName;
         document.getElementById('dash-type').innerText = providerData.type;
-        document.getElementById('dash-initial').innerText = providerData.businessName.charAt(0).toUpperCase();
+        
+        const iconEl = document.getElementById('dash-icon');
+        if (iconEl) {
+            iconEl.className = providerData.type === 'Company' ? 'fas fa-building text-3xl' : 'fas fa-user text-3xl';
+        }
+
+        try {
+            const res = await fetch(`http://localhost:5000/api/providers/${providerData._id}`);
+            if (res.ok) {
+                const liveData = await res.json();
+                providerData = liveData;
+                saveState();
+                
+                const statusEl = document.getElementById('dash-status-badge');
+                if (statusEl) {
+                    statusEl.innerText = liveData.status;
+                    statusEl.className = 'badge badge-sm font-bold ' + getStatusBadgeClass(liveData.status);
+                }
+
+                const alertContainer = document.getElementById('dash-alert-container');
+                if (alertContainer) {
+                    if (liveData.status === 'Approved') {
+                        alertContainer.innerHTML = `
+                            <div class="alert bg-success/10 border-none mb-6">
+                                <i class="fas fa-check-circle text-success text-2xl"></i>
+                                <div>
+                                    <h3 class="font-bold text-success">Application Approved & Live</h3>
+                                    <div class="text-sm">Your provider profile is now live on LocalServe. Customers can now find you!</div>
+                                </div>
+                            </div>
+                        `;
+                    } else if (liveData.status === 'Rejected') {
+                        alertContainer.innerHTML = `
+                            <div class="alert bg-error/10 border-none mb-6">
+                                <i class="fas fa-times-circle text-error text-2xl"></i>
+                                <div>
+                                    <h3 class="font-bold text-error">Application Rejected</h3>
+                                    <div class="text-sm">Reason: ${liveData.statusReason || 'Please review your information and try again.'}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const reasonHtml = liveData.statusReason ? `<div class="text-sm mt-2 p-3 bg-warning/20 rounded font-medium text-warning-content"><b>Reason / Violation:</b> ${liveData.statusReason}</div>` : '';
+                        alertContainer.innerHTML = `
+                            <div class="alert bg-base-200 border-none mb-6">
+                                <i class="fas fa-clock text-warning text-2xl"></i>
+                                <div>
+                                    <h3 class="font-bold">Application Under Review</h3>
+                                    <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
+                                    ${reasonHtml}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function getStatusBadgeClass(status) {
+        if (status === 'Approved') return 'badge-success text-white';
+        if (status === 'Rejected') return 'badge-error text-white';
+        if (status === 'Need More Info') return 'badge-info text-white';
+        return 'badge-warning';
     }
 
     // Edit Application - sets a flag and redirects to form page
