@@ -58,10 +58,10 @@
             <ul class="menu menu-horizontal px-1 font-semibold gap-2">
                 <li><a href="index.html" >Home</a></li>
                 <li><a href="search-providers.html" >All Providers</a></li>
-                <li><a href="user-provider/login.html">Become a Provider</a></li>
+                <li id="nav-provider-link"><a href="user-provider/login.html">Become a Provider</a></li>
             </ul>
         </div>
-        <div class="navbar-end">
+        <div class="navbar-end" id="nav-user-profile">
             
         </div>
     </div>
@@ -485,6 +485,24 @@
         }
 
         window.onload = loadProviderDetails;
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userJson = localStorage.getItem('ls_currentUser');
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    const providerLink = document.getElementById('nav-provider-link');
+                    if (providerLink) {
+                        providerLink.innerHTML = `<a href="user-provider/dashboard.html">Account</a>`;
+                    }
+                    const userProfile = document.getElementById('nav-user-profile');
+                    if (userProfile) {
+                        userProfile.innerHTML = `<a href="user-provider/dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
+                    }
+                } catch(e){}
+            }
+        });
     </script>
 </body>
 
