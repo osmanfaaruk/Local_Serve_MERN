@@ -75,7 +75,7 @@
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
-        <div class="flex-none"><a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a></div>
+        <div class="flex-none"><a href="/" class="btn btn-ghost btn-sm">Website</a></div>
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
@@ -425,7 +425,8 @@
             if (charCount > maxChars) label.classList.add('text-error', 'font-bold');
             else label.classList.remove('text-error', 'font-bold');
         }
-    }
+    }
+
     function setupAreaSearch() {
         const input = document.getElementById('areaSearchInput');
         const dropdown = document.getElementById('areaDropdown');
@@ -476,7 +477,8 @@
             container.appendChild(badge);
         });
         if (typeof saveDraft === 'function') saveDraft();
-    }
+    }
+
     function setupTagInput() {
         const input = document.getElementById('tagInput'); if(!input) return;
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); processTagInput(); } });
@@ -506,7 +508,8 @@
             badge.innerHTML = `<i class="fas fa-tag text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeTag(${i})"></i>`;
             container.appendChild(badge);
         });
-    }
+    }
+
     async function fetchCategories() {
         if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
         try {
@@ -565,11 +568,13 @@
             container.appendChild(badge);
         });
         if (typeof saveDraft === 'function') saveDraft();
-    }
+    }
+
     let offeredServicesTags = [];
     let categoriesTags = []; 
     let selectedAreas = []; 
-    let formCache = {};
+    let formCache = {};
+
     window.onload = async () => {
         try {
             const locRes = await fetch('/api/locations');
@@ -609,7 +614,8 @@
             selectedAreas = [];
         }
         renderForm();
-    }
+    }
+
     function renderForm() {
         const container = document.getElementById('main-container');
         container.innerHTML = '';
@@ -617,8 +623,10 @@
         
         setupTagInput();
         setupAreaSearch();
-        setupCategorySearch();
-        if(Object.keys(formCache).length > 0) {
+        setupCategorySearch();
+
+        if(Object.keys(formCache).length > 0) {
+
             const typeRadios = document.querySelectorAll('input[name="providerType"]');
             typeRadios.forEach(r => { if(r.value === formCache.type) r.checked = true; });
             document.getElementById('f_businessName').value = formCache.businessName || '';
@@ -626,7 +634,8 @@
             document.getElementById('f_email').value = formCache.email || '';
             if (document.getElementById('f_experience')) document.getElementById('f_experience').value = formCache.experience || '';
             document.getElementById('f_about').value = formCache.about || '';
-            updateCharCount('f_about', 'wordCountLabel', 300);
+            updateCharCount('f_about', 'wordCountLabel', 300);
+
             if (formCache.workDays) {
                 const dayChecks = document.querySelectorAll('input[name="workDay"]');
                 dayChecks.forEach(chk => {
@@ -636,11 +645,14 @@
             if (formCache.workTimeStart) document.getElementById('f_workTimeStart').value = formCache.workTimeStart;
             if (formCache.workTimeEnd) document.getElementById('f_workTimeEnd').value = formCache.workTimeEnd;
             document.getElementById('f_priceConsult').value = formCache.priceConsult || '';
-            document.getElementById('f_priceHourly').value = formCache.priceHourly || '';
+            document.getElementById('f_priceHourly').value = formCache.priceHourly || '';
+
             selectedAreas = [...(formCache.areas || [])];
-            refreshAreaSelection();
+            refreshAreaSelection();
+
             categoriesTags = [...(formCache.categories || [])];
-            refreshCategoryTags();
+            refreshCategoryTags();
+
             if(formCache.whyChooseUs) {
                 const checkboxes = document.querySelectorAll('input[name="chkWhy"]');
                 checkboxes.forEach(chk => { chk.checked = formCache.whyChooseUs.includes(chk.value); });
@@ -648,7 +660,9 @@
             
             refreshTags();
         }
-    }
+    }
+
+
     function goToStep(step) {
         if(step === 2) {
             const biz = document.getElementById('f_businessName').value.trim();
@@ -665,7 +679,8 @@
             if(aboutWordCount > 300) {
                  Swal.fire({icon:'warning', title:'Limit Exceeded', text:'About section cannot exceed 300 characters.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
                  return;
-            }
+            }
+
             formCache.type = document.querySelector('input[name="providerType"]:checked').value;
             formCache.businessName = biz;
             formCache.phone = phone;
@@ -674,7 +689,8 @@
             formCache.about = about;
 
             document.getElementById('form-part-1').classList.add('hidden');
-            document.getElementById('form-part-2').classList.remove('hidden');
+            document.getElementById('form-part-2').classList.remove('hidden');
+
             const steps = document.querySelectorAll('.step');
             steps[1].classList.add('step-primary');
             window.scrollTo(0,0);
@@ -703,7 +719,8 @@
         if(offeredServicesTags.length === 0) {
             Swal.fire({icon:'warning', title:'No Services', text:'Add at least one offered service.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
             return;
-        }
+        }
+
         formCache.workDays = Array.from(dayChecks).map(chk => chk.value);
         formCache.workTimeStart = wStart;
         formCache.workTimeEnd = wEnd;
@@ -712,7 +729,8 @@
         formCache.areas = [...selectedAreas];
         formCache.offeredServices = [...offeredServicesTags];
         formCache.categories = [...categoriesTags];
-        formCache.whyChooseUs = Array.from(whyBoxes).map(chk => chk.value);
+        formCache.whyChooseUs = Array.from(whyBoxes).map(chk => chk.value);
+
         const container = document.getElementById('main-container');
         container.innerHTML = '';
         container.appendChild(document.getElementById('tmpl-review').content.cloneNode(true));
@@ -752,7 +770,8 @@
     }
 
     function goToFormFromReview() {
-        renderForm();
+        renderForm();
+
         document.getElementById('form-part-1').classList.add('hidden');   
         document.getElementById('form-part-2').classList.remove('hidden');
         const steps = document.querySelectorAll('.step');
@@ -773,7 +792,8 @@
         });
 
         if (result.isConfirmed) {
-            try {
+            try {
+
                 Swal.fire({
                     title: 'Publishing...',
                     didOpen: () => { Swal.showLoading() },

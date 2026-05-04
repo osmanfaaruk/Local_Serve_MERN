@@ -47,13 +47,11 @@ app.use('/api/admin/locations',   adminManageLocations);
 app.use('/api/admin/add-provider',adminAddProvider);
 app.use('/api/admin/auth',        adminAuthRoutes);
 
-// Serve all static files from the project root (User-Website, Admin-Dashboard)
-app.use(express.static(path.join(__dirname, '../')));
+// Serve User-Website as the root static directory
+app.use(express.static(path.join(__dirname, '../User-Website')));
 
-// Default route (Homepage)
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../User-Website/index.html'));
-});
+// Serve Admin-Dashboard separately
+app.use('/Admin-Dashboard', express.static(path.join(__dirname, '../Admin-Dashboard')));
 
 // Admin portal shortcut
 app.get('/admin', (req, res) => {
