@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users | Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: {
+                themes: ['sky', 'light'],
+                darkTheme: 'light'
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="adminAuth.js"></script>
+    <style>
+        body, html { font-family: 'Inter', sans-serif !important; }
+        :root {
+            --p: 221 70% 41%;
+            --pf: 221 70% 31%;
+            --success: 142 76% 36%;
+            --error: 0 84% 60%;
+            --neutral: 0 0% 10%;
+        }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        .text-primary { color: hsl(var(--p)) !important; }
+        
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(12px) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+        }
+    </style>
+
+    <meta name="color-scheme" content="light">
+    <style>
+        body, html { font-family: 'Inter', sans-serif !important; }
+        @media (prefers-color-scheme: dark) {
+            :root { color-scheme: light !important; }
+        }
+        html { theme-transition: none; }
+    </style>
+</head>
+
+<body class="min-h-screen bg-base-200">
+
+    <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
+        <div class="flex-1">
+            <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
+        </div>
+        <div class="flex-none gap-2">
+            <a href="/" class="btn btn-ghost btn-sm">Website</a>
+            <button onclick="adminLogout()" class="btn btn-ghost btn-sm text-error font-bold">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
+        
+        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
+            <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="manage-providers.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-users-cog"></i> Providers
+            </a>
+            <a href="add-provider.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-user-plus"></i> Add Provider
+            </a>
+            <a href="manage-users.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-th-large"></i> Categories
+            </a>
+            <a href="manage-locations.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-map-marker-alt"></i> Locations
+            </a>
+            <div class="divider"></div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">System</div>
+            <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </aside>
+        
+        <main class="flex-1 p-8">
+            <div class="flex items-center justify-between mb-8">
+                <h1 class="text-3xl font-extrabold">Registered Users</h1>
+            </div>
+
+            <div class="card bg-base-100 shadow-sm border border-base-300">
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra font-medium">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th>Username</th>
+                                <th>Email Address</th>
+                                <th>Account Type</th>
+                                <th>Joined Date</th>
+                                <th class="text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const users = await response.json();
+                renderTable(users);
+            } catch (error) {
+                console.error('Failed to load users:', error);
+                document.getElementById('users-table-body').innerHTML = `
+                    <tr><td colspan="5" class="text-center py-10 text-error font-bold">Error loading user data.</td></tr>
+                `;
+            }
+        }
+
+        function renderTable(users) {
+            const tbody = document.getElementById('users-table-body');
+            if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 opacity-40 italic">No registered users found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = users.map(user => {
+                const date = new Date(user.createdAt).toLocaleDateString('en-GB', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+                const accountType = user.providerId ? 
+                    `<span class="badge badge-info gap-2 font-bold px-4 py-3"><i class="fas fa-user-tie"></i> Provider</span>` : 
+                    `<span class="badge badge-ghost gap-2 font-bold px-4 py-3"><i class="fas fa-user"></i> Regular User</span>`;
+
+                return `
+                    <tr>
+                        <td class="font-bold text-slate-800">${user.username}</td>
+                        <td class="font-medium text-slate-600">${user.email}</td>
+                        <td>${accountType}</td>
+                        <td class="text-slate-500">${date}</td>
+                        <td class="text-right">
+                            <span class="badge badge-success badge-sm font-black uppercase tracking-tighter">Active</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        loadUsers();
+    </script>
+    <script>document.body.style.opacity = "1";</script>
+</body>
+</html>

@@ -40,12 +40,14 @@ const adminManageCategories  = require('./routes/admin/manageCategoriesRoutes');
 const adminManageLocations   = require('./routes/admin/manageLocationsRoutes');   // → manage-locations.html
 const adminAddProvider       = require('./routes/admin/addProviderRoutes');       // → add-provider.html
 const adminAuthRoutes        = require('./routes/admin/adminAuthRoutes');         // → admin login/auth
+const adminManageUsers       = require('./routes/admin/manageUsersRoutes');      // → manage-users.html
 
 app.use('/api/admin/providers',   adminManageProviders);
 app.use('/api/admin/categories',  adminManageCategories);
 app.use('/api/admin/locations',   adminManageLocations);
 app.use('/api/admin/add-provider',adminAddProvider);
 app.use('/api/admin/auth',        adminAuthRoutes);
+app.use('/api/admin/users',       adminManageUsers);
 
 // Serve User-Website as the root static directory
 app.use(express.static(path.join(__dirname, '../User-Website')));

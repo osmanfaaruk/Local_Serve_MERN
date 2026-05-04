@@ -84,13 +84,19 @@
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
         
-                <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
+        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
             <a href="manage-providers.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
-                <i class="fas fa-users"></i> Providers
+                <i class="fas fa-users-cog"></i> Providers
+            </a>
+            <a href="add-provider.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
+                <i class="fas fa-user-plus"></i> Add Provider
+            </a>
+            <a href="manage-users.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-users"></i> Users
             </a>
             <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
                 <i class="fas fa-th-large"></i> Categories
@@ -99,11 +105,11 @@
                 <i class="fas fa-map-marker-alt"></i> Locations
             </a>
             <div class="divider"></div>
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">System</div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">System</div>
             <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
                 <i class="fas fa-cog"></i> Settings
             </a>
-            </aside>
+        </aside>
         
         <main class="flex-1 p-8">
             <div class="flex items-center gap-4 mb-8">
@@ -123,9 +129,6 @@
 
         </main>
     </div>
-
-
-
 
 <template id="tmpl-form">
     <div class="card bg-base-100 shadow-sm border border-base-300">
@@ -798,59 +801,51 @@
 
     async function finalSubmit() {
         const result = await Swal.fire({
-            title: 'Verified Listing Publishing',
-            text: "You are about to publish a pre-verified provider. It will be live immediately.",
-            icon: 'warning',
+            title: 'Confirm Submission',
+            text: 'Are you sure you want to publish this provider?',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Yes, Publish Live',
-            customClass: { confirmButton: 'btn btn-success text-white ml-2', cancelButton: 'btn btn-ghost' },
-            buttonsStyling: false,
-            reverseButtons: true
+            confirmButtonText: 'Yes, Publish It!',
+            cancelButtonText: 'No, Wait',
+            customClass: { confirmButton: 'btn btn-primary text-white', cancelButton: 'btn btn-ghost' },
+            buttonsStyling: false
         });
 
-        if (result.isConfirmed) {
-            try {
+        if (!result.isConfirmed) return;
 
-                Swal.fire({
-                    title: 'Publishing...',
-                    didOpen: () => { Swal.showLoading() },
-                    allowOutsideClick: false
-                });
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+            const method = editId ? 'PUT' : 'POST';
+            const endpoint = editId ? `/api/admin/providers/${editId}` : '/api/admin/add-provider';
 
-                const isEdit = !!formCache._id;
-                const url = isEdit ? `/api/providers/${formCache._id}` : '/api/providers';
-                const method = isEdit ? 'PUT' : 'POST';
-                
-                formCache.status = 'Approved';
-                formCache.isApplied = false; // Explicitly mark as admin-added
+            const res = await fetch(endpoint, {
+                method: method,
+                headers: { 'Content-Type': 'application/json', ...adminAuthHeader() },
+                body: JSON.stringify(formCache)
+            });
 
-                const response = await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formCache)
-                });
-
-                if (response.ok) {
-                    await Swal.fire({
-                        title: 'Published Successfully!',
-                        text: 'The provider is now auto-verified and live on the website.',
-                        icon: 'success',
-                        customClass: { confirmButton: 'btn btn-primary text-white' },
-                        buttonsStyling: false
-                    });
-                    window.location.href = 'manage-providers.html';
-                } else {
-                    throw new Error('Failed to publish');
-                }
-            } catch (error) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Something went wrong while publishing. Please try again.',
-                    icon: 'error',
+            if (res.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: editId ? 'Provider Updated!' : 'Provider Added!',
+                    text: 'The provider has been successfully listed and verified.',
                     customClass: { confirmButton: 'btn btn-primary text-white' },
                     buttonsStyling: false
                 });
+                window.location.href = 'manage-providers.html';
+            } else {
+                const err = await res.json();
+                throw new Error(err.message || 'Submission failed');
             }
+        } catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Submission Error',
+                text: e.message,
+                customClass: { confirmButton: 'btn btn-primary text-white' },
+                buttonsStyling: false
+            });
         }
     }
 

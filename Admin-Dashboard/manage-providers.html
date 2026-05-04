@@ -109,7 +109,13 @@
             </a>
             <a href="manage-providers.html"
                 class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
-                <i class="fas fa-users"></i> Providers
+                <i class="fas fa-users-cog"></i> Providers
+            </a>
+            <a href="add-provider.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
+                <i class="fas fa-user-plus"></i> Add Provider
+            </a>
+            <a href="manage-users.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
+                <i class="fas fa-users"></i> Users
             </a>
             <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-th-large"></i> Categories
@@ -211,10 +217,10 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase  opacity-60">
-                                        <th class="py-4">Provider / Business</th>
-                                        <th>Status</th>
-                                        <th>Added On</th>
+                                    <tr class="text-xs uppercase opacity-60">
+                                        <th class="py-4 w-[40%]">Provider / Business</th>
+                                        <th class="w-[20%]">Status</th>
+                                        <th class="w-[20%]">Added On</th>
                                         <th class="text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -229,7 +235,7 @@
                 
                 <div>
                     <div class="flex items-center gap-3 mb-6">
-                        <h2 class="text-xl font-black  text-indigo-900">Applied Providers</h2>
+                        <h2 class="text-xl font-black tracking-tight">Applied Providers</h2>
                         <div class="badge badge-ghost border-base-300 badge-sm font-bold" id="badge-applied-count">0
                         </div>
                     </div>
@@ -237,10 +243,10 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase  opacity-60">
-                                        <th class="py-4">Applicant Detail</th>
-                                        <th>Verification Status</th>
-                                        <th>Applied On</th>
+                                    <tr class="text-xs uppercase opacity-60">
+                                        <th class="py-4 w-[40%]">Applicant Detail</th>
+                                        <th class="w-[20%]">Verification Status</th>
+                                        <th class="w-[20%]">Applied On</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -332,10 +338,10 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="w-[20%]">
                             ${renderAppliedStatus(p.status)}
                         </td>
-                        <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
+                        <td class="w-[20%] font-bold text-xs opacity-50">${dateStr}</td>
                         <td class="text-right">
                             <button class="btn btn-sm btn-primary text-white shadow-sm" onclick="reviewProvider('${p._id}')">
                                 <i class="fas fa-clipboard-check mr-2"></i> Review
@@ -359,13 +365,13 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="w-[20%]">
                             ${p.status === 'Approved'
-                            ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase  shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
-                            : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase  shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
+                            ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
+                            : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
                         }
                         </td>
-                        <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
+                        <td class="w-[20%] font-bold text-xs opacity-50">${dateStr}</td>
                         <td class="text-right">
                             <div class="flex justify-end gap-1">
                                 <button class="btn btn-square btn-ghost btn-sm text-primary hover:bg-primary/10 tooltip tooltip-left" data-tip="Change Status" onclick="reviewProvider('${p._id}')">
