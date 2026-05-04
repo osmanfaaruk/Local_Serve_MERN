@@ -108,7 +108,7 @@
         <!-- sidebar section start -->
         <aside id="admin-sidebar"
             class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
+            <div class="text-xs font-bold text-slate-500 uppercase px-4 mb-4 mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
@@ -129,7 +129,7 @@
                 <i class="fas fa-map-marker-alt"></i> Locations
             </a>
             <div class="divider"></div>
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">System</div>
+            <div class="text-xs font-bold text-slate-500 uppercase px-4 mb-4  mt-4">System</div>
             <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-cog"></i> Settings
             </a>
@@ -161,7 +161,7 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Total Providers
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Providers
                             </div>
                             <div class="text-2xl font-black" id="stat-total">0</div>
                         </div>
@@ -174,7 +174,7 @@
                             <i class="fas fa-check-double"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Live & Verified
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Live & Verified
                             </div>
                             <div class="text-2xl font-black text-success" id="stat-live">0</div>
                         </div>
@@ -187,7 +187,7 @@
                             <i class="fas fa-hourglass-half"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Pending Application
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pending Application
                             </div>
                             <div class="text-2xl font-black text-warning" id="stat-pending">0</div>
                         </div>
@@ -230,7 +230,7 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase opacity-60">
+                                    <tr class="text-[11px] uppercase font-bold text-slate-800">
                                         <th class="py-4 w-[40%]">Provider / Business</th>
                                         <th class="w-[15%]">Status</th>
                                         <th class="w-[15%]">Added On</th>
@@ -257,7 +257,7 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase opacity-60">
+                                    <tr class="text-[11px] uppercase font-bold text-slate-800">
                                         <th class="py-4 w-[40%]">Applicant Detail</th>
                                         <th class="w-[15%]">Verification Status</th>
                                         <th class="w-[15%]">Applied On</th>
@@ -352,14 +352,14 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold text-sm">${p.businessName}</div>
-                                    <div class="text-[10px] opacity-40 uppercase font-black  mt-0.5">${p.type}</div>
+                                    <div class="font-bold text-sm text-slate-900">${p.businessName}</div>
+                                    <div class="text-[10px] text-slate-500 uppercase font-bold mt-0.5">${p.type}</div>
                                 </div>
                             </div>
                         </td>
                         <td class="w-[15%]">${renderAppliedStatus(p.status)}</td>
-                        <td class="w-[15%] font-bold text-xs opacity-50">${dateStr}</td>
-                        <td class="w-[15%] font-bold text-xs opacity-50">${timeStr}</td>
+                        <td class="w-[15%] font-bold text-xs text-slate-700">${dateStr}</td>
+                        <td class="w-[15%] font-bold text-xs text-slate-700">${timeStr}</td>
                         <td class="text-right">
                             <button class="btn btn-sm btn-primary text-white shadow-sm" onclick="reviewProvider('${p._id}')">
                                 <i class="fas fa-clipboard-check mr-2"></i> Review
@@ -378,8 +378,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold text-sm">${p.businessName}</div>
-                                    <div class="text-[10px] opacity-40 uppercase font-black  mt-0.5">${p.type}</div>
+                                    <div class="font-bold text-sm text-slate-900">${p.businessName}</div>
+                                    <div class="text-[10px] text-slate-500 uppercase font-bold mt-0.5">${p.type}</div>
                                 </div>
                             </div>
                         </td>
@@ -389,8 +389,8 @@
                             : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
                         }
                         </td>
-                        <td class="w-[15%] font-bold text-xs opacity-50">${dateStr}</td>
-                        <td class="w-[15%] font-bold text-xs opacity-50">${timeStr}</td>
+                        <td class="w-[15%] font-bold text-xs text-slate-700">${dateStr}</td>
+                        <td class="w-[15%] font-bold text-xs text-slate-700">${timeStr}</td>
                         <td class="text-right">
                             <div class="flex justify-end gap-1">
                                 <button class="btn btn-square btn-ghost btn-sm text-primary hover:bg-primary/10 tooltip tooltip-left" data-tip="Change Status" onclick="reviewProvider('${p._id}')">
