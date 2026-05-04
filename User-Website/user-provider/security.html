@@ -132,7 +132,7 @@
         btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Saving...';
 
         try {
-            const res = await fetch('http://localhost:5000/api/user-provider/login/change-password', {
+            const res = await fetch('/api/user-provider/login/change-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: currentUser.username, currentPassword, newPassword })

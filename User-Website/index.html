@@ -248,7 +248,7 @@
 
         async function loadCategories() {
             try {
-                const response = await fetch('http://localhost:5000/api/categories');
+                const response = await fetch('/api/categories');
                 categories = await response.json();
                 const categoryGrid = document.getElementById('category-grid');
                 if (categoryGrid) {
@@ -269,7 +269,7 @@
 
         async function loadFeatured() {
             try {
-                const response = await fetch('http://localhost:5000/api/providers');
+                const response = await fetch('/api/providers');
                 const providers = await response.json();
                 const featured = providers.filter(p => p.status === 'Approved').slice(0, 3);
                 const featuredGrid = document.getElementById('featured-professionals-grid');
@@ -302,7 +302,7 @@
 
         async function loadAreas() {
             try {
-                const response = await fetch('http://localhost:5000/api/locations');
+                const response = await fetch('/api/locations');
                 const data = await response.json();
                 if (data && data.length > 0) {
                     allAreas = data.map(l => l.name);

@@ -193,8 +193,8 @@
         async function loadLocations() {
             try {
                 const [locRes, provRes] = await Promise.all([
-                    fetch('http://localhost:5000/api/locations'),
-                    fetch('http://localhost:5000/api/providers')
+                    fetch('/api/locations'),
+                    fetch('/api/providers')
                 ]);
                 locations = await locRes.json();
                 providers = await provRes.json();
@@ -231,7 +231,7 @@
         function promptNewLocation() {
             confirmAdd('newLocationInput', 'Location', async (name) => {
                 try {
-                    const res = await fetch('http://localhost:5000/api/locations', {
+                    const res = await fetch('/api/locations', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name: name })
@@ -250,7 +250,7 @@
             if (!loc) return;
             confirmDelete(loc.name, 'Location', async () => {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/locations/${id}`, {
+                    const res = await fetch(`/api/locations/${id}`, {
                         method: 'DELETE'
                     });
                     if (res.ok) {

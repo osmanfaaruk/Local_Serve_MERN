@@ -257,7 +257,7 @@
 
         async function loadProviders() {
             try {
-                const response = await fetch('http://localhost:5000/api/providers');
+                const response = await fetch('/api/providers');
                 providersList = await response.json();
                 handleFilterChange(); // Initial render
             } catch (err) {
@@ -414,7 +414,7 @@
 
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/providers/${providerId}`, {
+                    const response = await fetch(`/api/providers/${providerId}`, {
                         method: 'DELETE'
                     });
 
@@ -615,7 +615,7 @@
         async function updateProviderStatus(providerId, status, reason) {
             try {
                 Swal.fire({ title: 'Updating...', didOpen: () => { Swal.showLoading() }, allowOutsideClick: false });
-                const response = await fetch(`http://localhost:5000/api/providers/${providerId}`, {
+                const response = await fetch(`/api/providers/${providerId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: status, statusReason: reason })

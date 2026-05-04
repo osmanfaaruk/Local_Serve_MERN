@@ -115,7 +115,7 @@
             btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Creating account...';
 
             try {
-                const res = await fetch('http://localhost:5000/api/user-provider/register', {
+                const res = await fetch('/api/user-provider/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, username, password })

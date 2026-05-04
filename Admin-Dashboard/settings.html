@@ -149,7 +149,7 @@
             }
 
             try {
-                const res = await fetch('http://localhost:5000/api/admin/auth/change-password', {
+                const res = await fetch('/api/admin/auth/change-password', {
                     method: 'POST',
                     headers: adminAuthHeader(),
                     body: JSON.stringify({ currentPassword, newPassword })

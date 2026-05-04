@@ -161,14 +161,14 @@
     <script>
         async function loadDashboardStats() {
             try {
-                const providersRes = await fetch('http://localhost:5000/api/providers');
+                const providersRes = await fetch('/api/providers');
                 const providers = await providersRes.json();
                 const activeProviders = providers.filter(p => p.status === 'Approved').length;
                 document.getElementById('total-providers').innerText = activeProviders;
-                const categoriesRes = await fetch('http://localhost:5000/api/categories');
+                const categoriesRes = await fetch('/api/categories');
                 const categories = await categoriesRes.json();
                 document.getElementById('total-categories').innerText = categories.length;
-                const locationsRes = await fetch('http://localhost:5000/api/locations');
+                const locationsRes = await fetch('/api/locations');
                 const locations = await locationsRes.json();
                 document.getElementById('total-locations').innerText = locations.length;
             } catch (error) {

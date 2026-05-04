@@ -100,7 +100,7 @@
         btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Logging in...';
 
         try {
-            const res = await fetch('http://localhost:5000/api/user-provider/login', {
+            const res = await fetch('/api/user-provider/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })

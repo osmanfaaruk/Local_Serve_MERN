@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -46,8 +47,17 @@ app.use('/api/admin/locations',   adminManageLocations);
 app.use('/api/admin/add-provider',adminAddProvider);
 app.use('/api/admin/auth',        adminAuthRoutes);
 
+// Serve all static files from the project root (User-Website, Admin-Dashboard)
+app.use(express.static(path.join(__dirname, '../')));
+
+// Default route (Homepage)
 app.get('/', (req, res) => {
-    res.send('LocalServe API is running...');
+    res.sendFile(path.join(__dirname, '../User-Website/index.html'));
+});
+
+// Admin portal shortcut
+app.get('/admin', (req, res) => {
+    res.redirect('/Admin-Dashboard/admin-login.html');
 });
 
 mongoose.connect(process.env.MONGO_URI)

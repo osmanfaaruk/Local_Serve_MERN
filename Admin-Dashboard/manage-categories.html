@@ -182,8 +182,8 @@
         async function loadCategories() {
             try {
                 const [catRes, provRes] = await Promise.all([
-                    fetch('http://localhost:5000/api/categories'),
-                    fetch('http://localhost:5000/api/providers')
+                    fetch('/api/categories'),
+                    fetch('/api/providers')
                 ]);
                 categories = await catRes.json();
                 providers = await provRes.json();
@@ -221,7 +221,7 @@
         function promptNewCategory() {
             confirmAdd('newCategoryInput', 'Category', async (name) => {
                 try {
-                    const res = await fetch('http://localhost:5000/api/categories', {
+                    const res = await fetch('/api/categories', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name: name, icon: 'fa-tag' })
@@ -240,7 +240,7 @@
             if (!cat) return;
             confirmEdit(cat.name, 'Category', async (newName) => {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                    const res = await fetch(`/api/categories/${id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name: newName })
@@ -265,7 +265,7 @@
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                        const res = await fetch(`/api/categories/${id}`, {
                             method: 'DELETE'
                         });
                         if (res.ok) {

@@ -409,7 +409,7 @@ function refreshTags() {
 async function fetchCategories(pathPrefix = '') {
     if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
     try {
-        const response = await fetch('http://localhost:5000/api/categories');
+        const response = await fetch('/api/categories');
         const data = await response.json();
         allAvailableCategories = Array.isArray(data) ? data : [];
         return allAvailableCategories;
@@ -480,7 +480,7 @@ let selectedAreas = [];
 let formCache = {};
 window.onload = async () => {
     try {
-        const locRes = await fetch('http://localhost:5000/api/locations');
+        const locRes = await fetch('/api/locations');
         const locData = await locRes.json();
         allAvailableAreas = Array.isArray(locData) ? locData.map(l => l.name) : ["Chittagong"];
     } catch (e) {
@@ -705,7 +705,7 @@ function finalSubmit() {
                 const currentUser = JSON.parse(localStorage.getItem('ls_currentUser') || '{}');
                 const payload = { ...formCache, status: 'Under Review', isApplied: true, userId: currentUser.id };
                 const isUpdate = !!payload._id;
-                const url = isUpdate ? `http://localhost:5000/api/providers/${payload._id}` : 'http://localhost:5000/api/user-provider/form/submit';
+                const url = isUpdate ? `/api/providers/${payload._id}` : '/api/user-provider/form/submit';
                 const method = isUpdate ? 'PUT' : 'POST';
 
                 const res = await fetch(url, {

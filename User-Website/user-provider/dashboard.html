@@ -159,7 +159,7 @@
         container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
         document.getElementById('profile-username-display').innerText = currentUser.username;
         try {
-            const res = await fetch(`http://localhost:5000/api/user-provider/dashboard/me/${currentUser.id}`);
+            const res = await fetch(`/api/user-provider/dashboard/me/${currentUser.id}`);
             const data = await res.json();
             providerData = data.provider || null;
         } catch (e) {
@@ -269,7 +269,7 @@
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await fetch(`http://localhost:5000/api/providers/${providerData._id}`, { method: 'DELETE' });
+                    await fetch(`/api/providers/${providerData._id}`, { method: 'DELETE' });
                 } catch (e) { console.error(e); }
                 localStorage.removeItem('ls_providerData');
                 localStorage.removeItem('ls_formDraft');

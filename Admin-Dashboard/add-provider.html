@@ -510,7 +510,7 @@
     async function fetchCategories() {
         if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
         try {
-            const response = await fetch(`http://localhost:5000/api/categories`);
+            const response = await fetch(`/api/categories`);
             allAvailableCategories = await response.json();
             return allAvailableCategories;
         } catch (error) {
@@ -572,7 +572,7 @@
     let formCache = {};
     window.onload = async () => {
         try {
-            const locRes = await fetch('http://localhost:5000/api/locations');
+            const locRes = await fetch('/api/locations');
             const locData = await locRes.json();
             allAvailableAreas = locData.map(l => l.name);
         } catch (e) {
@@ -592,7 +592,7 @@
 
         if (editId) {
             try {
-                const res = await fetch(`http://localhost:5000/api/providers/${editId}`);
+                const res = await fetch(`/api/providers/${editId}`);
                 if (res.ok) {
                     formCache = await res.json();
                     offeredServicesTags = [...(formCache.offeredServices || [])];
@@ -781,7 +781,7 @@
                 });
 
                 const isEdit = !!formCache._id;
-                const url = isEdit ? `http://localhost:5000/api/providers/${formCache._id}` : 'http://localhost:5000/api/providers';
+                const url = isEdit ? `/api/providers/${formCache._id}` : '/api/providers';
                 const method = isEdit ? 'PUT' : 'POST';
                 
                 formCache.status = 'Approved';

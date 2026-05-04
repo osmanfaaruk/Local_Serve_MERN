@@ -123,11 +123,11 @@
         async function loadData() {
             try {
 
-                const pResp = await fetch('http://localhost:5000/api/providers');
+                const pResp = await fetch('/api/providers');
                 allProviders = await pResp.json();
                 allProviders = allProviders.filter(p => p.status === 'Approved');
 
-                const cResp = await fetch('http://localhost:5000/api/categories');
+                const cResp = await fetch('/api/categories');
                 const cats = await cResp.json();
                 const catSelect = document.getElementById('categoryFilter');
                 cats.forEach(c => {
@@ -137,7 +137,7 @@
                     catSelect.appendChild(opt);
                 });
 
-                const lResp = await fetch('http://localhost:5000/api/locations');
+                const lResp = await fetch('/api/locations');
                 const locs = await lResp.json();
                 const locSelect = document.getElementById('areaFilter');
                 locs.forEach(l => {

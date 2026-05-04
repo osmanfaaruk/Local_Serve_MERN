@@ -6,7 +6,7 @@
  * If invalid/missing, redirects to admin-login.html.
  */
 
-const API = 'http://localhost:5000/api/admin/auth';
+const API = '/api/admin/auth';
 
 /**
  * Call this at the top of every admin page's window.onload (or directly).
