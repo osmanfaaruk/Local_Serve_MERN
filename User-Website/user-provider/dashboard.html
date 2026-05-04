@@ -44,6 +44,7 @@
 <body class="min-h-screen bg-base-200">
 
     
+    <!-- navbar section start -->
     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
@@ -59,252 +60,262 @@
             
         </div>
     </div>
+    <!-- navbar section end -->
 
     
+    <!-- Main Dashboard Body (Content will be injected here) start -->
     <div class="max-w-6xl mx-auto px-4 py-8" id="main-container">
         <div class="flex justify-center p-12">
             <span class="loading loading-spinner text-primary loading-lg"></span>
         </div>
     </div>
+    <!-- Main Dashboard Body end -->
 
 
-<template id="tmpl-provider-layout">
-    <div class="flex flex-col md:flex-row gap-6">
-        <div class="md:w-1/4 w-full">
-            <div class="bg-base-100 rounded-xl shadow-sm border border-base-300 overflow-hidden sticky top-[90px]">
-                <div class="p-6 border-b border-base-200 bg-primary/5 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">
-                        <i class="fas fa-user-tie"></i>
+    <!-- HTML TEMPLATES: These blocks are used by JavaScript to dynamically render the dashboard layout and application status -->
+    <!-- Template for the main provider dashboard layout (Sidebar + Content Area) -->
+    <template id="tmpl-provider-layout">
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="md:w-1/4 w-full">
+                <div class="bg-base-100 rounded-xl shadow-sm border border-base-300 overflow-hidden sticky top-[90px]">
+                    <div class="p-6 border-b border-base-200 bg-primary/5 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold opacity-50 uppercase ">Logged In As</p>
+                            <h3 class="font-black text-lg" id="profile-username-display">User</h3>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xs font-bold opacity-50 uppercase ">Logged In As</p>
-                        <h3 class="font-black text-lg" id="profile-username-display">User</h3>
-                    </div>
+                    <ul class="menu p-4 w-full bg-base-100 text-base-content gap-2">
+                        <li><a id="menu-app" href="dashboard.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-clipboard-list w-5"></i> Your Application</a></li>
+                        <li><a id="menu-sec" href="security.html" class="font-bold py-3"><i class="fas fa-lock w-5"></i> Change Password</a></li>
+                        <div class="divider my-1"></div>
+                        <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                    </ul>
                 </div>
-                <ul class="menu p-4 w-full bg-base-100 text-base-content gap-2">
-                    <li><a id="menu-app" href="dashboard.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-clipboard-list w-5"></i> Your Application</a></li>
-                    <li><a id="menu-sec" href="security.html" class="font-bold py-3"><i class="fas fa-lock w-5"></i> Change Password</a></li>
-                    <div class="divider my-1"></div>
-                    <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="md:w-3/4 w-full" id="dashboard-content-area">
-        </div>
-    </div>
-</template>
-
-
-<template id="tmpl-apply-gateway">
-    <div class="text-center py-12">
-        <div class="mb-8">
-            <i class="fas fa-clipboard-list text-6xl text-base-content/20"></i>
-        </div>
-        <h2 class="text-2xl font-bold mb-4">Start Your Application</h2>
-        <p class="text-base-content/60 max-w-md mx-auto mb-8">
-            You haven't submitted a provider profile yet. Create one now to start receiving requests from local customers.
-        </p>
-        <a href="form.html" class="btn btn-primary btn-lg text-white shadow-xl">
-            Apply to Become a Service Provider <i class="fas fa-arrow-right ml-2"></i>
-        </a>
-    </div>
-</template>
-
-
-<template id="tmpl-dashboard">
-    <div class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden">
-        <div class="bg-primary/10 p-8 text-center border-b border-base-300">
-            <div class="avatar placeholder mb-4">
-                <div class="bg-primary text-primary-content rounded-full w-24 h-24 outline outline-4 outline-base-100 shadow-lg flex items-center justify-center">
-                    <i class="fas fa-user text-3xl" id="dash-icon"></i>
-                </div>
-            </div>
-            <h2 class="text-3xl font-extrabold" id="dash-company-name"></h2>
-            <p class="opacity-70 mt-1 flex items-center justify-center gap-2">
-                <i class="fas fa-tag"></i> <span id="dash-type"></span> &bull; <span id="dash-status-container"><span class="px-3 py-1 bg-slate-50 text-slate-500 border border-slate-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> LOADING...</span></span>
-            </p>
-        </div>
-        <div class="card-body p-8">
-            <div id="dash-alert-container">
-                <div class="flex justify-center p-4 opacity-50"><span class="loading loading-spinner"></span></div>
             </div>
             
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-                <button onclick="editApplication()" class="btn btn-outline btn-primary flex-1 sm:flex-none">
-                    <i class="fas fa-edit"></i> Edit Information
-                </button>
-                <button onclick="terminateService()" class="btn btn-outline btn-error flex-1 sm:flex-none">
-                    <i class="fas fa-trash-alt"></i> Service Termination
-                </button>
+            <div class="md:w-3/4 w-full" id="dashboard-content-area">
             </div>
         </div>
-    </div>
-</template>
+    </template>
+
+
+    <template id="tmpl-apply-gateway">
+        <div class="text-center py-12">
+            <div class="mb-8">
+                <i class="fas fa-clipboard-list text-6xl text-base-content/20"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Start Your Application</h2>
+            <p class="text-base-content/60 max-w-md mx-auto mb-8">
+                You haven't submitted a provider profile yet. Create one now to start receiving requests from local customers.
+            </p>
+            <a href="form.html" class="btn btn-primary btn-lg text-white shadow-xl">
+                Apply to Become a Service Provider <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </template>
+
+
+    <template id="tmpl-dashboard">
+        <div class="card bg-base-100 shadow-xl border border-base-300 overflow-hidden">
+            <div class="bg-primary/10 p-8 text-center border-b border-base-300">
+                <div class="avatar placeholder mb-4">
+                    <div class="bg-primary text-primary-content rounded-full w-24 h-24 outline outline-4 outline-base-100 shadow-lg flex items-center justify-center">
+                        <i class="fas fa-user text-3xl" id="dash-icon"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-extrabold" id="dash-company-name"></h2>
+                <p class="opacity-70 mt-1 flex items-center justify-center gap-2">
+                    <i class="fas fa-tag"></i> <span id="dash-type"></span> &bull; <span id="dash-status-container"><span class="px-3 py-1 bg-slate-50 text-slate-500 border border-slate-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> LOADING...</span></span>
+                </p>
+            </div>
+            <div class="card-body p-8">
+                <div id="dash-alert-container">
+                    <div class="flex justify-center p-4 opacity-50"><span class="loading loading-spinner"></span></div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+                    <button onclick="editApplication()" class="btn btn-outline btn-primary flex-1 sm:flex-none">
+                        <i class="fas fa-edit"></i> Edit Information
+                    </button>
+                    <button onclick="terminateService()" class="btn btn-outline btn-error flex-1 sm:flex-none">
+                        <i class="fas fa-trash-alt"></i> Service Termination
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- templates section end -->
 
 
 
 
-<script>
-    let currentUser = null;
-    let providerData = null;
+    <!-- scripts section start -->
+    <script>
+        let currentUser = null;
+        let providerData = null;
 
-    window.onload = async () => {
-        const storedUser = localStorage.getItem('ls_currentUser');
-        if (!storedUser) {
-            window.location.href = 'login.html';
-            return;
-        }
-        currentUser = JSON.parse(storedUser);
+        window.onload = async () => {
+            const storedUser = localStorage.getItem('ls_currentUser');
+            if (!storedUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = JSON.parse(storedUser);
 
-        const container = document.getElementById('main-container');
-        container.innerHTML = '';
-        container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
-        document.getElementById('profile-username-display').innerText = currentUser.username;
+            const container = document.getElementById('main-container');
+            container.innerHTML = '';
+            container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
+            document.getElementById('profile-username-display').innerText = currentUser.username;
 
-        try {
-            const res = await fetch(`/api/user-provider/dashboard/me/${currentUser.id}`);
-            const data = await res.json();
-            providerData = data.provider || null;
-        } catch (e) {
-            console.error('Could not reach server:', e);
-        }
+            try {
+                const res = await fetch(`/api/user-provider/dashboard/me/${currentUser.id}`);
+                const data = await res.json();
+                providerData = data.provider || null;
+                if (providerData) {
+                    localStorage.setItem('ls_providerData', JSON.stringify(providerData));
+                }
+            } catch (e) {
+                console.error('Could not reach server:', e);
+            }
 
-        const contentArea = document.getElementById('dashboard-content-area');
+            const contentArea = document.getElementById('dashboard-content-area');
 
-        if (providerData) {
-            contentArea.appendChild(document.getElementById('tmpl-dashboard').content.cloneNode(true));
-            hydrateDashboard();
-        } else {
-            contentArea.appendChild(document.getElementById('tmpl-apply-gateway').content.cloneNode(true));
-        }
-
-        document.body.style.opacity = "1";
-    };
-
-    function logout() {
-        localStorage.removeItem('ls_currentUser');
-        localStorage.removeItem('ls_providerData');
-        localStorage.removeItem('ls_formDraft');
-        localStorage.removeItem('ls_editMode');
-        window.location.href = 'login.html';
-    }
-
-    async function hydrateDashboard() {
-        if (!providerData) return;
-        document.getElementById('dash-company-name').innerText = providerData.businessName;
-        document.getElementById('dash-type').innerText = providerData.type;
-
-        const iconEl = document.getElementById('dash-icon');
-        if (iconEl) {
-            iconEl.className = providerData.type === 'Company' ? 'fas fa-building text-3xl' : 'fas fa-user text-3xl';
-        }
-
-        const statusContainer = document.getElementById('dash-status-container');
-        if (statusContainer) {
-            statusContainer.innerHTML = renderStatusPill(providerData.status);
-        }
-
-        const alertContainer = document.getElementById('dash-alert-container');
-        if (alertContainer) {
-            if (providerData.status === 'Approved') {
-                alertContainer.innerHTML = `
-                    <div class="alert bg-success/10 border-none mb-6">
-                        <i class="fas fa-check-circle text-success text-2xl"></i>
-                        <div>
-                            <h3 class="font-bold text-success">Application Approved &amp; Live</h3>
-                            <div class="text-sm">Your provider profile is now live on LocalServe. Customers can now find you!</div>
-                        </div>
-                    </div>`;
-            } else if (providerData.status === 'Rejected') {
-                alertContainer.innerHTML = `
-                    <div class="alert bg-error/10 border-none mb-6">
-                        <i class="fas fa-times-circle text-error text-2xl"></i>
-                        <div>
-                            <h3 class="font-bold text-error">Application Rejected</h3>
-                            <div class="text-sm">Reason: ${providerData.statusReason || 'Please review your information and try again.'}</div>
-                        </div>
-                    </div>`;
+            if (providerData) {
+                contentArea.appendChild(document.getElementById('tmpl-dashboard').content.cloneNode(true));
+                hydrateDashboard();
             } else {
-                const reasonHtml = providerData.statusReason ? `<div class="text-sm mt-2 p-3 bg-warning/20 rounded font-medium text-warning-content"><b>Reason / Violation:</b> ${providerData.statusReason}</div>` : '';
-                alertContainer.innerHTML = `
-                    <div class="alert bg-base-200 border-none mb-6">
-                        <i class="fas fa-clock text-warning text-2xl"></i>
-                        <div>
-                            <h3 class="font-bold">Application Under Review</h3>
-                            <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
-                            ${reasonHtml}
-                        </div>
-                    </div>`;
+                contentArea.appendChild(document.getElementById('tmpl-apply-gateway').content.cloneNode(true));
+            }
+
+            document.body.style.opacity = "1";
+        };
+
+        function logout() {
+            localStorage.removeItem('ls_currentUser');
+            localStorage.removeItem('ls_providerData');
+            localStorage.removeItem('ls_formDraft');
+            localStorage.removeItem('ls_editMode');
+            window.location.href = 'login.html';
+        }
+
+        async function hydrateDashboard() {
+            if (!providerData) return;
+            document.getElementById('dash-company-name').innerText = providerData.businessName;
+            document.getElementById('dash-type').innerText = providerData.type;
+
+            const iconEl = document.getElementById('dash-icon');
+            if (iconEl) {
+                iconEl.className = providerData.type === 'Company' ? 'fas fa-building text-3xl' : 'fas fa-user text-3xl';
+            }
+
+            const statusContainer = document.getElementById('dash-status-container');
+            if (statusContainer) {
+                statusContainer.innerHTML = renderStatusPill(providerData.status);
+            }
+
+            const alertContainer = document.getElementById('dash-alert-container');
+            if (alertContainer) {
+                if (providerData.status === 'Approved') {
+                    alertContainer.innerHTML = `
+                        <div class="alert bg-success/10 border-none mb-6">
+                            <i class="fas fa-check-circle text-success text-2xl"></i>
+                            <div>
+                                <h3 class="font-bold text-success">Application Approved &amp; Live</h3>
+                                <div class="text-sm">Your provider profile is now live on LocalServe. Customers can now find you!</div>
+                            </div>
+                        </div>`;
+                } else if (providerData.status === 'Rejected') {
+                    alertContainer.innerHTML = `
+                        <div class="alert bg-error/10 border-none mb-6">
+                            <i class="fas fa-times-circle text-error text-2xl"></i>
+                            <div>
+                                <h3 class="font-bold text-error">Application Rejected</h3>
+                                <div class="text-sm">Reason: ${providerData.statusReason || 'Please review your information and try again.'}</div>
+                            </div>
+                        </div>`;
+                } else {
+                    const reasonHtml = providerData.statusReason ? `<div class="text-sm mt-2 p-3 bg-warning/20 rounded font-medium text-warning-content"><b>Reason / Violation:</b> ${providerData.statusReason}</div>` : '';
+                    alertContainer.innerHTML = `
+                        <div class="alert bg-base-200 border-none mb-6">
+                            <i class="fas fa-clock text-warning text-2xl"></i>
+                            <div>
+                                <h3 class="font-bold">Application Under Review</h3>
+                                <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
+                                ${reasonHtml}
+                            </div>
+                        </div>`;
+                }
             }
         }
-    }
 
-    function renderStatusPill(status) {
-        if (status === 'Approved') {
-            return `<span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> LIVE</span>`;
-        } else if (status === 'Rejected') {
-            return `<span class="px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> REJECTED</span>`;
-        } else if (status === 'Under Review') {
-            return `<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> UNDER REVIEW</span>`;
-        } else {
-            return `<span class="px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> ${status.toUpperCase()}</span>`;
+        function renderStatusPill(status) {
+            if (status === 'Approved') {
+                return `<span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> LIVE</span>`;
+            } else if (status === 'Rejected') {
+                return `<span class="px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> REJECTED</span>`;
+            } else if (status === 'Under Review') {
+                return `<span class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> UNDER REVIEW</span>`;
+            } else {
+                return `<span class="px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-[10px] font-black uppercase  inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span> ${status.toUpperCase()}</span>`;
+            }
         }
-    }
 
-    function editApplication() {
-        localStorage.setItem('ls_editMode', 'edit');
-        window.location.href = 'form.html';
-    }
+        function editApplication() {
+            if (!providerData || !providerData._id) return;
+            localStorage.setItem('ls_editMode', 'edit');
+            localStorage.setItem('ls_providerData', JSON.stringify(providerData));
+            window.location.href = 'form.html';
+        }
 
-    function terminateService() {
-        Swal.fire({
-            title: 'Terminate Service?',
-            text: "Are you sure you want to stop providing services? This will remove your listing.",
-            icon: 'warning',
-            input: 'textarea',
-            inputLabel: 'Reason for deletion (Optional)',
-            inputPlaceholder: 'Tell us why you are leaving...',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Terminate',
-            customClass: { confirmButton: 'btn btn-error text-white ml-2', cancelButton: 'btn btn-ghost' },
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
+        function terminateService() {
+            Swal.fire({
+                title: 'Terminate Service?',
+                text: "Are you sure you want to stop providing services? This will remove your listing.",
+                icon: 'warning',
+                input: 'textarea',
+                inputLabel: 'Reason for deletion (Optional)',
+                inputPlaceholder: 'Tell us why you are leaving...',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Terminate',
+                customClass: { confirmButton: 'btn btn-error text-white ml-2', cancelButton: 'btn btn-ghost' },
+                buttonsStyling: false,
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await fetch(`/api/providers/${providerData._id}`, { method: 'DELETE' });
+                    } catch (e) { console.error(e); }
+                    localStorage.removeItem('ls_providerData');
+                    localStorage.removeItem('ls_formDraft');
+                    Swal.fire({
+                        title: 'Terminated!',
+                        text: 'Your service provider account has been removed.',
+                        icon: 'success',
+                        customClass: { confirmButton: 'btn btn-primary text-white' },
+                        buttonsStyling: false
+                    }).then(() => { window.location.reload(); });
+                }
+            });
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userJson = localStorage.getItem('ls_currentUser');
+            if (userJson) {
                 try {
-                    await fetch(`/api/providers/${providerData._id}`, { method: 'DELETE' });
-                } catch (e) { console.error(e); }
-                localStorage.removeItem('ls_providerData');
-                localStorage.removeItem('ls_formDraft');
-                Swal.fire({
-                    title: 'Terminated!',
-                    text: 'Your service provider account has been removed.',
-                    icon: 'success',
-                    customClass: { confirmButton: 'btn btn-primary text-white' },
-                    buttonsStyling: false
-                }).then(() => { window.location.reload(); });
+                    const user = JSON.parse(userJson);
+                    const providerLink = document.getElementById('nav-provider-link');
+                    if (providerLink) providerLink.innerHTML = `<a href="dashboard.html" class="active">Account</a>`;
+                    
+                    const userProfile = document.getElementById('nav-user-profile');
+                    if (userProfile) userProfile.innerHTML = `<a href="dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
+                } catch(e){}
             }
         });
-    }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const userJson = localStorage.getItem('ls_currentUser');
-        if (userJson) {
-            try {
-                const user = JSON.parse(userJson);
-                const providerLink = document.getElementById('nav-provider-link');
-                if (providerLink) {
-                    providerLink.innerHTML = `<a href="dashboard.html">Account</a>`;
-                }
-                const userProfile = document.getElementById('nav-user-profile');
-                if (userProfile) {
-                    userProfile.innerHTML = `<a href="dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
-                }
-            } catch(e){}
-        }
-    });
-</script>
+    </script>
+    <!-- scripts section end -->
 </body>
 </html>

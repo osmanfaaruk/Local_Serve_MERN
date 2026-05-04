@@ -41,6 +41,7 @@
             top: 0 !important;
             z-index: 50 !important;
         }
+        body { opacity: 0; transition: opacity 0.3s ease; }
     </style>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -57,6 +58,7 @@
 
 <body class="min-h-screen bg-base-200">
 
+    <!-- navbar section start -->
     <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
@@ -68,8 +70,11 @@
             </button>
         </div>
     </div>
+    <!-- navbar section end -->
 
+    <!-- sidebar and main section start -->
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
+        <!-- sidebar section start -->
         <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
@@ -96,7 +101,9 @@
                 <i class="fas fa-cog"></i> Settings
             </a>
         </aside>
+        <!-- sidebar section end -->
 
+        <!-- main content section start -->
         <main class="flex-1 p-8">
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-3xl font-extrabold">Service Locations</h1>
@@ -106,6 +113,7 @@
                 </div>
             </div>
 
+            <!-- locations table section start -->
             <div class="card bg-base-100 shadow-sm border border-base-300">
                 <div class="overflow-x-auto">
                     <table class="table table-zebra font-medium">
@@ -121,10 +129,13 @@
                     </table>
                 </div>
             </div>
+            <!-- locations table section end -->
         </main>
+        <!-- main content section end -->
     </div>
+    <!-- sidebar and main section end -->
 
-    
+    <!-- scripts section start -->
     <script>
         const SWAL_STYLE = {
             confirm: 'btn btn-primary text-white mx-3',
@@ -271,11 +282,13 @@
             });
         }
 
-        (async () => {
+        window.onload = async () => {
             await requireAdminAuth();
             loadLocations();
             document.body.style.opacity = "1";
-        })();
+        };
     </script>
+    <!-- scripts section end -->
+
 </body>
 </html>

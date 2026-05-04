@@ -78,6 +78,7 @@
             overflow-y: visible !important;
             border-radius: 1.5rem !important;
         }
+        body { opacity: 0; transition: opacity 0.3s ease; }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -87,6 +88,7 @@
 
 <body class="min-h-screen bg-base-200/50">
 
+    <!-- navbar section start -->
     <div class="navbar bg-base-100 shadow-sm px-4 md:px-20">
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
@@ -98,9 +100,12 @@
             </button>
         </div>
     </div>
+    <!-- navbar section end -->
 
+    <!-- sidebar and main section start -->
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
         
+        <!-- sidebar section start -->
         <aside id="admin-sidebar"
             class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
@@ -129,7 +134,10 @@
                 <i class="fas fa-cog"></i> Settings
             </a>
         </aside>
+        <!-- sidebar section end -->
 
+
+        <!-- main content section start -->
         <main class="flex-1 p-4 md:p-10">
             
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
@@ -143,6 +151,8 @@
             </div>
 
             
+            <!-- Statistics Overview Cards start -->
+            <!-- stats grid section start -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
                     <div class="card-body p-6 flex-row items-center gap-4">
@@ -184,8 +194,9 @@
                     </div>
                 </div>
             </div>
+            <!-- Statistics Overview Cards end -->
 
-            
+            <!-- Search and Status Filtering start -->
             <div class="card bg-base-100 shadow-sm border border-base-300 mb-10">
                 <div class="card-body p-4 flex flex-col md:flex-row gap-4">
                     <div class="flex-1 join shadow-sm">
@@ -204,8 +215,10 @@
                     </select>
                 </div>
             </div>
+            <!-- Search and Status Filtering end -->
 
-            
+            <!-- Main Data Tables (Admin Added vs. User Applied) start -->
+            <!-- providers container section start -->
             <div id="providers-container" class="space-y-12">
                 
                 <div>
@@ -219,8 +232,9 @@
                                 <thead class="bg-base-200/50">
                                     <tr class="text-xs uppercase opacity-60">
                                         <th class="py-4 w-[40%]">Provider / Business</th>
-                                        <th class="w-[20%]">Status</th>
-                                        <th class="w-[20%]">Added On</th>
+                                        <th class="w-[15%]">Status</th>
+                                        <th class="w-[15%]">Added On</th>
+                                        <th class="w-[15%]">Time</th>
                                         <th class="text-right">Actions</th>
                                     </tr>
                                 </thead>
@@ -245,8 +259,9 @@
                                 <thead class="bg-base-200/50">
                                     <tr class="text-xs uppercase opacity-60">
                                         <th class="py-4 w-[40%]">Applicant Detail</th>
-                                        <th class="w-[20%]">Verification Status</th>
-                                        <th class="w-[20%]">Applied On</th>
+                                        <th class="w-[15%]">Verification Status</th>
+                                        <th class="w-[15%]">Applied On</th>
+                                        <th class="w-[15%]">Time</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -258,8 +273,11 @@
                     </div>
                 </div>
             </div>
+            <!-- providers container section end -->
         </main>
+        <!-- main content section end -->
     </div>
+    <!-- sidebar and main section end -->
 
     <script>
         let providersList = [];
@@ -313,7 +331,8 @@
             let appliedCount = 0;
 
             filteredList.forEach(p => {
-                const dateStr = new Date(p.createdAt).toLocaleDateString();
+                const dateStr = new Date(p.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                const timeStr = new Date(p.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
 
                 const isApplied = p.isApplied === true || (p.isApplied !== false && (p.status === 'Under Review' || p.status === 'Rejected'));
@@ -338,10 +357,9 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="w-[20%]">
-                            ${renderAppliedStatus(p.status)}
-                        </td>
-                        <td class="w-[20%] font-bold text-xs opacity-50">${dateStr}</td>
+                        <td class="w-[15%]">${renderAppliedStatus(p.status)}</td>
+                        <td class="w-[15%] font-bold text-xs opacity-50">${dateStr}</td>
+                        <td class="w-[15%] font-bold text-xs opacity-50">${timeStr}</td>
                         <td class="text-right">
                             <button class="btn btn-sm btn-primary text-white shadow-sm" onclick="reviewProvider('${p._id}')">
                                 <i class="fas fa-clipboard-check mr-2"></i> Review
@@ -365,13 +383,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="w-[20%]">
+                        <td class="w-[15%]">
                             ${p.status === 'Approved'
                             ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
                             : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
                         }
                         </td>
-                        <td class="w-[20%] font-bold text-xs opacity-50">${dateStr}</td>
+                        <td class="w-[15%] font-bold text-xs opacity-50">${dateStr}</td>
+                        <td class="w-[15%] font-bold text-xs opacity-50">${timeStr}</td>
                         <td class="text-right">
                             <div class="flex justify-end gap-1">
                                 <button class="btn btn-square btn-ghost btn-sm text-primary hover:bg-primary/10 tooltip tooltip-left" data-tip="Change Status" onclick="reviewProvider('${p._id}')">
@@ -442,6 +461,18 @@
             }
         }
 
+        function formatTime12h(timeStr) {
+            if (!timeStr || !timeStr.includes(':')) return timeStr || '--';
+            try {
+                let [hours, minutes] = timeStr.split(':');
+                hours = parseInt(hours);
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                return `${hours}:${minutes} ${ampm}`;
+            } catch (e) { return timeStr; }
+        }
+
         function reviewProvider(id) {
             const p = providersList.find(x => x._id === id);
             if (!p) return;
@@ -451,15 +482,15 @@
             const content = `
                 <div class="text-left mt-4 max-h-[72vh] overflow-y-auto pr-3 custom-scrollbar">
 
-                    
+                    <!-- Modal Header: Business Name, Type, and Categories -->
                     <div class="bg-primary/5 rounded-2xl p-5 mb-5 border border-primary/10">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
                             <div>
                                 <h3 class="text-2xl font-black text-slate-900">${p.businessName}</h3>
-                                <div class="flex items-center gap-2 mt-1 text-slate-600 font-bold text-xs">
-                                    <span class="flex items-center gap-1.5"><i class="fas fa-tag opacity-40"></i> ${p.type || 'Provider'}</span>
-                                    <span>&bull;</span>
-                                    <span class="flex items-center gap-1.5"><i class="fas fa-history opacity-40"></i> ${p.experience || 'N/A'} Exp.</span>
+                                <div class="flex flex-wrap items-center gap-2 mt-2 font-bold text-xs">
+                                    <span class="flex items-center gap-1.5 text-slate-600 bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fas fa-tag opacity-40 text-primary"></i> ${p.type || 'Provider'}</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span class="flex items-center gap-1.5 text-slate-600 bg-white px-2 py-1 rounded-md border border-slate-200"><i class="fas fa-history opacity-40 text-primary"></i> ${p.experience || 'N/A'} Exp.</span>
                                 </div>
                             </div>
                             <div class="text-[10px] font-black uppercase text-slate-500 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
@@ -488,13 +519,13 @@
                             <div class="space-y-3">
                                 <div>
                                     <label class="text-xs font-bold text-slate-600 uppercase block mb-1">Availability</label>
-                                    <div class="flex flex-wrap gap-1">
-                                        ${p.workDays && p.workDays.length ? p.workDays.map(d => `<span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-bold border border-slate-200">${d}</span>`).join('') : 'Not set'}
+                                    <div class="flex flex-wrap gap-1.5">
+                                        ${p.workDays && p.workDays.length ? p.workDays.map(d => `<span class="px-2.5 py-1 bg-white border border-primary/30 text-primary rounded-lg text-xs font-bold shadow-sm">${d}</span>`).join('') : 'Not set'}
                                     </div>
                                 </div>
                                 <div>
                                     <label class="text-xs font-bold text-slate-600 uppercase block mb-0.5">Time Slot</label>
-                                    <p class="text-lg font-black text-slate-800">${p.workTimeStart || '--'} to ${p.workTimeEnd || '--'}</p>
+                                    <p class="text-lg font-black text-slate-800">${formatTime12h(p.workTimeStart)} to ${formatTime12h(p.workTimeEnd)}</p>
                                 </div>
                             </div>
                         </div>
@@ -512,8 +543,16 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="text-xs font-bold text-slate-600 uppercase block mb-0.5">Service Coverage</label>
-                                <p class="text-sm font-black text-slate-800">${p.areas ? p.areas.join(', ') : '—'}</p>
+                                <label class="text-xs font-bold text-slate-600 uppercase block mb-1.5">Service Coverage</label>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${p.areas && p.areas.length ? p.areas.map(area => `<span class="px-2.5 py-1 bg-white border border-primary/30 text-primary rounded-lg text-xs font-bold shadow-sm"><i class="fas fa-map-marker-alt opacity-50 mr-1"></i> ${area}</span>`).join('') : '—'}
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label class="text-xs font-bold text-slate-600 uppercase block mb-1.5">Service Categories</label>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${p.categories && p.categories.length ? p.categories.map(c => `<span class="px-2.5 py-1 bg-white border border-primary/30 text-primary rounded-lg text-xs font-bold shadow-sm">${c}</span>`).join('') : '<span class="text-error text-xs font-bold uppercase">No Category</span>'}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -523,7 +562,7 @@
                             <div>
                                 <label class="text-xs font-black text-slate-600 uppercase block mb-2">Core Services</label>
                                 <div class="flex flex-wrap gap-1.5">
-                                    ${p.offeredServices && p.offeredServices.length ? p.offeredServices.map(s => `<span class="px-2.5 py-1 bg-white border border-primary/30 text-primary rounded-lg text-xs font-bold shadow-sm"># ${s}</span>`).join('') : '—'}
+                                    ${p.offeredServices && p.offeredServices.length ? p.offeredServices.map(s => `<span class="px-2.5 py-1 bg-white border border-primary/30 text-primary rounded-lg text-xs font-bold shadow-sm">${s}</span>`).join('') : '—'}
                                 </div>
                             </div>
                             <div>

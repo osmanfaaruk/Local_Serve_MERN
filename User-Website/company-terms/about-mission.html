@@ -32,6 +32,7 @@
 </head>
 <body class="min-h-screen bg-base-100 flex flex-col">
     
+    <!-- navbar section start -->
     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
@@ -40,15 +41,17 @@
             <ul class="menu menu-horizontal px-1 font-semibold gap-2">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="../search-providers.html">All Providers</a></li>
-                <li><a href="../user-provider/login.html">Become a Provider</a></li>
+                <li id="nav-provider-link"><a href="../user-provider/login.html">Become a Provider</a></li>
             </ul>
         </div>
-        <div class="navbar-end">
+        <div class="navbar-end" id="nav-user-profile">
             
         </div>
     </div>
+    <!-- navbar section end -->
 
     
+    <!-- main section start -->
     <main class="flex-grow flex items-center justify-center p-4">
         <div class="text-center">
             <div class="text-6xl text-primary/40 mb-6"><i class="fas fa-tools"></i></div>
@@ -57,8 +60,10 @@
             <a href="../index.html" class="btn btn-primary">Return to Home</a>
         </div>
     </main>
+    <!-- main section end -->
 
     
+    <!-- footer section start -->
         <footer class="bg-slate-950 text-slate-300 pt-20 pb-10 px-6 md:px-20 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             
@@ -136,6 +141,24 @@
             </p>
         </div>
     </footer>
+    <!-- footer section end -->
     
+    <!-- scripts section start -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userJson = localStorage.getItem('ls_currentUser');
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    const providerLink = document.getElementById('nav-provider-link');
+                    if (providerLink) providerLink.innerHTML = `<a href="../user-provider/dashboard.html">Account</a>`;
+                    
+                    const userProfile = document.getElementById('nav-user-profile');
+                    if (userProfile) userProfile.innerHTML = `<a href="../user-provider/dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
+                } catch(e){}
+            }
+        });
+    </script>
+    <!-- scripts section end -->
 </body>
 </html>

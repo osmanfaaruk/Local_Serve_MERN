@@ -1,14 +1,19 @@
+// imports section start
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
+// imports section end
 
+// config section start
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
+// config section end
 
+// routes section start
 const providerRoutes = require('./routes/providerRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const locationRoutes = require('./routes/locationRoutes');
@@ -48,7 +53,9 @@ app.use('/api/admin/locations',   adminManageLocations);
 app.use('/api/admin/add-provider',adminAddProvider);
 app.use('/api/admin/auth',        adminAuthRoutes);
 app.use('/api/admin/users',       adminManageUsers);
+// routes section end
 
+// static files section start
 // Serve User-Website as the root static directory
 app.use(express.static(path.join(__dirname, '../User-Website')));
 
@@ -59,11 +66,17 @@ app.use('/Admin-Dashboard', express.static(path.join(__dirname, '../Admin-Dashbo
 app.get('/admin', (req, res) => {
     res.redirect('/Admin-Dashboard/admin-login.html');
 });
+// static files section end
 
+// database section start
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ MongoDB Connected'))
     .catch(err => console.log('❌ MongoDB Connection Error:', err));
+// database section end
 
+// server start section start
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
+// server start section end
+

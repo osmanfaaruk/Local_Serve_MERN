@@ -59,6 +59,7 @@
 
 <body class="min-h-screen bg-base-200">
 
+    <!-- navbar section start -->
     <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
@@ -70,12 +71,13 @@
             </button>
         </div>
     </div>
+    <!-- navbar section end -->
 
-    
+    <!-- sidebar and main section start -->
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto min-h-[calc(100vh-64px)] overflow-hidden">
 
-        
-                <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
+        <!-- sidebar section start -->
+        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
                 <i class="fas fa-chart-pie"></i> Dashboard
@@ -100,12 +102,14 @@
             <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
                 <i class="fas fa-cog"></i> Settings
             </a>
-            </aside>
+        </aside>
+        <!-- sidebar section end -->
         
+        <!-- main content section start -->
         <main class="flex-1 p-8 overflow-y-auto">
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
                 <div>
-                    <h1 class="text-4xl font-extrabold mb-1">Chittagong Local Directory</h1>
+                    <h1 class="text-3xl font-extrabold mb-1">Chittagong Local Directory</h1>
                     <p class="text-base-content/60 font-medium">Managing service providers across Chittagong District.
                     </p>
                 </div>
@@ -116,13 +120,13 @@
                 </div>
             </div>
 
-            
+            <!-- stats grid section start -->
             <div class="grid grid-cols-1 gap-4 mb-10">
                 <div class="stats shadow-sm bg-base-100 border border-base-300 cursor-pointer w-full" onclick="window.location.href='manage-providers.html'">
                     <div class="stat flex items-center justify-between py-6">
                         <div>
                             <div class="stat-title font-bold text-primary">Total Active Providers</div>
-                            <div id="total-providers" class="stat-value text-primary text-4xl mt-1">...</div>
+                            <div id="total-providers" class="stat-value text-primary text-3xl mt-1">...</div>
                             <div class="stat-desc text-base-content/60 font-medium flex items-center gap-1 mt-2">
                                 <i class="fas fa-arrow-right text-primary"></i> Manage Providers
                             </div>
@@ -137,7 +141,7 @@
                     <div class="stat flex items-center justify-between py-6">
                         <div>
                             <div class="stat-title font-bold text-primary">Total Categories</div>
-                            <div id="total-categories" class="stat-value text-primary text-4xl mt-1">...</div>
+                            <div id="total-categories" class="stat-value text-primary text-3xl mt-1">...</div>
                             <div class="stat-desc text-base-content/60 font-medium flex items-center gap-1 mt-2">
                                 <i class="fas fa-arrow-right text-primary"></i> Manage Categories
                             </div>
@@ -152,7 +156,7 @@
                     <div class="stat flex items-center justify-between py-6">
                         <div>
                             <div class="stat-title font-bold text-primary">Total Active Locations</div>
-                            <div id="total-locations" class="stat-value text-primary text-4xl mt-1">...</div>
+                            <div id="total-locations" class="stat-value text-primary text-3xl mt-1">...</div>
                             <div class="stat-desc text-base-content/60 font-medium flex items-center gap-1 mt-2">
                                 <i class="fas fa-arrow-right text-primary"></i> Manage Locations
                             </div>
@@ -163,10 +167,14 @@
                     </div>
                 </div>
             </div>
+            <!-- stats grid section end -->
 
-            </main>
+        </main>
+        <!-- main content section end -->
     </div>
+    <!-- sidebar and main section end -->
 
+    <!-- scripts section start -->
     <script>
         async function loadDashboardStats() {
             try {
@@ -198,6 +206,7 @@
             document.body.style.opacity = "1";
         };
     </script>
+    <!-- scripts section end -->
 </body>
 
 </html>

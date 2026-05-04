@@ -31,6 +31,7 @@
 
 <body class="min-h-screen bg-base-200 overflow-x-hidden">
 
+    <!-- navbar section start -->
     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
@@ -46,8 +47,10 @@
             
         </div>
     </div>
+    <!-- navbar section end -->
 
-    <div class="max-w-7xl mx-auto px-4 py-8 relative z-10">
+    <!-- content section start -->
+    <div class="max-w-7xl mx-auto px-4 md:px-20 py-8 relative z-10">
         <div class="flex flex-col lg:flex-row gap-8">
 
             
@@ -57,7 +60,7 @@
                         <h2 class="text-xl font-black mb-8">Filter Results</h2>
 
                         <div class="form-control mb-6">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Search Keywords</span></label>
+                            <label class="label pt-0"><span class="label-text text-[11px] uppercase font-black text-slate-400">Search Keywords</span></label>
                             <div class="relative">
                                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary/40"></i>
                                 <input type="text" id="sidebarSearch" placeholder="Electrician, Plumbing"
@@ -66,14 +69,14 @@
                         </div>
 
                         <div class="form-control mb-6">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Service Category</span></label>
+                            <label class="label pt-0"><span class="label-text text-[11px] uppercase font-black text-slate-400">Service Category</span></label>
                             <select id="categoryFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
                                 <option value="All">All Categories</option>
                             </select>
                         </div>
 
                         <div class="form-control mb-8">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Service Area</span></label>
+                            <label class="label pt-0"><span class="label-text text-[11px] uppercase font-black text-slate-400">Service Area</span></label>
                             <select id="areaFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
                                 <option value="All">All Locations</option>
                             </select>
@@ -114,7 +117,9 @@
             </main>
         </div>
     </div>
+    <!-- content section end -->
 
+    <!-- scripts section start -->
     <script>
         let allProviders = [];
         let filteredProviders = [];
@@ -206,27 +211,28 @@
             }
 
             grid.innerHTML = paginatedItems.map(p => `
-                <div class="card bg-white border border-slate-200 overflow-hidden rounded-[2rem] cursor-pointer shadow-sm hover:shadow-md transition-all"
+                <div class="card bg-white border border-slate-200 overflow-hidden rounded-[2.5rem] cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
                     onclick="window.location.href='provider-details.html?id=${p._id}'">
                     <div class="card-body p-8 flex-col md:flex-row gap-8 items-center">
                         <div class="w-28 h-28 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 shrink-0">
                             <i class="fas ${p.type === 'Company' ? 'fa-building' : 'fa-user-tie'} text-4xl"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="px-4 py-1.5 bg-blue-700 text-white rounded-lg text-[10px] font-bold uppercase tracking-tight">${p.categories && p.categories[0] ? p.categories[0] : 'Service'}</span>
-                                <span class="px-4 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-lg text-[10px] font-bold uppercase tracking-tight">Verified</span>
+                            <div class="flex items-center gap-2 mb-3 overflow-hidden">
+                                <span class="px-3 py-1.5 bg-blue-700 text-white rounded-lg text-[11px] font-bold uppercase whitespace-nowrap shadow-sm shadow-blue-700/20">${p.categories && p.categories[0] ? p.categories[0] : 'Service'}</span>
+                                <span class="px-3 py-1.5 bg-slate-100 text-slate-600 border border-slate-200 rounded-lg text-[11px] font-bold uppercase whitespace-nowrap">${p.type === 'Company' ? 'Company' : 'Self Provider'}</span>
+                                <span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-lg text-[11px] font-bold uppercase whitespace-nowrap">Verified</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-slate-900 mb-2 leading-tight">${p.businessName}</h3>
-                            <div class="flex items-center gap-6 text-sm font-bold text-slate-500 mb-4">
-                                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt opacity-30"></i> ${p.areas && p.areas[0] ? p.areas[0] : 'Chittagong'}</span>
-                                <span class="flex items-center gap-2"><i class="fas fa-history opacity-30"></i> ${p.experience || 'N/A'}</span>
+                            <h3 class="text-3xl font-bold text-slate-900 mb-2 leading-tight tracking-tight">${p.businessName}</h3>
+                            <div class="flex items-center gap-6 text-sm font-bold text-slate-500 mb-4 overflow-hidden">
+                                <span class="flex items-center gap-2 whitespace-nowrap"><i class="fas fa-map-marker-alt opacity-30 text-xs"></i> ${p.areas && p.areas[0] ? p.areas[0] : 'Chittagong'}</span>
+                                <span class="flex items-center gap-2 whitespace-nowrap"><i class="fas fa-history opacity-30 text-xs"></i> ${p.experience || 'N/A'}</span>
                             </div>
                             <p class="text-slate-600 text-sm leading-relaxed line-clamp-2 font-medium">${p.about || 'Professional service provider.'}</p>
                         </div>
-                        <div class="w-full md:w-64 text-center md:text-right md:pl-8 md:border-l border-slate-100 flex flex-col justify-end md:self-end pb-2">
-                            <div class="text-sm font-bold text-slate-500 uppercase mb-1">Hourly Labor</div>
-                            <div class="text-xl font-bold text-blue-700 whitespace-nowrap">${p.priceHourly || p.priceConsult || 'Contact'} TK</div>
+                        <div class="w-full md:w-64 text-center md:text-right md:pl-8 flex flex-col justify-end md:self-end pb-2">
+                            <div class="text-xs font-bold text-slate-400 uppercase mb-1 tracking-widest">Hourly Labor</div>
+                            <div class="text-3xl font-bold text-blue-700 whitespace-nowrap">${p.priceHourly || p.priceConsult || 'Contact'} TK</div>
                         </div>
                     </div>
                 </div>
@@ -266,6 +272,22 @@
         document.getElementById('prevBtn').onclick = () => { if(currentPage > 1) { currentPage--; renderProviders(); window.scrollTo({top: 0, behavior: 'smooth'}); } };
         document.getElementById('nextBtn').onclick = () => { if(currentPage < Math.ceil(filteredProviders.length/itemsPerPage)) { currentPage++; renderProviders(); window.scrollTo({top: 0, behavior: 'smooth'}); } };
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userJson = localStorage.getItem('ls_currentUser');
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    const providerLink = document.getElementById('nav-provider-link');
+                    if (providerLink) providerLink.innerHTML = `<a href="user-provider/dashboard.html">Account</a>`;
+                    
+                    const userProfile = document.getElementById('nav-user-profile');
+                    if (userProfile) userProfile.innerHTML = `<a href="user-provider/dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
+                } catch(e){}
+            }
+        });
+    </script>
+    <!-- scripts section end -->
 </body>
 
 </html>

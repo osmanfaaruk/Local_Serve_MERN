@@ -41,6 +41,7 @@
             top: 0 !important;
             z-index: 50 !important;
         }
+        body { opacity: 0; transition: opacity 0.3s ease; }
     </style>
 
     <meta name="color-scheme" content="light">
@@ -55,6 +56,7 @@
 
 <body class="min-h-screen bg-base-200">
 
+    <!-- navbar section start -->
     <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
@@ -66,9 +68,12 @@
             </button>
         </div>
     </div>
+    <!-- navbar section end -->
 
+    <!-- sidebar and main section start -->
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
         
+        <!-- sidebar section start -->
         <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
@@ -95,12 +100,15 @@
                 <i class="fas fa-cog"></i> Settings
             </a>
         </aside>
+        <!-- sidebar section end -->
         
+        <!-- main content section start -->
         <main class="flex-1 p-8">
             <div class="flex items-center justify-between mb-8">
                 <h1 class="text-3xl font-extrabold">Registered Users</h1>
             </div>
 
+            <!-- users table section start -->
             <div class="card bg-base-100 shadow-sm border border-base-300">
                 <div class="overflow-x-auto">
                     <table class="table table-zebra font-medium">
@@ -110,6 +118,7 @@
                                 <th>Email Address</th>
                                 <th>Account Type</th>
                                 <th>Joined Date</th>
+                                <th>Joined Time</th>
                                 <th class="text-right">Status</th>
                             </tr>
                         </thead>
@@ -119,9 +128,13 @@
                     </table>
                 </div>
             </div>
+            <!-- users table section end -->
         </main>
+        <!-- main content section end -->
     </div>
+    <!-- sidebar and main section end -->
     
+    <!-- scripts section start -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         async function loadUsers() {
@@ -148,6 +161,9 @@
                 const date = new Date(user.createdAt).toLocaleDateString('en-GB', {
                     day: 'numeric', month: 'short', year: 'numeric'
                 });
+                const time = new Date(user.createdAt).toLocaleTimeString('en-US', {
+                    hour: '2-digit', minute: '2-digit', hour12: true
+                });
                 const accountType = user.providerId ? 
                     `<span class="badge badge-info gap-2 font-bold px-4 py-3"><i class="fas fa-user-tie"></i> Provider</span>` : 
                     `<span class="badge badge-ghost gap-2 font-bold px-4 py-3"><i class="fas fa-user"></i> Regular User</span>`;
@@ -158,6 +174,7 @@
                         <td class="font-medium text-slate-600">${user.email}</td>
                         <td>${accountType}</td>
                         <td class="text-slate-500">${date}</td>
+                        <td class="text-slate-500 font-bold">${time}</td>
                         <td class="text-right">
                             <span class="badge badge-success badge-sm font-black uppercase tracking-tighter">Active</span>
                         </td>
@@ -165,9 +182,14 @@
                 `;
             }).join('');
         }
-
-        loadUsers();
+        
+        window.onload = async () => {
+            await requireAdminAuth();
+            loadUsers();
+            document.body.style.opacity = "1";
+        };
     </script>
-    <script>document.body.style.opacity = "1";</script>
+    <!-- scripts section end -->
+
 </body>
 </html>
