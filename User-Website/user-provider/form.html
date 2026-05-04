@@ -81,7 +81,7 @@
                         <i class="fas fa-user-tie"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold opacity-50 uppercase tracking-widest">Logged In As</p>
+                        <p class="text-xs font-bold opacity-50 uppercase ">Logged In As</p>
                         <h3 class="font-black text-lg" id="profile-username-display">User</h3>
                     </div>
                 </div>
@@ -316,7 +316,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="review-content"></div>
 
             <div class="mt-12 pt-8 border-t flex flex-col md:flex-row gap-4 justify-between items-center">
-                <button onclick="goToFormFromReview()" class="btn btn-ghost font-bold text-xs uppercase tracking-widest"><i class="fas fa-edit mr-2"></i> Edit Application</button>
+                <button onclick="goToFormFromReview()" class="btn btn-ghost font-bold text-xs uppercase "><i class="fas fa-edit mr-2"></i> Edit Application</button>
                 <button onclick="finalSubmit()" class="btn btn-primary px-12 font-bold shadow-lg">Submit for Approval <i class="fas fa-paper-plane ml-2"></i></button>
             </div>
         </div>
@@ -337,7 +337,8 @@ function updateCharCount(inputId, labelId, maxChars = 300) {
         if (charCount > maxChars) label.classList.add('text-error', 'font-bold');
         else label.classList.remove('text-error', 'font-bold');
     }
-}
+}
+
 function setupAreaSearch() {
     const input = document.getElementById('areaSearchInput');
     const dropdown = document.getElementById('areaDropdown');
@@ -388,7 +389,8 @@ function refreshAreaSelection() {
         container.appendChild(badge);
     });
     if (typeof saveDraft === 'function') saveDraft();
-}
+}
+
 function setupTagInput() {
     const input = document.getElementById('tagInput'); if(!input) return;
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); processTagInput(); } });
@@ -482,16 +484,19 @@ function refreshCategoryTags() {
         container.appendChild(badge);
     });
     if (typeof saveDraft === 'function') saveDraft();
-}
+}
+
 let allAvailableAreas = [];
-let allAvailableCategories = [];
+let allAvailableCategories = [];
+
 
 let currentUser = null;
 let providerData = null;
 let offeredServicesTags = [];
 let categoriesTags = [];
 let selectedAreas = [];
-let formCache = {};
+let formCache = {};
+
 window.onload = async () => {
     try {
         const locRes = await fetch('/api/locations');
@@ -525,7 +530,8 @@ function logout() {
     currentUser = null;
     saveState();
     window.location.href = 'login.html';
-}
+}
+
 function renderRouter() {
     if (!currentUser) {
         window.location.href = 'login.html';
@@ -535,7 +541,8 @@ function renderRouter() {
     const container = document.getElementById('main-container');
     container.innerHTML = '';
     container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
-    document.getElementById('profile-username-display').innerText = currentUser.username;
+    document.getElementById('profile-username-display').innerText = currentUser.username;
+
     const editMode = localStorage.getItem('ls_editMode');
     if (editMode === 'edit' && providerData) {
         formCache = {...providerData};
@@ -559,7 +566,8 @@ function renderRouter() {
     }
 
     renderForm();
-}
+}
+
 function renderForm() {
     const contentArea = document.getElementById('dashboard-content-area');
     if (!contentArea) return;
@@ -570,7 +578,8 @@ function renderForm() {
     
     const p1 = document.getElementById('form-part-1');
     const p2 = document.getElementById('form-part-2');
-    const steps = document.querySelectorAll('.step');
+    const steps = document.querySelectorAll('.step');
+
     if (formCache && (formCache.currentStep == 2)) {
         if(p1) p1.classList.add('hidden');
         if(p2) p2.classList.remove('hidden');
@@ -583,7 +592,8 @@ function renderForm() {
 
     setupTagInput();
     setupAreaSearch();
-    setupCategorySearch();
+    setupCategorySearch();
+
     if (formCache && Object.keys(formCache).length > 0) {
         try {
             const typeRadios = document.querySelectorAll('input[name="providerType"]');
@@ -615,7 +625,8 @@ function renderForm() {
             refreshTags();
         } catch (err) { console.warn("Pre-fill error:", err); }
     }
-}
+}
+
 function saveDraft() {
     const p1 = document.getElementById('form-part-1');
     const p2 = document.getElementById('form-part-2');
@@ -647,7 +658,8 @@ function saveDraft() {
 }
 
 document.addEventListener('input', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
-document.addEventListener('change', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
+document.addEventListener('change', (e) => { if(e.target.closest('#main-container')) saveDraft(); });
+
 function goToStep(step) {
     if(step===2){
         const biz = document.getElementById('f_businessName').value.trim(),
@@ -688,19 +700,19 @@ function goToReview() {
 function renderReviewContent() {
     const c=document.getElementById('review-content'),data=formCache;
     c.innerHTML=`
-        <div class="space-y-6"><div><h3 class="text-xs font-bold uppercase tracking-widest opacity-40 mb-3">Business Information</h3><div class="space-y-4">
+        <div class="space-y-6"><div><h3 class="text-xs font-bold uppercase  opacity-40 mb-3">Business Information</h3><div class="space-y-4">
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Entity Type</p><p class="font-bold text-lg">${data.type}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Business Name</p><p class="font-bold text-lg">${data.businessName}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Contact</p><p class="font-bold">${data.phone} | ${data.email}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Experience</p><p class="font-bold">${data.experience}</p></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter mb-1">About</p><p class="text-sm bg-base-200 p-4 rounded-lg border border-base-300 italic">${data.about}</p></div>
         </div></div></div>
-        <div class="space-y-6"><div><h3 class="text-xs font-bold uppercase tracking-widest opacity-40 mb-3">Service Details</h3><div class="space-y-6">
+        <div class="space-y-6"><div><h3 class="text-xs font-bold uppercase  opacity-40 mb-3">Service Details</h3><div class="space-y-6">
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Categories</p><div class="flex flex-wrap gap-2 mt-1">${data.categories.map(cat=>`<span class="badge badge-primary text-white font-bold">${cat}</span>`).join('')}</div></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Areas</p><div class="flex flex-wrap gap-2 mt-1">${data.areas.map(a=>`<span class="badge badge-outline font-bold border-base-300">${a}</span>`).join('')}</div></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Services</p><div class="flex flex-wrap gap-2 mt-1">${data.offeredServices.map(s=>`<span class="badge badge-ghost font-bold border-base-300"># ${s}</span>`).join('')}</div></div>
             <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Availability / Pricing</p><p class="font-bold mt-1">${data.workDays.join(', ')} (${data.workTimeStart}-${data.workTimeEnd})<br>${data.priceConsult} TK Consult / ${data.priceHourly} TK Hourly</p></div>
-            <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Why Choose Us</p><div class="flex flex-wrap gap-2 mt-1">${data.whyChooseUs ? data.whyChooseUs.map(w=>`<span class="badge badge-warning text-[10px] font-black uppercase tracking-widest px-3 py-2 border-none bg-warning/20 text-warning-content">${w}</span>`).join('') : 'None selected'}</div></div>
+            <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Why Choose Us</p><div class="flex flex-wrap gap-2 mt-1">${data.whyChooseUs ? data.whyChooseUs.map(w=>`<span class="badge badge-warning text-[10px] font-black uppercase  px-3 py-2 border-none bg-warning/20 text-warning-content">${w}</span>`).join('') : 'None selected'}</div></div>
         </div></div></div>`;
 }
 

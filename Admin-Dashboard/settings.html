@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | LocalServe Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" /><script>
         tailwind.config = {
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="adminAuth.js"></script>
     <style>
+        body, html { font-family: 'Inter', sans-serif !important; }
         :root {
             --p: 221 70% 41%; /* Dark Blue (blue-700 equivalent) */
             --pf: 221 70% 31%; /* Darker focus */
@@ -46,6 +48,7 @@
     
     <meta name="color-scheme" content="light">
     <style>
+        body, html { font-family: 'Inter', sans-serif !important; }
         @media (prefers-color-scheme: dark) {
             :root { color-scheme: light !important; }
         }
@@ -72,7 +75,7 @@
 
         
             <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
@@ -86,7 +89,7 @@
                 <i class="fas fa-map-marker-alt"></i> Locations
             </a>
             <div class="divider"></div>
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">System</div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">System</div>
             <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
                 <i class="fas fa-cog"></i> Settings
             </a>
@@ -95,8 +98,8 @@
         
         <main class="flex-1 p-8 overflow-y-auto">
             <div class="mb-8 border-b border-base-300 pb-4">
-                <h1 class="text-3xl font-bold mb-2">System Settings</h1>
-                <p class="text-base-content/60">Manage your administrative preferences.</p>
+
+
             </div>
 
             <div class="card bg-base-100 shadow-xl border border-base-300 max-w-2xl">
@@ -179,3 +182,4 @@
     </div>
 </body>
 </html>
+

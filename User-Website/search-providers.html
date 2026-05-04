@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Providers | LocalServe Modern</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         [data-theme] {
@@ -17,7 +18,7 @@
         }
         
         body, html {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         }
 
         .text-primary { color: hsl(var(--p)) !important; }
@@ -56,7 +57,7 @@
                         <h2 class="text-xl font-black mb-8">Filter Results</h2>
 
                         <div class="form-control mb-6">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Search Keywords</span></label>
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Search Keywords</span></label>
                             <div class="relative">
                                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary/40"></i>
                                 <input type="text" id="sidebarSearch" placeholder="Electrician, Plumbing"
@@ -65,14 +66,14 @@
                         </div>
 
                         <div class="form-control mb-6">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Service Category</span></label>
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Service Category</span></label>
                             <select id="categoryFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
                                 <option value="All">All Categories</option>
                             </select>
                         </div>
 
                         <div class="form-control mb-8">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Service Area</span></label>
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black">Service Area</span></label>
                             <select id="areaFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
                                 <option value="All">All Locations</option>
                             </select>
@@ -80,7 +81,7 @@
 
                         <div class="pt-4">
                             <button onclick="clearFilters()"
-                                class="btn btn-outline btn-primary w-full h-12 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:text-white transition-all">
+                                class="btn btn-outline btn-primary w-full h-12 rounded-2xl font-black text-xs uppercase hover:text-white transition-all">
                                 <i class="fas fa-undo-alt mr-2"></i> Clear All Filters
                             </button>
                         </div>
@@ -91,8 +92,8 @@
             
             <main class="flex-1">
                 <div class="flex items-center justify-between mb-8 px-2">
-                    <div id="resultsCount" class="text-sm font-bold opacity-40 uppercase tracking-widest">
-                        Loading providers...
+                    <div id="resultsCount" class="text-sm font-bold opacity-40 uppercase">
+                        FOUND 0 RESULTS
                     </div>
                 </div>
 
@@ -101,13 +102,13 @@
                 </div>
 
                 
-                <div id="pagination" class="flex items-center justify-center gap-4 mt-12 py-8 border-t border-base-300 hidden">
-                    <button onclick="changePage(-1)" id="prevBtn" class="btn btn-ghost btn-sm font-black uppercase tracking-widest text-[10px] disabled:opacity-20">
-                        <i class="fas fa-chevron-left mr-2"></i> Previous
+                <div id="pagination" class="mt-12 flex items-center justify-center gap-2 pb-20">
+                    <button id="prevBtn" class="btn btn-circle btn-ghost btn-sm hover:bg-primary/10">
+                        <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="flex items-center gap-2" id="pageNumbers"></div>
-                    <button onclick="changePage(1)" id="nextBtn" class="btn btn-ghost btn-sm font-black uppercase tracking-widest text-[10px] disabled:opacity-20">
-                        Next <i class="fas fa-chevron-right ml-2"></i>
+                    <div id="pageNumbers" class="flex items-center gap-1"></div>
+                    <button id="nextBtn" class="btn btn-circle btn-ghost btn-sm hover:bg-primary/10">
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </main>
@@ -120,32 +121,40 @@
         let currentPage = 1;
         const itemsPerPage = 5;
 
-        async function loadData() {
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
             try {
+                const [pRes, cRes, lRes] = await Promise.all([
+                    fetch('/api/providers'),
+                    fetch('/api/categories'),
+                    fetch('/api/locations')
+                ]);
 
-                const pResp = await fetch('/api/providers');
-                allProviders = await pResp.json();
-                allProviders = allProviders.filter(p => p.status === 'Approved');
+                allProviders = (await pRes.json()).filter(p => p.status === 'Approved');
+                const categories = await cRes.json();
+                const locations = await lRes.json();
 
-                const cResp = await fetch('/api/categories');
-                const cats = await cResp.json();
-                const catSelect = document.getElementById('categoryFilter');
-                cats.forEach(c => {
+                
+                const catFilter = document.getElementById('categoryFilter');
+                categories.forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c.name;
-                    opt.textContent = c.name;
-                    catSelect.appendChild(opt);
+                    opt.innerText = c.name;
+                    catFilter.appendChild(opt);
                 });
 
-                const lResp = await fetch('/api/locations');
-                const locs = await lResp.json();
-                const locSelect = document.getElementById('areaFilter');
-                locs.forEach(l => {
+                const areaFilter = document.getElementById('areaFilter');
+                locations.forEach(l => {
                     const opt = document.createElement('option');
                     opt.value = l.name;
-                    opt.textContent = l.name;
-                    locSelect.appendChild(opt);
+                    opt.innerText = l.name;
+                    areaFilter.appendChild(opt);
                 });
+
+                document.getElementById('sidebarSearch').addEventListener('input', handleFilter);
+                document.getElementById('categoryFilter').addEventListener('change', handleFilter);
+                document.getElementById('areaFilter').addEventListener('change', handleFilter);
 
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('service')) document.getElementById('sidebarSearch').value = urlParams.get('service');
@@ -181,7 +190,7 @@
             const paginatedItems = filteredProviders.slice(start, end);
             const totalPages = Math.ceil(filteredProviders.length / itemsPerPage);
 
-            document.getElementById('resultsCount').innerText = `Found ${filteredProviders.length} result${filteredProviders.length !== 1 ? 's' : ''}`;
+            document.getElementById('resultsCount').innerText = `FOUND ${filteredProviders.length} RESULT${filteredProviders.length !== 1 ? 'S' : ''}`;
 
             if (filteredProviders.length === 0) {
                 grid.innerHTML = `
@@ -197,27 +206,27 @@
             }
 
             grid.innerHTML = paginatedItems.map(p => `
-                <div class="card bg-base-100 border border-base-200 overflow-hidden rounded-[2.5rem] cursor-pointer"
+                <div class="card bg-white border border-slate-200 overflow-hidden rounded-[2rem] cursor-pointer shadow-sm hover:shadow-md transition-all"
                     onclick="window.location.href='provider-details.html?id=${p._id}'">
-                    <div class="card-body p-8 flex-col md:flex-row gap-8 items-start md:items-center">
-                        <div class="w-24 h-24 rounded-3xl bg-primary/5 flex items-center justify-center text-primary transition-all">
-                            <i class="fas ${p.type === 'Company' ? 'fa-building' : 'fa-user-tie'} text-3xl"></i>
+                    <div class="card-body p-8 flex-col md:flex-row gap-8 items-center">
+                        <div class="w-28 h-28 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 shrink-0">
+                            <i class="fas ${p.type === 'Company' ? 'fa-building' : 'fa-user-tie'} text-4xl"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-3">
-                                <span class="badge badge-primary font-black text-[10px] uppercase tracking-widest px-4 py-3 border-none">${p.categories && p.categories[0] ? p.categories[0] : 'Service'}</span>
-                                <span class="badge bg-emerald-50 text-emerald-700 border-emerald-100 font-black text-[10px] uppercase tracking-widest px-4 py-3"><i class="fas fa-check-circle mr-1"></i> Verified</span>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-4 py-1.5 bg-blue-700 text-white rounded-lg text-[10px] font-black uppercase tracking-tight">${p.categories && p.categories[0] ? p.categories[0] : 'Service'}</span>
+                                <span class="px-4 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-lg text-[10px] font-black uppercase tracking-tight">Verified</span>
                             </div>
-                            <h3 class="text-2xl font-black text-slate-800 tracking-tight">${p.businessName}</h3>
-                            <div class="flex flex-wrap items-center gap-6 mt-3 text-sm font-bold text-slate-400">
-                                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary/30"></i> ${p.areas && p.areas[0] ? p.areas[0] : 'Not specified'}</span>
-                                <span class="flex items-center gap-2"><i class="fas fa-briefcase text-primary/30"></i> ${p.experience || 'N/A'}</span>
+                            <h3 class="text-2xl font-black text-slate-900 mb-2 leading-tight">${p.businessName}</h3>
+                            <div class="flex items-center gap-6 text-sm font-bold text-slate-500 mb-4">
+                                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt opacity-30"></i> ${p.areas && p.areas[0] ? p.areas[0] : 'Chittagong'}</span>
+                                <span class="flex items-center gap-2"><i class="fas fa-history opacity-30"></i> ${p.experience || 'N/A'}</span>
                             </div>
-                            <p class="mt-4 text-slate-500 line-clamp-2 text-sm italic">"${p.about || 'Professional service provider.'}"</p>
+                            <p class="text-slate-600 text-sm leading-relaxed line-clamp-2 font-medium">${p.about || 'Professional service provider.'}</p>
                         </div>
-                        <div class="w-full md:w-48 text-center md:text-right md:pl-8 md:border-l border-slate-100 flex flex-col justify-end self-stretch py-2">
-                            <div class="text-[10px] font-black uppercase tracking-widest opacity-30 mb-1">Hourly Labor</div>
-                            <div class="text-2xl font-black text-primary">${p.priceHourly || p.priceConsult || 'Contact'} TK</div>
+                        <div class="w-full md:w-64 text-center md:text-right md:pl-8 md:border-l border-slate-100 flex flex-col justify-center">
+                            <div class="text-[10px] font-black uppercase opacity-40 mb-2">Hourly Labor</div>
+                            <div class="text-3xl font-black text-blue-700 whitespace-nowrap">${p.priceHourly || p.priceConsult || 'Contact'} TK</div>
                         </div>
                     </div>
                 </div>
@@ -247,12 +256,6 @@
             }
         }
 
-        function changePage(dir) {
-            currentPage += dir;
-            renderProviders();
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
         function clearFilters() {
             document.getElementById('sidebarSearch').value = '';
             document.getElementById('categoryFilter').value = 'All';
@@ -260,29 +263,9 @@
             handleFilter();
         }
 
-        document.getElementById('sidebarSearch').oninput = handleFilter;
-        document.getElementById('categoryFilter').onchange = handleFilter;
-        document.getElementById('areaFilter').onchange = handleFilter;
-
-        window.onload = loadData;
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const userJson = localStorage.getItem('ls_currentUser');
-            if (userJson) {
-                try {
-                    const user = JSON.parse(userJson);
-                    const providerLink = document.getElementById('nav-provider-link');
-                    if (providerLink) {
-                        providerLink.innerHTML = `<a href="user-provider/dashboard.html">Account</a>`;
-                    }
-                    const userProfile = document.getElementById('nav-user-profile');
-                    if (userProfile) {
-                        userProfile.innerHTML = `<a href="user-provider/dashboard.html" class="btn btn-ghost btn-sm font-bold text-primary"><i class="fas fa-user-circle mr-1 text-lg"></i> ${user.username}</a>`;
-                    }
-                } catch(e){}
-            }
-        });
+        document.getElementById('prevBtn').onclick = () => { if(currentPage > 1) { currentPage--; renderProviders(); window.scrollTo({top: 0, behavior: 'smooth'}); } };
+        document.getElementById('nextBtn').onclick = () => { if(currentPage < Math.ceil(filteredProviders.length/itemsPerPage)) { currentPage++; renderProviders(); window.scrollTo({top: 0, behavior: 'smooth'}); } };
     </script>
 </body>
+
 </html>

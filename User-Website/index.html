@@ -17,6 +17,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -41,6 +42,9 @@
             background-color: hsl(var(--pf)) !important;
         }
 
+        body, html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        }
     </style>
 
     
@@ -77,11 +81,14 @@
     <div class="hero min-h-[70vh] bg-base-200 relative overflow-hidden">
         <div class="hero-content text-center relative z-10">
             <div class="max-w-3xl">
-                <div class="badge badge-primary badge-outline font-bold mb-6 p-4">#1 Neighborhood Service Platform</div>
-                <h1 class="text-5xl font-extrabold mb-4 leading-tight">Find Trusted <span
-                        class="text-primary italic">Local Professionals</span></h1>
-                <p class="text-xl text-base-content/70 mb-8">The most reliable way to discover high-quality services in
-                    your neighborhood. Simple, professional, and verified.</p>
+                <div class="badge badge-primary badge-outline border-primary/40 text-primary font-bold mb-6 px-6 py-4 rounded-full bg-transparent">#1 Neighborhood Service Platform</div>
+                <h1 class="text-4xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight">
+                    Find Trusted <span class="text-primary italic whitespace-nowrap">Local Professionals</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    The most reliable way to discover high-quality services in your neighborhood. 
+                    <span class="text-primary/60 font-bold italic">Simple, professional, and verified.</span>
+                </p>
 
 
                 <div
@@ -121,7 +128,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold text-white" onclick="doSearch()">Search Now</button>
+                    <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-black text-white" onclick="doSearch()">SEARCH NOW</button>
                 </div>
             </div>
         </div>
@@ -189,7 +196,7 @@
 
 
             <div class="space-y-6">
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Explore LocalServe</h4>
+                <h4 class="text-white font-bold uppercase  text-xs">Explore LocalServe</h4>
                 <ul class="space-y-4 text-sm">
                     <li><a href="index.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Home & Featured</a></li>
                     <li><a href="search-providers.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Search All Providers</a></li>
@@ -199,7 +206,7 @@
 
 
             <div class="space-y-6">
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Company & Terms</h4>
+                <h4 class="text-white font-bold uppercase  text-xs">Company & Terms</h4>
                 <ul class="space-y-4 text-sm">
                     <li><a href="company-terms/about-mission.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">About Our Mission</a></li>
                     <li><a href="company-terms/contact-support.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Contact Support</a></li>
@@ -215,7 +222,7 @@
 
 
             <div class="space-y-6">
-                <h4 class="text-white font-bold uppercase tracking-widest text-xs">Contact</h4>
+                <h4 class="text-white font-bold uppercase  text-xs">Contact</h4>
                 <ul class="space-y-4 text-sm">
                     <li class="flex items-start gap-3">
                         <i class="fas fa-map-marker-alt text-blue-700 mt-1"></i>
@@ -290,7 +297,7 @@
                                     <i class="fas fa-map-marker-alt text-primary/40"></i> ${p.areas[0] || 'Chittagong'}
                                 </p>
                                 <div class="flex items-center justify-between border-t border-base-100 pt-5 mt-auto">
-                                    <div class="text-lg font-black text-primary">${p.priceConsult || p.priceHourly || 'N/A'} TK</div>
+                                    <div class="text-lg font-black text-primary whitespace-nowrap">${p.priceConsult || p.priceHourly || 'N/A'} TK</div>
                                     <button class="btn btn-primary btn-sm px-5 rounded-xl font-bold">View</button>
                                 </div>
                             </div>

@@ -17,6 +17,7 @@
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="adminAuth.js"></script>
     <style>
@@ -28,6 +29,9 @@
             --neutral: 0 0% 10%;
         }
 
+        body, html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        }
         body {
             /* Using system default font for consistency */
         }
@@ -99,7 +103,7 @@
         
         <aside id="admin-sidebar"
             class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
@@ -114,7 +118,7 @@
                 <i class="fas fa-map-marker-alt"></i> Locations
             </a>
             <div class="divider"></div>
-            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">System</div>
+            <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4  mt-4">System</div>
             <a href="settings.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-cog"></i> Settings
             </a>
@@ -207,7 +211,7 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase tracking-widest opacity-60">
+                                    <tr class="text-xs uppercase  opacity-60">
                                         <th class="py-4">Provider / Business</th>
                                         <th>Status</th>
                                         <th>Added On</th>
@@ -233,7 +237,7 @@
                         <div class="overflow-x-auto">
                             <table class="table w-full">
                                 <thead class="bg-base-200/50">
-                                    <tr class="text-xs uppercase tracking-widest opacity-60">
+                                    <tr class="text-xs uppercase  opacity-60">
                                         <th class="py-4">Applicant Detail</th>
                                         <th>Verification Status</th>
                                         <th>Applied On</th>
@@ -324,7 +328,7 @@
                                 </div>
                                 <div>
                                     <div class="font-bold text-sm">${p.businessName}</div>
-                                    <div class="text-[10px] opacity-40 uppercase font-black tracking-widest mt-0.5">${p.type}</div>
+                                    <div class="text-[10px] opacity-40 uppercase font-black  mt-0.5">${p.type}</div>
                                 </div>
                             </div>
                         </td>
@@ -351,14 +355,14 @@
                                 </div>
                                 <div>
                                     <div class="font-bold text-sm">${p.businessName}</div>
-                                    <div class="text-[10px] opacity-40 uppercase font-black tracking-widest mt-0.5">${p.type}</div>
+                                    <div class="text-[10px] opacity-40 uppercase font-black  mt-0.5">${p.type}</div>
                                 </div>
                             </div>
                         </td>
                         <td>
                             ${p.status === 'Approved'
-                            ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
-                            : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
+                            ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase  shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
+                            : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase  shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
                         }
                         </td>
                         <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
@@ -638,13 +642,13 @@
         function renderAppliedStatus(status) {
             switch (status) {
                 case 'Approved':
-                    return '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved & Live</span>';
+                    return '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase  shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved & Live</span>';
                 case 'Rejected':
-                    return '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Rejected</span>';
+                    return '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase  shadow-sm">Rejected</span>';
                 case 'Under Review':
-                    return '<span class="px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Under Review</span>';
+                    return '<span class="px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10px] font-black uppercase  shadow-sm">Under Review</span>';
                 default:
-                    return `<span class="px-3 py-1.5 bg-slate-50 text-slate-600 border border-slate-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">${status}</span>`;
+                    return `<span class="px-3 py-1.5 bg-slate-50 text-slate-600 border border-slate-200 rounded-lg text-[10px] font-black uppercase  shadow-sm">${status}</span>`;
             }
         }
     </script>
