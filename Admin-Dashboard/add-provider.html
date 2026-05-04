@@ -17,6 +17,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="adminAuth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -64,7 +65,7 @@
         }
     </style>
 
-    <!-- Light Mode -->
+    
     <meta name="color-scheme" content="light">
 </head>
 
@@ -78,7 +79,7 @@
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
-        <!-- Sidebar -->
+        
                 <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
@@ -99,7 +100,7 @@
                 <i class="fas fa-cog"></i> Settings
             </a>
             </aside>
-        <!-- Main Content -->
+        
         <main class="flex-1 p-8">
             <div class="flex items-center gap-4 mb-8">
                 <a href="manage-providers.html" class="btn btn-circle btn-ghost"><i class="fas fa-arrow-left"></i></a>
@@ -109,7 +110,7 @@
                 </div>
             </div>
 
-            <!-- Main Content Container -->
+            
             <div class="max-w-4xl max-w-4xl mx-auto" id="main-container">
                  <div class="flex justify-center p-12">
                     <span class="loading loading-spinner text-primary loading-lg"></span>
@@ -121,11 +122,11 @@
 
 
 
-<!-- View: Application Form -->
+
 <template id="tmpl-form">
     <div class="card bg-base-100 shadow-sm border border-base-300">
         <div class="card-body p-6 md:p-10">
-            <!-- Progress Steps -->
+            
             <ul class="steps steps-horizontal w-full mb-10 text-sm font-bold opacity-80 overflow-hidden">
                 <li class="step step-primary">Company Info</li>
                 <li class="step">Services</li>
@@ -133,7 +134,7 @@
             </ul>
 
             <form id="providerForm" onsubmit="handleFormNext(event)" class="space-y-8">
-                <!-- PART 1: Company Information -->
+                
                 <div id="form-part-1">
                     <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 border-b pb-2 mb-6">
                         <i class="fas fa-building text-primary"></i> Company Information
@@ -142,11 +143,11 @@
                     <div class="form-control mb-6">
                         <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Provider Type <span class="text-error">*</span></span></label>
                         <div class="flex gap-4">
-                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1 hover:border-primary/50 transition-colors">
+                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1">
                                 <input type="radio" name="providerType" value="Company" class="radio radio-primary radio-sm" checked />
                                 <span class="label-text font-semibold">Company</span>
                             </label>
-                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1 hover:border-primary/50 transition-colors">
+                            <label class="label cursor-pointer justify-start gap-2 bg-base-200 px-4 py-2 rounded-lg border border-base-300 flex-1">
                                 <input type="radio" name="providerType" value="Self Provider" class="radio radio-primary radio-sm" />
                                 <span class="label-text font-semibold">Self Provider (Individual)</span>
                             </label>
@@ -188,14 +189,14 @@
                     </div>
                 </div>
 
-                <!-- PART 2: Services Information (Hidden initially) -->
+                
                 <div id="form-part-2" class="hidden">
                     <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2 border-b pb-2 mb-6">
                         <i class="fas fa-tools text-primary"></i> Services Information
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                        <!-- Working Hours (Improved UX) -->
+                        
                         <div class="form-control col-span-1 md:col-span-2">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Working Days <span class="text-error">*</span></span></label>
                             <div class="flex flex-wrap gap-2 mb-4" id="workDayPicker">
@@ -264,32 +265,32 @@
                             </div>
                         </div>
 
-                        <!-- Pricing Guide -->
+                        
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Consultation Fee (TK) <span class="text-error">*</span></span></label>
-                            <input type="text" id="f_priceConsult" placeholder="e.g. Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
+                            <input type="text" id="f_priceConsult" placeholder="Free, 500, 1000-2000" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Hourly Labor Fee (TK) <span class="text-error">*</span></span></label>
-                            <input type="text" id="f_priceHourly" placeholder="e.g. 500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
+                            <input type="text" id="f_priceHourly" placeholder="500-1000 per hour" class="input input-bordered w-full focus:outline-primary" required />
                         </div>
 
-                        <!-- Categories Selection (Searchable Dropdown) - UPGRADED -->
+                        
                         <div class="form-control md:col-span-2 relative" id="categorySearchSection">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Categories <span class="text-error">*</span></span></label>
                             
                             <div class="join w-full mb-3 shadow-sm">
                                 <span class="join-item flex items-center px-4 bg-base-200 border border-base-300 border-r-0"><i class="fas fa-search opacity-50"></i></span>
-                                <input type="text" id="categorySearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Search and select categories (e.g. Plumbing)..." autocomplete="off" />
+                                <input type="text" id="categorySearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Search and select categories..." autocomplete="off" />
                                 <button type="button" class="btn btn-primary join-item text-white" onclick="toggleCategoryDropdown()"><i class="fas fa-chevron-down"></i></button>
                             </div>
 
-                            <!-- Dropdown List -->
+                            
                             <div id="categoryDropdown" class="absolute top-[85px] left-0 w-full bg-base-100 border border-base-300 rounded-lg z-[60] hidden">
-                                <!-- Category items will be injected here -->
+                                
                             </div>
 
-                            <!-- Selected Categories Tags -->
+                            
                             <div class="bg-base-200/50 p-4 rounded-xl border border-base-300 flex flex-wrap gap-2 min-h-[4rem] mt-2" id="categoryTagContainer">
                                 <span class="text-xs opacity-50 italic py-1 px-1">No categories selected yet. Click search bar to see options.</span>
                             </div>
@@ -297,23 +298,23 @@
                             <label class="label"><span class="label-text-alt opacity-70">Search and select all categories that describe the business.</span></label>
                         </div>
 
-                        <!-- Service Areas (Searchable Dropdown) -->
+                        
 
                         <div class="form-control md:col-span-2 relative" id="areaSearchSection">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Service Areas <span class="text-error">*</span></span></label>
                             
                             <div class="join w-full mb-3 shadow-sm">
                                 <span class="join-item flex items-center px-4 bg-base-200 border border-base-300 border-r-0"><i class="fas fa-search opacity-50"></i></span>
-                                <input type="text" id="areaSearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Type to search locations (e.g. Halishahar)..." autocomplete="off" />
+                                <input type="text" id="areaSearchInput" class="input input-bordered join-item w-full focus:outline-primary border-l-0" placeholder="Type to search locations..." autocomplete="off" />
                                 <button type="button" class="btn btn-primary join-item text-white" onclick="toggleAreaDropdown()"><i class="fas fa-chevron-down"></i></button>
                             </div>
 
-                            <!-- Dropdown List -->
+                            
                             <div id="areaDropdown" class="absolute top-[85px] left-0 w-full bg-base-100 border border-base-300 rounded-lg z-[60] hidden">
-                                <!-- Area items will be injected here -->
+                                
                             </div>
 
-                            <!-- Selected Areas Tags -->
+                            
                             <div class="bg-base-200/50 p-4 rounded-xl border border-base-300 flex flex-wrap gap-2 min-h-[4rem] mt-2" id="selectedAreasContainer">
                                 <span class="text-xs opacity-50 italic py-1 px-1">No areas selected yet. Click search bar to see options.</span>
                             </div>
@@ -321,7 +322,7 @@
                             <label class="label"><span class="label-text-alt opacity-70">Search and select all areas where you can provide service.</span></label>
                         </div>
 
-                        <!-- Offered Services Tags -->
+                        
                         <div class="form-control md:col-span-2">
                             <label class="label">
                                 <span class="label-text font-bold uppercase tracking-wider text-xs">Offered Services <span class="text-error">*</span></span>
@@ -337,7 +338,7 @@
                             <label class="label"><span class="label-text-alt text-error hidden" id="tagError">Service name cannot exceed 6 words.</span></label>
                         </div>
                         
-                        <!-- Why Choose Us -->
+                        
                         <div class="form-control md:col-span-2">
                             <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Why Choose Us (Select multiple) <span class="text-error">*</span></span></label>
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="whyChooseUsContainer">
@@ -371,7 +372,7 @@
     </div>
 </template>
 
-<!-- View: Review Application -->
+
 <template id="tmpl-review">
     <div class="card bg-base-100 shadow-sm border border-base-300">
         <div class="card-body p-6 md:p-10">
@@ -384,7 +385,7 @@
             <h2 class="text-3xl font-black text-center mb-8 border-b border-base-300 pb-4 text-base-content">Review New Listing</h2>
 
             <div class="space-y-8">
-                <!-- Data will be injected here by renderReview() -->
+                
                 <div id="review-content" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8"></div>
             </div>
 
@@ -424,9 +425,7 @@
             if (charCount > maxChars) label.classList.add('text-error', 'font-bold');
             else label.classList.remove('text-error', 'font-bold');
         }
-    }
-
-    // area search
+    }
     function setupAreaSearch() {
         const input = document.getElementById('areaSearchInput');
         const dropdown = document.getElementById('areaDropdown');
@@ -477,9 +476,7 @@
             container.appendChild(badge);
         });
         if (typeof saveDraft === 'function') saveDraft();
-    }
-
-    // tag input
+    }
     function setupTagInput() {
         const input = document.getElementById('tagInput'); if(!input) return;
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); processTagInput(); } });
@@ -509,9 +506,7 @@
             badge.innerHTML = `<i class="fas fa-tag text-[10px] opacity-70"></i> ${t} <i class="fas fa-times cursor-pointer hover:text-white/70 ml-1" onclick="removeTag(${i})"></i>`;
             container.appendChild(badge);
         });
-    }
-
-    // Locations Logic
+    }
     async function fetchCategories() {
         if (allAvailableCategories && allAvailableCategories.length > 0) return allAvailableCategories;
         try {
@@ -570,15 +565,11 @@
             container.appendChild(badge);
         });
         if (typeof saveDraft === 'function') saveDraft();
-    }
-
-    // State
+    }
     let offeredServicesTags = [];
     let categoriesTags = []; 
     let selectedAreas = []; 
-    let formCache = {};
-
-    // Initialization
+    let formCache = {};
     window.onload = async () => {
         try {
             const locRes = await fetch('http://localhost:5000/api/locations');
@@ -618,9 +609,7 @@
             selectedAreas = [];
         }
         renderForm();
-    }
-
-    // Form Logic
+    }
     function renderForm() {
         const container = document.getElementById('main-container');
         container.innerHTML = '';
@@ -628,11 +617,8 @@
         
         setupTagInput();
         setupAreaSearch();
-        setupCategorySearch();
-        
-        // Pre-fill form if editing
-        if(Object.keys(formCache).length > 0) {
-            // Part 1
+        setupCategorySearch();
+        if(Object.keys(formCache).length > 0) {
             const typeRadios = document.querySelectorAll('input[name="providerType"]');
             typeRadios.forEach(r => { if(r.value === formCache.type) r.checked = true; });
             document.getElementById('f_businessName').value = formCache.businessName || '';
@@ -640,9 +626,7 @@
             document.getElementById('f_email').value = formCache.email || '';
             if (document.getElementById('f_experience')) document.getElementById('f_experience').value = formCache.experience || '';
             document.getElementById('f_about').value = formCache.about || '';
-            updateCharCount('f_about', 'wordCountLabel', 300);
-            
-            // Part 2
+            updateCharCount('f_about', 'wordCountLabel', 300);
             if (formCache.workDays) {
                 const dayChecks = document.querySelectorAll('input[name="workDay"]');
                 dayChecks.forEach(chk => {
@@ -652,17 +636,11 @@
             if (formCache.workTimeStart) document.getElementById('f_workTimeStart').value = formCache.workTimeStart;
             if (formCache.workTimeEnd) document.getElementById('f_workTimeEnd').value = formCache.workTimeEnd;
             document.getElementById('f_priceConsult').value = formCache.priceConsult || '';
-            document.getElementById('f_priceHourly').value = formCache.priceHourly || '';
-            
-            // Areas
+            document.getElementById('f_priceHourly').value = formCache.priceHourly || '';
             selectedAreas = [...(formCache.areas || [])];
-            refreshAreaSelection();
-
-            // Categories
+            refreshAreaSelection();
             categoriesTags = [...(formCache.categories || [])];
-            refreshCategoryTags();
-            
-            // Why Choose us
+            refreshCategoryTags();
             if(formCache.whyChooseUs) {
                 const checkboxes = document.querySelectorAll('input[name="chkWhy"]');
                 checkboxes.forEach(chk => { chk.checked = formCache.whyChooseUs.includes(chk.value); });
@@ -670,12 +648,7 @@
             
             refreshTags();
         }
-    }
-
-    // Navigation and Logic blocks are in provider-form-core.js (Tag Input, Area Search)
-    
-
-    // Form Navigation & Validation
+    }
     function goToStep(step) {
         if(step === 2) {
             const biz = document.getElementById('f_businessName').value.trim();
@@ -692,9 +665,7 @@
             if(aboutWordCount > 300) {
                  Swal.fire({icon:'warning', title:'Limit Exceeded', text:'About section cannot exceed 300 characters.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
                  return;
-            }
-
-            // Save Part 1 to cache
+            }
             formCache.type = document.querySelector('input[name="providerType"]:checked').value;
             formCache.businessName = biz;
             formCache.phone = phone;
@@ -703,9 +674,7 @@
             formCache.about = about;
 
             document.getElementById('form-part-1').classList.add('hidden');
-            document.getElementById('form-part-2').classList.remove('hidden');
-            
-            // update steps visual
+            document.getElementById('form-part-2').classList.remove('hidden');
             const steps = document.querySelectorAll('.step');
             steps[1].classList.add('step-primary');
             window.scrollTo(0,0);
@@ -734,9 +703,7 @@
         if(offeredServicesTags.length === 0) {
             Swal.fire({icon:'warning', title:'No Services', text:'Add at least one offered service.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false});
             return;
-        }
-
-        // Save Part 2
+        }
         formCache.workDays = Array.from(dayChecks).map(chk => chk.value);
         formCache.workTimeStart = wStart;
         formCache.workTimeEnd = wEnd;
@@ -745,9 +712,7 @@
         formCache.areas = [...selectedAreas];
         formCache.offeredServices = [...offeredServicesTags];
         formCache.categories = [...categoriesTags];
-        formCache.whyChooseUs = Array.from(whyBoxes).map(chk => chk.value);
-
-        // Render Review
+        formCache.whyChooseUs = Array.from(whyBoxes).map(chk => chk.value);
         const container = document.getElementById('main-container');
         container.innerHTML = '';
         container.appendChild(document.getElementById('tmpl-review').content.cloneNode(true));
@@ -787,8 +752,7 @@
     }
 
     function goToFormFromReview() {
-        renderForm();
-        // Skip right to part 2 visually
+        renderForm();
         document.getElementById('form-part-1').classList.add('hidden');   
         document.getElementById('form-part-2').classList.remove('hidden');
         const steps = document.querySelectorAll('.step');
@@ -809,8 +773,7 @@
         });
 
         if (result.isConfirmed) {
-            try {
-                // Show loading state
+            try {
                 Swal.fire({
                     title: 'Publishing...',
                     didOpen: () => { Swal.showLoading() },

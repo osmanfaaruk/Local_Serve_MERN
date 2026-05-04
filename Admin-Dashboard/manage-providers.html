@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Providers | Admin</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script>
         tailwind.config = {
@@ -18,6 +18,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="adminAuth.js"></script>
     <style>
         :root {
             --p: 221 70% 41%;
@@ -26,11 +27,25 @@
             --error: 0 84% 60%;
             --neutral: 0 0% 10%;
         }
-        body { font-family: 'Inter', sans-serif; }
-        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
-        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
-        .text-primary { color: hsl(var(--p)) !important; }
-        
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: hsl(var(--p)) !important;
+            border-color: hsl(var(--p)) !important;
+            color: white !important;
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(var(--pf)) !important;
+        }
+
+        .text-primary {
+            color: hsl(var(--p)) !important;
+        }
+
         .navbar {
             background-color: rgba(255, 255, 255, 0.8) !important;
             backdrop-filter: blur(12px) !important;
@@ -39,19 +54,28 @@
             top: 0 !important;
             z-index: 50 !important;
         }
+
         .stat-card {
-            transition: all 0.3s ease;
+            /* no hover effects */
         }
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
+
         .table-row-hover:hover {
             background-color: rgba(0, 0, 0, 0.02);
         }
-        .swal2-actions { display: flex !important; margin-top: 1.5rem !important; gap: 0.5rem !important; }
-        .swal2-popup { padding-bottom: 2rem !important; overflow-y: visible !important; border-radius: 1.5rem !important; }
+
+        .swal2-actions {
+            display: flex !important;
+            margin-top: 1.5rem !important;
+            gap: 0.5rem !important;
+        }
+
+        .swal2-popup {
+            padding-bottom: 2rem !important;
+            overflow-y: visible !important;
+            border-radius: 1.5rem !important;
+        }
     </style>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <meta name="color-scheme" content="light">
@@ -63,17 +87,24 @@
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
-        <div class="flex-none"><a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a></div>
+        <div class="flex-none gap-2">
+            <a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a>
+            <button onclick="adminLogout()" class="btn btn-ghost btn-sm text-error font-bold">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
-        <!-- Sidebar -->
-        <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
+        
+        <aside id="admin-sidebar"
+            class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen hidden lg:block">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
-            <a href="manage-providers.html" class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
+            <a href="manage-providers.html"
+                class="btn btn-ghost btn-md w-full justify-start gap-4 bg-primary/10 text-primary font-bold">
                 <i class="fas fa-users"></i> Providers
             </a>
             <a href="manage-categories.html" class="btn btn-ghost btn-md w-full justify-start gap-4">
@@ -90,62 +121,72 @@
         </aside>
 
         <main class="flex-1 p-4 md:p-10">
-            <!-- Header Section -->
+            
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
                 <div>
                     <h1 class="text-3xl font-black tracking-tight">Provider Management</h1>
                     <p class="text-base-content/60 mt-1">Manage, verify, and monitor all service providers.</p>
                 </div>
-                <a href="add-provider.html" class="btn btn-primary text-white shadow-lg hover:shadow-xl px-8">
+                <a href="add-provider.html" class="btn btn-primary text-white px-8">
                     <i class="fas fa-plus"></i> Add Provider
                 </a>
             </div>
 
-            <!-- Stats Overview -->
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
                     <div class="card-body p-6 flex-row items-center gap-4">
-                        <div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl">
+                        <div
+                            class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl">
                             <i class="fas fa-users"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Total Providers</div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Total Providers
+                            </div>
                             <div class="text-2xl font-black" id="stat-total">0</div>
                         </div>
                     </div>
                 </div>
                 <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
                     <div class="card-body p-6 flex-row items-center gap-4">
-                        <div class="w-12 h-12 bg-success/10 text-success rounded-xl flex items-center justify-center text-xl">
+                        <div
+                            class="w-12 h-12 bg-success/10 text-success rounded-xl flex items-center justify-center text-xl">
                             <i class="fas fa-check-double"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Live & Verified</div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Live & Verified
+                            </div>
                             <div class="text-2xl font-black text-success" id="stat-live">0</div>
                         </div>
                     </div>
                 </div>
                 <div class="card bg-base-100 shadow-sm border border-base-300 stat-card">
                     <div class="card-body p-6 flex-row items-center gap-4">
-                        <div class="w-12 h-12 bg-warning/10 text-warning rounded-xl flex items-center justify-center text-xl">
+                        <div
+                            class="w-12 h-12 bg-warning/10 text-warning rounded-xl flex items-center justify-center text-xl">
                             <i class="fas fa-hourglass-half"></i>
                         </div>
                         <div>
-                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Pending Apps</div>
+                            <div class="text-xs font-bold text-base-content/40 uppercase tracking-wider">Pending Application
+                            </div>
                             <div class="text-2xl font-black text-warning" id="stat-pending">0</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Search and Filters -->
+            
             <div class="card bg-base-100 shadow-sm border border-base-300 mb-10">
                 <div class="card-body p-4 flex flex-col md:flex-row gap-4">
                     <div class="flex-1 join shadow-sm">
-                        <span class="join-item bg-base-200 flex items-center px-4 border border-base-300 border-r-0"><i class="fas fa-search opacity-40"></i></span>
-                        <input type="text" id="providerSearch" class="input input-bordered join-item w-full focus:outline-none" placeholder="Search by name, email, or phone..." oninput="handleFilterChange()" />
+                        <span class="join-item bg-base-200 flex items-center px-4 border border-base-300 border-r-0"><i
+                                class="fas fa-search opacity-40"></i></span>
+                        <input type="text" id="providerSearch"
+                            class="input input-bordered join-item w-full focus:outline-none"
+                            placeholder="Search by name, email, or phone..." oninput="handleFilterChange()" />
                     </div>
-                    <select id="statusFilter" class="select select-bordered w-full md:w-48 shadow-sm focus:outline-none" onchange="handleFilterChange()">
+                    <select id="statusFilter" class="select select-bordered w-full md:w-48 shadow-sm focus:outline-none"
+                        onchange="handleFilterChange()">
                         <option value="All">All Statuses</option>
                         <option value="Approved">Live / Approved</option>
                         <option value="Under Review">Under Review</option>
@@ -154,9 +195,9 @@
                 </div>
             </div>
 
-            <!-- Sections Container -->
+            
             <div id="providers-container" class="space-y-12">
-                <!-- Admin Added Section -->
+                
                 <div>
                     <div class="flex items-center gap-3 mb-6">
                         <h2 class="text-xl font-black tracking-tight">Admin Added Providers</h2>
@@ -168,24 +209,25 @@
                                 <thead class="bg-base-200/50">
                                     <tr class="text-xs uppercase tracking-widest opacity-60">
                                         <th class="py-4">Provider / Business</th>
-                                        <th>Verification</th>
+                                        <th>Status</th>
                                         <th>Added On</th>
                                         <th class="text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-providers-body">
-                                    <!-- Dynamic content -->
+                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- User Applied Section -->
+                
                 <div>
                     <div class="flex items-center gap-3 mb-6">
-                        <h2 class="text-xl font-black tracking-tight text-indigo-900">Applied Providers</h2>
-                        <div class="badge badge-ghost border-base-300 badge-sm font-bold" id="badge-applied-count">0</div>
+                        <h2 class="text-xl font-black  text-indigo-900">Applied Providers</h2>
+                        <div class="badge badge-ghost border-base-300 badge-sm font-bold" id="badge-applied-count">0
+                        </div>
                     </div>
                     <div class="card bg-base-100 shadow-md border border-base-300 overflow-hidden">
                         <div class="overflow-x-auto">
@@ -193,13 +235,13 @@
                                 <thead class="bg-base-200/50">
                                     <tr class="text-xs uppercase tracking-widest opacity-60">
                                         <th class="py-4">Applicant Detail</th>
-                                        <th>Status</th>
+                                        <th>Verification Status</th>
                                         <th>Applied On</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="applied-providers-body">
-                                    <!-- Dynamic content -->
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -212,7 +254,7 @@
     <script>
         let providersList = [];
         let filteredList = [];
-        
+
         async function loadProviders() {
             try {
                 const response = await fetch('http://localhost:5000/api/providers');
@@ -229,9 +271,9 @@
             const statusFilter = document.getElementById('statusFilter').value;
 
             filteredList = providersList.filter(p => {
-                const matchesSearch = p.businessName.toLowerCase().includes(searchTerm) || 
-                                     p.email.toLowerCase().includes(searchTerm) || 
-                                     p.phone.includes(searchTerm);
+                const matchesSearch = p.businessName.toLowerCase().includes(searchTerm) ||
+                    p.email.toLowerCase().includes(searchTerm) ||
+                    p.phone.includes(searchTerm);
                 const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
                 return matchesSearch && matchesStatus;
             });
@@ -253,7 +295,7 @@
         function renderTables() {
             const adminBody = document.getElementById('admin-providers-body');
             const appliedBody = document.getElementById('applied-providers-body');
-            
+
             adminBody.innerHTML = '';
             appliedBody.innerHTML = '';
 
@@ -261,12 +303,10 @@
             let appliedCount = 0;
 
             filteredList.forEach(p => {
-                const dateStr = new Date(p.createdAt).toLocaleDateString();
-                // Strictly use the flag: If it's explicitly marked as NOT applied (isApplied: false), it's Admin-added.
-                // If it's missing the flag (old data), we use status as fallback for grouping.
+                const dateStr = new Date(p.createdAt).toLocaleDateString();
                 const isApplied = p.isApplied === true || (p.isApplied !== false && (p.status === 'Under Review' || p.status === 'Rejected'));
                 const iconClass = p.type === 'Company' ? 'fa-building' : 'fa-user';
-                
+
                 const row = document.createElement('tr');
                 row.className = 'table-row-hover transition-colors border-b border-base-200 last:border-0';
 
@@ -287,7 +327,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="badge ${getStatusClass(p.status)} border-none badge-sm font-bold py-3 px-3">${p.status}</div>
+                            ${renderAppliedStatus(p.status)}
                         </td>
                         <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
                         <td class="text-right">
@@ -314,10 +354,10 @@
                             </div>
                         </td>
                         <td>
-                            ${p.status === 'Approved' 
-                                ? '<div class="badge badge-success text-white badge-sm font-bold py-3 px-3">Verified & Live</div>' 
-                                : `<div class="badge ${getStatusClass(p.status)} border-none badge-sm font-bold py-3 px-3">${p.status}</div>`
-                            }
+                            ${p.status === 'Approved'
+                            ? '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live</span>'
+                            : '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Not Live</span>'
+                        }
                         </td>
                         <td><span class="text-xs opacity-50 font-bold">${dateStr}</span></td>
                         <td class="text-right">
@@ -397,85 +437,91 @@
             const isAdminAdded = p.isApplied !== true;
 
             const content = `
-                <div class="text-left mt-4 space-y-0 max-h-[65vh] overflow-y-auto pr-1 custom-scrollbar">
+                <div class="text-left mt-4 max-h-[72vh] overflow-y-auto pr-3 custom-scrollbar">
 
-                    <!-- Section 1: Business / User Details -->
-                    <div class="mb-4">
-                        <div class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-3 px-1">Business Information</div>
-                        <div class="bg-base-200 rounded-2xl p-5 grid grid-cols-2 gap-5">
-                            <div class="col-span-2">
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Business Name</div>
-                                <div class="text-2xl font-black text-primary">${p.businessName}</div>
-                            </div>
+                    
+                    <div class="bg-primary/5 rounded-3xl p-8 mb-8 border border-primary/10">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                             <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Entity Type</div>
-                                <div class="font-bold text-base">${p.type || '—'}</div>
+                                <h3 class="text-3xl font-bold text-slate-900">${p.businessName}</h3>
+                                <div class="flex items-center gap-3 mt-2 text-slate-500 font-medium text-sm">
+                                    <span class="flex items-center gap-2"><i class="fas fa-tag"></i> ${p.type || 'Provider'}</span>
+                                    <span>&bull;</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-history"></i> ${p.experience || 'N/A'} Experience</span>
+                                </div>
                             </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Experience</div>
-                                <div class="font-bold text-base">${p.experience || 'Not specified'}</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Contact Number</div>
-                                <div class="font-bold text-base">${p.phone || '—'}</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Email Address</div>
-                                <div class="font-bold text-base break-all">${p.email || '—'}</div>
-                            </div>
-                            <div class="col-span-2">
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Categories</div>
-                                <div class="flex flex-wrap gap-2">${p.categories && p.categories.length ? p.categories.map(c => `<span class="badge badge-primary text-white font-bold px-3 py-2">${c}</span>`).join('') : '<span class="opacity-40 text-sm">None</span>'}</div>
+                            <div class="text-xs font-bold uppercase tracking-widest text-slate-400 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
+                                Provider ID: ${p._id.slice(-6).toUpperCase()}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Section 2: About / Bio -->
-                    <div class="mb-4">
-                        <div class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-3 px-1">About / Bio</div>
-                        <div class="bg-base-200 rounded-2xl p-5">
-                            <p class="text-base text-base-content/80 italic leading-relaxed">"${p.about || 'No description provided.'}"</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] block mb-2">Direct Contact</label>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 text-slate-700 font-bold text-lg"><i class="fas fa-phone-alt text-primary/40 text-sm"></i> ${p.phone || '—'}</div>
+                                <div class="flex items-center gap-3 text-slate-700 font-bold text-lg"><i class="fas fa-envelope text-primary/40 text-sm"></i> ${p.email || '—'}</div>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] block mb-2">About Description</label>
+                            <p class="text-slate-600 font-medium leading-relaxed line-clamp-3 text-sm">${p.about || 'No summary available.'}</p>
                         </div>
                     </div>
 
-                    <!-- Section 3: Working Details -->
-                    <div class="mb-4">
-                        <div class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-3 px-1">Working Details</div>
-                        <div class="bg-base-200 rounded-2xl p-5 grid grid-cols-2 gap-5">
-                            <div class="col-span-2">
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Working Days</div>
-                                <div class="flex flex-wrap gap-2">${p.workDays && p.workDays.length ? p.workDays.map(d => `<span class="badge badge-ghost border border-base-300 font-bold px-3 py-2">${d}</span>`).join('') : '<span class="opacity-40 text-sm">Not set</span>'}</div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10 px-2">
+                        <div class="space-y-6">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 pb-3">Operational Details</h4>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-300 uppercase block mb-2">Availability</label>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        ${p.workDays && p.workDays.length ? p.workDays.map(d => `<span class="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold border border-slate-100">${d}</span>`).join('') : 'Not set'}
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-300 uppercase block mb-1">Time Slot</label>
+                                    <p class="text-xl font-bold text-slate-800">${p.workTimeStart || '--'} to ${p.workTimeEnd || '--'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 pb-3">Financial Info</h4>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-300 uppercase block mb-1">Hourly Rate</label>
+                                    <p class="text-xl font-bold text-primary">${p.priceHourly ? p.priceHourly + ' TK' : '—'}</p>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-300 uppercase block mb-1">Consult Fee</label>
+                                    <p class="text-xl font-bold text-primary">${p.priceConsult ? p.priceConsult + ' TK' : '—'}</p>
+                                </div>
                             </div>
                             <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Working Hours</div>
-                                <div class="font-bold text-base">${p.workTimeStart || '--'} → ${p.workTimeEnd || '--'}</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Consultation Fee</div>
-                                <div class="font-black text-xl text-success">${p.priceConsult ? p.priceConsult + ' TK' : '—'}</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Service Areas</div>
-                                <div class="font-bold text-base">${p.areas ? p.areas.join(', ') : '—'}</div>
-                            </div>
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Hourly Rate</div>
-                                <div class="font-black text-xl text-success">${p.priceHourly ? p.priceHourly + ' TK' : '—'}</div>
+                                <label class="text-[10px] font-bold text-slate-300 uppercase block mb-1">Service Coverage</label>
+                                <p class="text-base font-bold text-slate-800">${p.areas ? p.areas.join(', ') : '—'}</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Section 4: Service Details -->
-                    <div class="mb-4">
-                        <div class="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mb-3 px-1">Service Details</div>
-                        <div class="bg-base-200 rounded-2xl p-5 space-y-5">
+                    
+                    <div class="bg-slate-50/50 rounded-3xl p-8 border border-slate-200/50 mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                             <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Specific Services Offered</div>
-                                <div class="flex flex-wrap gap-2">${p.offeredServices && p.offeredServices.length ? p.offeredServices.map(s => `<span class="badge badge-ghost border border-base-300 font-bold px-3 py-2"># ${s}</span>`).join('') : '<span class="opacity-40 text-sm">None listed</span>'}</div>
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] block mb-4">Core Services</label>
+                                <div class="flex flex-wrap gap-2">
+                                    ${p.offeredServices && p.offeredServices.length ? p.offeredServices.map(s => `<span class="px-3 py-1.5 bg-white border border-primary/20 text-primary rounded-xl text-xs font-bold shadow-sm"># ${s}</span>`).join('') : '—'}
+                                </div>
                             </div>
                             <div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-2">Why Choose Us</div>
-                                <div class="font-semibold text-base italic opacity-70">${p.whyChooseUs && p.whyChooseUs.length ? p.whyChooseUs.join(' • ') : 'Not specified'}</div>
+                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] block mb-2">Value Add</label>
+                                <p class="text-sm font-medium text-slate-500 leading-relaxed italic">
+                                    ${p.whyChooseUs && p.whyChooseUs.length ? p.whyChooseUs.join(' &bull; ') : '—'}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -483,8 +529,11 @@
                 </div>
                 <style>
                     .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-                    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
-                    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+                    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+                    .swal2-html-container { margin: 1rem 0 0 !important; }
+                    .swal2-title { font-size: 0.85rem !important; font-weight: 800 !important; color: #94a3b8 !important; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.5; }
+                    .swal2-popup { border-radius: 2.5rem !important; padding: 1.5rem !important; }
                 </style>
             `;
 
@@ -565,7 +614,7 @@
 
         async function updateProviderStatus(providerId, status, reason) {
             try {
-                Swal.fire({title: 'Updating...', didOpen: () => { Swal.showLoading() }, allowOutsideClick: false});
+                Swal.fire({ title: 'Updating...', didOpen: () => { Swal.showLoading() }, allowOutsideClick: false });
                 const response = await fetch(`http://localhost:5000/api/providers/${providerId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -582,10 +631,23 @@
             }
         }
 
-        window.onload = () => {
+        window.onload = async () => {
+            await requireAdminAuth();
             loadProviders();
             document.body.style.opacity = "1";
         };
+        function renderAppliedStatus(status) {
+            switch (status) {
+                case 'Approved':
+                    return '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Approved & Live</span>';
+                case 'Rejected':
+                    return '<span class="px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Rejected</span>';
+                case 'Under Review':
+                    return '<span class="px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">Under Review</span>';
+                default:
+                    return `<span class="px-3 py-1.5 bg-slate-50 text-slate-600 border border-slate-200 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">${status}</span>`;
+            }
+        }
     </script>
 </body>
 

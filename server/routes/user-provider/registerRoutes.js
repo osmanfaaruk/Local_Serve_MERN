@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../../models/User');
 
-// POST /api/user-provider/register
 router.post('/', async (req, res) => {
     const { email, username, password } = req.body;
 

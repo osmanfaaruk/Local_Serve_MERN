@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Provider = require('../models/Provider');
-
-// GET all providers
+const Provider = require('../models/Provider');
 router.get('/', async (req, res) => {
     try {
         const providers = await Provider.find();
@@ -10,9 +8,7 @@ router.get('/', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// GET a single provider by ID
+});
 router.get('/:id', async (req, res) => {
     try {
         const provider = await Provider.findById(req.params.id);
@@ -21,9 +17,7 @@ router.get('/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// POST a new provider
+});
 router.post('/', async (req, res) => {
     const provider = new Provider(req.body);
     try {
@@ -32,9 +26,7 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
-
-// UPDATE a provider status or info
+});
 router.put('/:id', async (req, res) => {
     try {
         const updatedProvider = await Provider.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -42,9 +34,7 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
-
-// DELETE a provider
+});
 router.delete('/:id', async (req, res) => {
     try {
         await Provider.findByIdAndDelete(req.params.id);

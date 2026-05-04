@@ -4,9 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Middleware
+const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
@@ -40,11 +38,13 @@ const adminManageProviders   = require('./routes/admin/manageProvidersRoutes'); 
 const adminManageCategories  = require('./routes/admin/manageCategoriesRoutes');  // → manage-categories.html
 const adminManageLocations   = require('./routes/admin/manageLocationsRoutes');   // → manage-locations.html
 const adminAddProvider       = require('./routes/admin/addProviderRoutes');       // → add-provider.html
+const adminAuthRoutes        = require('./routes/admin/adminAuthRoutes');         // → admin login/auth
 
 app.use('/api/admin/providers',   adminManageProviders);
 app.use('/api/admin/categories',  adminManageCategories);
 app.use('/api/admin/locations',   adminManageLocations);
 app.use('/api/admin/add-provider',adminAddProvider);
+app.use('/api/admin/auth',        adminAuthRoutes);
 
 app.get('/', (req, res) => {
     res.send('LocalServe API is running...');

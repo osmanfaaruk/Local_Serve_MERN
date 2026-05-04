@@ -5,314 +5,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Providers | LocalServe Modern</title>
-    
-
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            daisyui: {
-                themes: ['sky', 'light'],
-                darkTheme: 'light'
-            }
-        }
-    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-
     <style>
         [data-theme] {
-            --p: 221 70% 41% !important; /* Dark Blue (blue-700) */
+            --p: 221 70% 41% !important;
             --pf: 221 70% 31% !important;
             --pc: 0 0% 100% !important;
         }
+        
+        body, html {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        }
+
         .text-primary { color: hsl(var(--p)) !important; }
         .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
         .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
         .badge-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
-        
-    </style>
-
-    <!-- Light Theme -->
-    <meta name="color-scheme" content="light">
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root { color-scheme: light !important; }
-        }
-        html { theme-transition: none; }
+        .card { transform: none !important; transition: none !important; }
     </style>
 </head>
 
 <body class="min-h-screen bg-base-200 overflow-x-hidden">
 
-
-     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
+    <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 font-semibold gap-2">
-                <li><a href="index.html" >Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="search-providers.html" class="active">All Providers</a></li>
                 <li><a href="user-provider/login.html">Become a Provider</a></li>
             </ul>
         </div>
         <div class="navbar-end">
-            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+            
         </div>
     </div>
-
-
 
     <div class="max-w-7xl mx-auto px-4 py-8 relative z-10">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            <!-- Filter Sidebar -->
-            <aside class="w-full lg:w-80 space-y-6">
+            
+            <aside class="w-full lg:w-80 shrink-0">
                 <div class="card bg-base-100 shadow-sm border border-base-300 sticky top-24 rounded-3xl">
                     <div class="card-body p-8">
-                        <h2 class="card-title text-xl font-black mb-6">Filter Results</h2>
+                        <h2 class="text-xl font-black mb-8">Filter Results</h2>
 
-                        <!-- Search Within -->
-                        <div class="form-control mb-5">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Search Keywords</span></label>
+                        <div class="form-control mb-6">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Search Keywords</span></label>
                             <div class="relative">
                                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-primary/40"></i>
-                                <input type="text" id="sidebarSearch" placeholder="e.g. Electrician, Plumbing"
+                                <input type="text" id="sidebarSearch" placeholder="Electrician, Plumbing"
                                     class="input input-bordered w-full pl-12 h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-medium" />
                             </div>
                         </div>
 
-                        <div class="form-control mb-5">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Service Category</span></label>
+                        <div class="form-control mb-6">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Service Category</span></label>
                             <select id="categoryFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
-                                <option value="">All Categories</option>
+                                <option value="All">All Categories</option>
                             </select>
                         </div>
 
-                        <!-- Location Filter -->
-                        <div class="form-control mb-5">
-                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-50">Service Area</span></label>
-                            <select id="locationFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
-                                <option value="">All Locations</option>
+                        <div class="form-control mb-8">
+                            <label class="label pt-0"><span class="label-text text-[10px] uppercase font-black tracking-widest opacity-40">Service Area</span></label>
+                            <select id="areaFilter" class="select select-bordered w-full h-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-all font-bold">
+                                <option value="All">All Locations</option>
                             </select>
                         </div>
 
-                        <!-- Filter Action -->
-                        <div class="mt-8 space-y-3">
-                            <button onclick="handleFilter()" class="btn btn-primary w-full h-12 rounded-2xl shadow-xl shadow-primary/20 font-black tracking-tight">
-                                <i class="fas fa-sliders-h mr-2"></i> Apply Filters
-                            </button>
-                            <button onclick="clearFilters()" class="btn btn-ghost btn-sm w-full font-bold opacity-50 hover:opacity-100">
-                                Clear All Filters
+                        <div class="pt-4">
+                            <button onclick="clearFilters()"
+                                class="btn btn-outline btn-primary w-full h-12 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:text-white transition-all">
+                                <i class="fas fa-undo-alt mr-2"></i> Clear All Filters
                             </button>
                         </div>
                     </div>
                 </div>
             </aside>
 
-            <!-- Main Listing Area -->
+            
             <main class="flex-1">
-                <!-- Results Section -->
-                <div class="mb-4">
-                <p class="text-sm font-bold opacity-50" id="results-count">Showing all providers</p>
-                </div>
-
-                <!-- Grid of Results -->
-                <div id="results-grid" class="grid grid-cols-1 gap-6">
-                    <!-- Dynamic results will be injected here -->
-                </div>
-
-                <!-- Pagination -->
-                <div class="flex justify-center mt-12 pb-12">
-                    <div class="join shadow-xl rounded-2xl bg-base-100 p-2 border border-base-300">
-                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">«</button>
-                        <button class="join-item btn btn-primary btn-sm px-6 rounded-xl shadow-lg shadow-primary/20">1</button>
-                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">2</button>
-                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">3</button>
-                        <button class="join-item btn btn-ghost btn-sm hover:text-primary transition-colors">»</button>
+                <div class="flex items-center justify-between mb-8 px-2">
+                    <div id="resultsCount" class="text-sm font-bold opacity-40 uppercase tracking-widest">
+                        Loading providers...
                     </div>
+                </div>
+
+                <div id="providersGrid" class="space-y-6 min-h-[400px]">
+                    
+                </div>
+
+                
+                <div id="pagination" class="flex items-center justify-center gap-4 mt-12 py-8 border-t border-base-300 hidden">
+                    <button onclick="changePage(-1)" id="prevBtn" class="btn btn-ghost btn-sm font-black uppercase tracking-widest text-[10px] disabled:opacity-20">
+                        <i class="fas fa-chevron-left mr-2"></i> Previous
+                    </button>
+                    <div class="flex items-center gap-2" id="pageNumbers"></div>
+                    <button onclick="changePage(1)" id="nextBtn" class="btn btn-ghost btn-sm font-black uppercase tracking-widest text-[10px] disabled:opacity-20">
+                        Next <i class="fas fa-chevron-right ml-2"></i>
+                    </button>
                 </div>
             </main>
         </div>
     </div>
-    
 
     <script>
         let allProviders = [];
+        let filteredProviders = [];
+        let currentPage = 1;
+        const itemsPerPage = 5;
 
-        async function initializePage() {
+        async function loadData() {
             try {
-                // 1. Fetch Categories
-                const catRes = await fetch('http://localhost:5000/api/categories');
-                const categories = await catRes.json();
-                const categorySelect = document.getElementById('categoryFilter');
-                categories.forEach(cat => {
-                    const option = document.createElement('option');
-                    option.value = cat.name;
-                    option.textContent = cat.name;
-                    categorySelect.appendChild(option);
+
+                const pResp = await fetch('http://localhost:5000/api/providers');
+                allProviders = await pResp.json();
+                allProviders = allProviders.filter(p => p.status === 'Approved');
+
+                const cResp = await fetch('http://localhost:5000/api/categories');
+                const cats = await cResp.json();
+                const catSelect = document.getElementById('categoryFilter');
+                cats.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.name;
+                    opt.textContent = c.name;
+                    catSelect.appendChild(opt);
                 });
 
-                // 2. Fetch Locations
-                const locRes = await fetch('http://localhost:5000/api/locations');
-                const locations = await locRes.json();
-                const locationSelect = document.getElementById('locationFilter');
-                locations.forEach(loc => {
-                    const option = document.createElement('option');
-                    option.value = loc.name;
-                    option.textContent = loc.name;
-                    locationSelect.appendChild(option);
+                const lResp = await fetch('http://localhost:5000/api/locations');
+                const locs = await lResp.json();
+                const locSelect = document.getElementById('areaFilter');
+                locs.forEach(l => {
+                    const opt = document.createElement('option');
+                    opt.value = l.name;
+                    opt.textContent = l.name;
+                    locSelect.appendChild(opt);
                 });
 
-                // 3. Fetch Providers
-                const provRes = await fetch('http://localhost:5000/api/providers');
-                const data = await provRes.json();
-                allProviders = data.filter(p => p.status === 'Approved');
-
-                // Read URL params from homepage search and pre-fill sidebar
                 const urlParams = new URLSearchParams(window.location.search);
-                const initialService = urlParams.get('service') || '';
-                const initialCategory = urlParams.get('category') || '';
-                const initialArea = urlParams.get('area') || '';
+                if (urlParams.get('service')) document.getElementById('sidebarSearch').value = urlParams.get('service');
+                if (urlParams.get('category')) document.getElementById('categoryFilter').value = urlParams.get('category');
+                if (urlParams.get('area')) document.getElementById('areaFilter').value = urlParams.get('area');
 
-                if (initialService) {
-                    document.getElementById('sidebarSearch').value = initialService;
-                }
-                if (initialCategory) {
-                    categorySelect.value = initialCategory;
-                }
-                if (initialArea) {
-                    document.getElementById('locationFilter').value = initialArea;
-                }
+                handleFilter();
+            } catch (err) { console.error('Init Error:', err); }
+        }
 
-                // Auto-run filter if any param is present
-                if (initialService || initialCategory || initialArea) {
-                    handleFilter();
-                } else {
-                    renderProviders(allProviders);
-                    document.getElementById('results-count').textContent = `Showing all ${allProviders.length} providers`;
-                }
-            } catch (error) {
-                console.error('Error initializing page:', error);
+        function handleFilter() {
+            const query = document.getElementById('sidebarSearch').value.toLowerCase();
+            const cat = document.getElementById('categoryFilter').value;
+            const area = document.getElementById('areaFilter').value;
+
+            filteredProviders = allProviders.filter(p => {
+                const matchesSearch = !query || (p.businessName.toLowerCase().includes(query) || 
+                                     (p.categories && p.categories.some(c => c.toLowerCase().includes(query))) ||
+                                     (p.about && p.about.toLowerCase().includes(query)));
+                const matchesCat = cat === 'All' || (p.categories && p.categories.includes(cat));
+                const matchesArea = area === 'All' || (p.areas && p.areas.includes(area));
+                return matchesSearch && matchesCat && matchesArea;
+            });
+
+            currentPage = 1;
+            renderProviders();
+        }
+
+        function renderProviders() {
+            const grid = document.getElementById('providersGrid');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = filteredProviders.slice(start, end);
+            const totalPages = Math.ceil(filteredProviders.length / itemsPerPage);
+
+            document.getElementById('resultsCount').innerText = `Found ${filteredProviders.length} result${filteredProviders.length !== 1 ? 's' : ''}`;
+
+            if (filteredProviders.length === 0) {
+                grid.innerHTML = `
+                    <div class="bg-white rounded-[2.5rem] border border-slate-200 p-20 text-center shadow-sm">
+                        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-search text-3xl text-slate-200"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">No professionals found</h3>
+                        <p class="text-slate-400">Try adjusting your filters or search keywords</p>
+                    </div>`;
+                document.getElementById('pagination').classList.add('hidden');
+                return;
             }
+
+            grid.innerHTML = paginatedItems.map(p => `
+                <div class="card bg-base-100 border border-base-200 overflow-hidden rounded-[2.5rem] cursor-pointer"
+                    onclick="window.location.href='provider-details.html?id=${p._id}'">
+                    <div class="card-body p-8 flex-col md:flex-row gap-8 items-start md:items-center">
+                        <div class="w-24 h-24 rounded-3xl bg-primary/5 flex items-center justify-center text-primary transition-all">
+                            <i class="fas ${p.type === 'Company' ? 'fa-building' : 'fa-user-tie'} text-3xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="badge badge-primary font-black text-[10px] uppercase tracking-widest px-4 py-3 border-none">${p.categories && p.categories[0] ? p.categories[0] : 'Service'}</span>
+                                <span class="badge bg-emerald-50 text-emerald-700 border-emerald-100 font-black text-[10px] uppercase tracking-widest px-4 py-3"><i class="fas fa-check-circle mr-1"></i> Verified</span>
+                            </div>
+                            <h3 class="text-2xl font-black text-slate-800 tracking-tight">${p.businessName}</h3>
+                            <div class="flex flex-wrap items-center gap-6 mt-3 text-sm font-bold text-slate-400">
+                                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-primary/30"></i> ${p.areas && p.areas[0] ? p.areas[0] : 'Not specified'}</span>
+                                <span class="flex items-center gap-2"><i class="fas fa-briefcase text-primary/30"></i> ${p.experience || 'N/A'}</span>
+                            </div>
+                            <p class="mt-4 text-slate-500 line-clamp-2 text-sm italic">"${p.about || 'Professional service provider.'}"</p>
+                        </div>
+                        <div class="w-full md:w-48 text-center md:text-right md:pl-8 md:border-l border-slate-100 flex flex-col justify-end self-stretch py-2">
+                            <div class="text-[10px] font-black uppercase tracking-widest opacity-30 mb-1">Hourly Labor</div>
+                            <div class="text-2xl font-black text-primary">${p.priceHourly || p.priceConsult || 'Contact'} TK</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updatePagination(totalPages);
+        }
+
+        function updatePagination(totalPages) {
+            const paginationEl = document.getElementById('pagination');
+            if (totalPages > 1) {
+                paginationEl.classList.remove('hidden');
+                document.getElementById('prevBtn').disabled = currentPage === 1;
+                document.getElementById('nextBtn').disabled = currentPage === totalPages;
+                
+                const pageNumbersEl = document.getElementById('pageNumbers');
+                pageNumbersEl.innerHTML = '';
+                for(let i=1; i<=totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = `w-8 h-8 rounded-lg font-black text-[10px] transition-all ${i === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'hover:bg-primary/10 text-slate-400'}`;
+                    btn.innerText = i;
+                    btn.onclick = () => { currentPage = i; renderProviders(); window.scrollTo({top: 0, behavior: 'smooth'}); };
+                    pageNumbersEl.appendChild(btn);
+                }
+            } else {
+                paginationEl.classList.add('hidden');
+            }
+        }
+
+        function changePage(dir) {
+            currentPage += dir;
+            renderProviders();
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         function clearFilters() {
             document.getElementById('sidebarSearch').value = '';
-            document.getElementById('categoryFilter').value = '';
-            document.getElementById('locationFilter').value = '';
+            document.getElementById('categoryFilter').value = 'All';
+            document.getElementById('areaFilter').value = 'All';
             handleFilter();
         }
 
-        function handleFilter() {
-            const serviceQuery = document.getElementById('sidebarSearch').value.toLowerCase().trim();
-            const category = document.getElementById('categoryFilter').value;
-            const location = document.getElementById('locationFilter').value;
+        document.getElementById('sidebarSearch').oninput = handleFilter;
+        document.getElementById('categoryFilter').onchange = handleFilter;
+        document.getElementById('areaFilter').onchange = handleFilter;
 
-            const filtered = allProviders.filter(p => {
-                // Multi-field service match: checks categories, offeredServices, businessName, about
-                const serviceMatch = !serviceQuery || (
-                    (p.categories && p.categories.some(c => c.toLowerCase().includes(serviceQuery))) ||
-                    (p.offeredServices && p.offeredServices.some(s => s.toLowerCase().includes(serviceQuery))) ||
-                    (p.businessName && p.businessName.toLowerCase().includes(serviceQuery)) ||
-                    (p.about && p.about.toLowerCase().includes(serviceQuery))
-                );
-
-                const matchesCategory = !category || category === 'All Categories' || 
-                    (p.categories && p.categories.some(c => c.toLowerCase() === category.toLowerCase()));
-
-                const matchesLocation = !location || location === 'All Locations' || 
-                    (p.areas && p.areas.some(a => a.toLowerCase() === location.toLowerCase()));
-
-                return serviceMatch && matchesCategory && matchesLocation;
-            });
-
-            const count = document.getElementById('results-count');
-            if (filtered.length === allProviders.length && !serviceQuery && !category && !location) {
-                count.textContent = `Showing all ${filtered.length} providers`;
-            } else {
-                count.textContent = `Found ${filtered.length} result${filtered.length !== 1 ? 's' : ''} for your search`;
-            }
-
-            renderProviders(filtered);
-        }
-
-        function renderProviders(providers) {
-            const grid = document.getElementById('results-grid');
-            grid.innerHTML = '';
-
-            if (providers.length === 0) {
-                grid.innerHTML = `
-                    <div class="flex flex-col items-center justify-center p-20 text-center bg-base-100 rounded-[3rem] border border-dashed border-base-300">
-                        <div class="w-24 h-24 rounded-full bg-base-200 flex items-center justify-center mb-6">
-                            <i class="fas fa-search text-4xl opacity-20"></i>
-                        </div>
-                        <h3 class="text-2xl font-black mb-2">No Professionals Found</h3>
-                        <p class="text-base-content/50 max-w-xs mx-auto">We couldn't find any providers matching your current filters. Try adjusting your search or clear all filters.</p>
-                        <button onclick="clearFilters()" class="btn btn-primary btn-outline rounded-xl mt-8 px-8">Clear All Filters</button>
-                    </div>
-                `;
-                return;
-            }
-
-            providers.forEach(p => {
-                const categoryBadge = p.categories && p.categories.length > 0 ? p.categories[0] : 'Service';
-                const areaText = p.areas && p.areas.length > 0 ? p.areas[0] : 'Chittagong';
-                const price = p.priceHourly || p.priceConsult || 'Contact for price';
-
-                const card = document.createElement('div');
-                card.className = "card bg-base-100 border border-base-200 cursor-pointer rounded-3xl overflow-hidden";
-                card.onclick = () => window.location.href = `provider-details.html?id=${p._id}`;
-                
-                const aboutText = p.about || 'No description available.';
-                const expHtml = p.experience ? `<span class="flex items-center gap-1"><i class="fas fa-briefcase text-primary/50"></i> ${p.experience}</span>` : '';
-                
-                card.innerHTML = `
-                    <div class="card-body p-6 flex-col sm:flex-row gap-6 items-start">
-                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shrink-0 border border-primary/10">
-                            <i class="fas fa-user-tie text-3xl text-primary/40"></i>
-                        </div>
-                        <div class="flex-1 w-full">
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="badge badge-primary font-black text-xs py-3 px-4 shadow-sm border-none">${categoryBadge}</div>
-                                <div class="badge badge-ghost text-xs font-bold gap-1 py-3 px-4"><i class="fas fa-check-circle text-success"></i> Verified</div>
-                            </div>
-                            <h3 class="text-xl font-bold text-base-content mb-1">${p.businessName}</h3>
-                            
-                            <div class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-base-content/60 mb-3">
-                                <span class="flex items-center gap-1"><i class="fas fa-map-marker-alt text-primary/50"></i> ${areaText}</span>
-                                ${expHtml}
-                            </div>
-                            
-                            <p class="text-sm text-base-content/70 line-clamp-2 mb-4 italic">"${aboutText}"</p>
-                            
-                            <div class="flex items-center justify-between border-t border-base-200 pt-4 mt-auto">
-                                <div>
-                                    <span class="text-[10px] uppercase font-bold tracking-wider text-base-content/40 block mb-0.5">Hourly Labor</span>
-                                    <div class="font-black text-primary text-lg">${price === 'Free' || price === '0' ? 'Free' : price + ' TK'}</div>
-                                </div>
-                                <button class="btn btn-primary btn-sm px-6 rounded-xl font-bold">View Profile</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // Attach event listeners for live search
-        document.getElementById('sidebarSearch').addEventListener('input', handleFilter);
-        document.getElementById('categoryFilter').addEventListener('change', handleFilter);
-        document.getElementById('locationFilter').addEventListener('change', handleFilter);
-
-        // Start
-        window.onload = initializePage;
+        window.onload = loadData;
     </script>
 </body>
-
 </html>

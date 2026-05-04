@@ -37,7 +37,7 @@
         
     </style>
 
-    <!-- Light Mode -->
+    
     <meta name="color-scheme" content="light">
     <style>
         @media (prefers-color-scheme: dark) {
@@ -62,7 +62,7 @@
             </ul>
         </div>
         <div class="navbar-end">
-            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+            
         </div>
     </div>
 
@@ -70,12 +70,12 @@
     <main class="max-w-7xl mx-auto px-4 pt-8 pb-20">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <!-- Left: Main Content -->
+            
             <div class="lg:col-span-2 space-y-8 relative z-10">
 
                 <div class="card bg-base-100 shadow-sm border border-base-300 overflow-hidden rounded-[2.5rem]">
                     <figure class="h-96 relative bg-gradient-to-br from-primary/20 via-primary/5 to-base-100 flex items-center justify-center overflow-hidden">
-                        <!-- Abstract Background Decoration -->
+                        
                         <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
                         <div class="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full blur-3xl -ml-24 -mb-24"></div>
                         
@@ -143,7 +143,7 @@
 
                             <h3 class="text-2xl font-bold mt-10 mb-6">Services Offered</h3>
                             <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Services injected here -->
+                                
                             </div>
                         </div>
                     </div>
@@ -156,13 +156,13 @@
                             <i class="fas fa-star text-warning"></i> Why Choose Us
                         </h3>
                         <div id="whyChooseUsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Injected dynamically -->
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Secondary Info -->
+            
             <div class="space-y-6 relative z-10">
 
                 <div class="card bg-base-100 shadow-sm border border-base-300 rounded-3xl overflow-hidden leading-tight">
@@ -255,7 +255,7 @@
 
         <footer class="bg-slate-950 text-slate-300 pt-20 pb-10 px-6 md:px-20 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-            <!-- Brand Section -->
+            
             <div class="space-y-6">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-700/20">
@@ -282,7 +282,7 @@
                 </div>
             </div>
 
-            <!-- Quick Links -->
+            
             <div class="space-y-6">
                 <h4 class="text-white font-bold uppercase tracking-widest text-xs">Explore LocalServe</h4>
                 <ul class="space-y-4 text-sm">
@@ -292,7 +292,7 @@
                 </ul>
             </div>
 
-            <!-- Company & Legal -->
+            
             <div class="space-y-6">
                 <h4 class="text-white font-bold uppercase tracking-widest text-xs">Company & Terms</h4>
                 <ul class="space-y-4 text-sm">
@@ -303,7 +303,7 @@
                 </ul>
             </div>
 
-            <!-- Contact -->
+            
             <div class="space-y-6">
                 <h4 class="text-white font-bold uppercase tracking-widest text-xs">Contact</h4>
                 <ul class="space-y-4 text-sm">
@@ -323,7 +323,7 @@
             </div>
         </div>
 
-        <!-- Copyright Bottom -->
+        
         <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 text-center">
             <p class="text-xs font-medium opacity-50 tracking-wide">
                 &copy; 2026 LocalServe Directory.
@@ -393,8 +393,7 @@
 
     </script>
 
-    <script>
-        // Fetch data on load
+    <script>
         async function loadProviderDetails() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
@@ -432,17 +431,13 @@
                 
                 if (p.phone) {
                     document.getElementById('callBtn').href = `tel:${p.phone}`;
-                }
-
-                // Render Category Badges
+                }
                 if (p.categories && p.categories.length > 0) {
                     const badgeContainer = document.getElementById('categoryBadges');
                     badgeContainer.innerHTML = p.categories.map(cat => 
                         `<div class="badge badge-outline border-white/40 text-white font-bold backdrop-blur-md">${cat}</div>`
                     ).join('');
-                }
-
-                // Render Services Grid
+                }
                 if (p.offeredServices && p.offeredServices.length > 0) {
                     const servicesGrid = document.getElementById('servicesGrid');
                     servicesGrid.innerHTML = p.offeredServices.map(service => `
@@ -453,9 +448,7 @@
                     `).join('');
                 } else {
                     document.getElementById('servicesGrid').innerHTML = '<p class="opacity-50 italic">No specific services listed.</p>';
-                }
-
-                // Render Why Choose Us
+                }
                 const whyChooseUsData = {
                     "Professional Grade": { icon: "fa-tools", color: "primary", desc: "We use industrial-standard tools for long-lasting results." },
                     "Fixed Pricing": { icon: "fa-hand-holding-usd", color: "success", desc: "No hidden charges. Clear quotes before we start." },
@@ -467,10 +460,11 @@
                 if (p.whyChooseUs && p.whyChooseUs.length > 0) {
                     const whyGrid = document.getElementById('whyChooseUsGrid');
                     whyGrid.innerHTML = p.whyChooseUs.map(item => {
-                        const data = whyChooseUsData[item] || { icon: "fa-star", color: "neutral", desc: "A top reason to choose this provider." };
+                        const data = whyChooseUsData[item] || { icon: "fa-star", color: "warning", desc: "A top reason to choose this provider." };
+                        const finalColor = data.color === 'neutral' ? 'warning' : data.color;
                         return `
-                            <div class="flex gap-4 p-5 rounded-3xl hover:bg-${data.color}/5 transition-all border border-transparent hover:border-${data.color}/10 group">
-                                <div class="w-14 h-14 rounded-2xl bg-${data.color}/10 flex items-center justify-center text-${data.color} shrink-0 group-hover:scale-110 transition-transform">
+                            <div class="flex gap-4 p-5 rounded-3xl border border-base-200 bg-base-100">
+                                <div class="w-14 h-14 rounded-2xl bg-${finalColor}/10 flex items-center justify-center text-${finalColor} shrink-0">
                                     <i class="fas ${data.icon} text-2xl"></i>
                                 </div>
                                 <div>

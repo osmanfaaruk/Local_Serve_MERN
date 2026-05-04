@@ -18,6 +18,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="adminAuth.js"></script>
     <style>
         :root {
             --p: 221 70% 41%;
@@ -57,7 +58,12 @@
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
-        <div class="flex-none"><a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a></div>
+        <div class="flex-none gap-2">
+            <a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a>
+            <button onclick="adminLogout()" class="btn btn-ghost btn-sm text-error font-bold">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
     </div>
 
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto">
@@ -109,7 +115,7 @@
         </main>
     </div>
 
-    <!-- Modals & Functions -->
+    
     <script>
         const SWAL_STYLE = {
             confirm: 'btn btn-primary text-white mx-3',
@@ -256,8 +262,11 @@
             });
         }
 
-        loadLocations();
+        (async () => {
+            await requireAdminAuth();
+            loadLocations();
+            document.body.style.opacity = "1";
+        })();
     </script>
-    <script>document.body.style.opacity = "1";</script>
 </body>
 </html>

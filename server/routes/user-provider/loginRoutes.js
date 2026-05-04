@@ -3,7 +3,6 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../../models/User');
 
-// POST /api/user-provider/login
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
 
@@ -27,7 +26,6 @@ router.post('/', async (req, res) => {
     });
 });
 
-// POST /api/user-provider/login/change-password
 router.post('/change-password', async (req, res) => {
     const { username, currentPassword, newPassword } = req.body;
 

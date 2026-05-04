@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Location = require('../models/Location');
-
-// GET all locations
+const Location = require('../models/Location');
 router.get('/', async (req, res) => {
     try {
         const locations = await Location.find();
@@ -10,9 +8,7 @@ router.get('/', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// POST a new location (for admin use)
+});
 router.post('/', async (req, res) => {
     const location = new Location(req.body);
     try {
@@ -21,9 +17,7 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
-
-// PUT (update) a location
+});
 router.put('/:id', async (req, res) => {
     try {
         const updatedLocation = await Location.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -31,9 +25,7 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
-
-// DELETE a location
+});
 router.delete('/:id', async (req, res) => {
     try {
         await Location.findByIdAndDelete(req.params.id);

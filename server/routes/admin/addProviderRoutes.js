@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Provider = require('../../models/Provider');
 const Category = require('../../models/Category');
-const Location = require('../../models/Location');
-
-// GET all categories (for the category picker dropdown in the form)
+const Location = require('../../models/Location');
 router.get('/categories', async (req, res) => {
     try {
         const categories = await Category.find();
@@ -12,9 +10,7 @@ router.get('/categories', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// GET all locations (for the area picker dropdown in the form)
+});
 router.get('/locations', async (req, res) => {
     try {
         const locations = await Location.find();
@@ -22,9 +18,7 @@ router.get('/locations', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// GET a single provider by ID (for pre-filling the edit form)
+});
 router.get('/provider/:id', async (req, res) => {
     try {
         const provider = await Provider.findById(req.params.id);
@@ -33,10 +27,7 @@ router.get('/provider/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// POST - admin manually adds a new provider
-// isApplied: false ensures this stays in the Admin Added section
+});
 router.post('/', async (req, res) => {
     try {
         const providerData = { ...req.body, isApplied: false, status: 'Approved' };
@@ -46,9 +37,7 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-});
-
-// PUT - admin edits an existing provider's full info
+});
 router.put('/:id', async (req, res) => {
     try {
         const updatedProvider = await Provider.findByIdAndUpdate(

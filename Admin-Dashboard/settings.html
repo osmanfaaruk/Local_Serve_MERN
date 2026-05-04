@@ -17,6 +17,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="adminAuth.js"></script>
     <style>
         :root {
             --p: 221 70% 41%; /* Dark Blue (blue-700 equivalent) */
@@ -42,7 +43,7 @@
     </style>
     
 
-    <!-- Forcibly disable dark mode OS preferences -->
+    
     <meta name="color-scheme" content="light">
     <style>
         @media (prefers-color-scheme: dark) {
@@ -58,13 +59,18 @@
         <div class="flex-1">
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
-        <div class="flex-none"><a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a></div>
+        <div class="flex-none gap-2">
+            <a href="../User-Website/index.html" class="btn btn-ghost btn-sm">Website</a>
+            <button onclick="adminLogout()" class="btn btn-ghost btn-sm text-error font-bold">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
     </div>
 
-    <!-- Admin Wrapper -->
+    
     <div class="flex flex-col lg:flex-row max-w-[1600px] mx-auto min-h-[calc(100vh-64px)] overflow-hidden">
 
-        <!-- Sidebar  -->
+        
             <aside id="admin-sidebar" class="w-full lg:w-72 bg-base-100 border-r border-base-300 p-6 space-y-2 lg:min-h-screen">
             <div class="text-xs font-bold text-base-content/40 uppercase px-4 mb-4 tracking-widest mt-4">Main Menu</div>
             <a href="index.html" class="btn btn-ghost btn-md w-full justify-start gap-4 ">
@@ -85,7 +91,7 @@
                 <i class="fas fa-cog"></i> Settings
             </a>
             </aside>
-        <!-- Main Dashboard Content -->
+        
         
         <main class="flex-1 p-8 overflow-y-auto">
             <div class="mb-8 border-b border-base-300 pb-4">
@@ -122,38 +128,54 @@
         </main>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            function handlePasswordChange(e) {
-                e.preventDefault();
-                const current = document.getElementById('cp_current').value;
-                const newPass = document.getElementById('cp_new').value;
-                const confirm = document.getElementById('cp_confirm').value;
+        window.onload = async () => {
+            await requireAdminAuth();
+            document.body.style.opacity = '1';
+        };
 
-                if (newPass !== confirm) {
-                    Swal.fire({ icon: 'error', title: 'Error', text: 'Passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
-                    return;
-                }
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+            const currentPassword = document.getElementById('cp_current').value;
+            const newPassword     = document.getElementById('cp_new').value;
+            const confirmPassword = document.getElementById('cp_confirm').value;
 
-                // Match user's hardcoded demo logic
-                if (current !== '1') {
-                    Swal.fire({ icon: 'error', title: 'Auth Error', text: 'Current password is incorrect.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+            if (newPassword !== confirmPassword) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'New passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+                return;
+            }
+            if (newPassword.length < 6) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'New password must be at least 6 characters.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:5000/api/admin/auth/change-password', {
+                    method: 'POST',
+                    headers: adminAuthHeader(),
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: data.error || 'Failed to change password.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
                     return;
                 }
 
                 Swal.fire({
-                    icon: 'success', 
-                    title: 'Success!', 
-                    text: 'Admin password changed successfully.', 
-                    customClass: { confirmButton: 'btn btn-primary text-white' }, 
+                    icon: 'success',
+                    title: 'Password Changed!',
+                    text: 'Your admin password has been updated successfully.',
+                    customClass: { confirmButton: 'btn btn-primary text-white' },
                     buttonsStyling: false
                 }).then(() => {
                     document.getElementById('changePasswordForm').reset();
                 });
+            } catch (err) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Cannot connect to server.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
             }
+        }
         </script>
-
     </div>
-
-    <script>document.body.style.opacity = "1";</script>
 </body>
-
 </html>

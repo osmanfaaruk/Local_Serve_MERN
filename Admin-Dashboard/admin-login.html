@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | LocalServe</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            daisyui: { themes: ['light'], darkTheme: 'light' }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --p: 221 70% 41%;
+            --pf: 221 70% 31%;
+            --pc: 0 0% 100%;
+        }
+        .text-primary { color: hsl(var(--p)) !important; }
+        .btn-primary { background-color: hsl(var(--p)) !important; border-color: hsl(var(--p)) !important; color: white !important; }
+        .btn-primary:hover { background-color: hsl(var(--pf)) !important; }
+        body { opacity: 0; transition: opacity 0.3s ease; }
+    </style>
+    <meta name="color-scheme" content="light">
+</head>
+
+<body class="min-h-screen bg-base-200 flex items-center justify-center">
+
+    <div class="w-full max-w-md px-4">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black text-primary tracking-tight">LocalServe</h1>
+            <p class="text-base-content/50 text-sm mt-1 font-medium">Admin Portal</p>
+        </div>
+
+        
+        <div class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body p-8">
+                <h2 class="text-xl font-bold mb-6 text-center">Sign in to Admin Dashboard</h2>
+
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold uppercase tracking-wider text-xs">Username <span class="text-error">*</span></span>
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            class="input input-bordered w-full focus:outline-primary"
+                            placeholder="Admin username"
+                            required
+                            autocomplete="username"
+                        />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-bold uppercase tracking-wider text-xs">Password <span class="text-error">*</span></span>
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            class="input input-bordered w-full focus:outline-primary"
+                            placeholder="Admin password"
+                            required
+                            autocomplete="current-password"
+                        />
+                    </div>
+
+                    <div id="errorMsg" class="hidden">
+                        <div class="alert alert-error py-3 text-sm">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span id="errorText">Invalid credentials.</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="loginBtn" class="btn btn-primary w-full font-bold">
+                            <span id="btnText"><i class="fas fa-sign-in-alt mr-2"></i>Sign In</span>
+                            <span id="btnLoading" class="hidden"><span class="loading loading-spinner loading-sm"></span> Verifying...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="../User-Website/index.html" class="text-sm text-base-content/40 font-medium">
+                <i class="fas fa-arrow-left mr-1"></i> Back to Website
+            </a>
+        </div>
+    </div>
+
+    <script>
+
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+
+            fetch('http://localhost:5000/api/admin/auth/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }).then(r => {
+                if (r.ok) window.location.href = 'index.html';
+                else {
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminUsername');
+                }
+            }).catch(() => {}).finally(() => {
+                document.body.style.opacity = '1';
+            });
+        } else {
+            document.body.style.opacity = '1';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            document.getElementById('btnText').classList.add('hidden');
+            document.getElementById('btnLoading').classList.remove('hidden');
+            document.getElementById('loginBtn').disabled = true;
+            document.getElementById('errorMsg').classList.add('hidden');
+
+            try {
+                const res = await fetch('http://localhost:5000/api/admin/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    showError(data.error || 'Invalid credentials. Please try again.');
+                    return;
+                }
+
+                localStorage.setItem('adminToken', data.token);
+                localStorage.setItem('adminUsername', data.username);
+
+                window.location.href = 'index.html';
+
+            } catch (err) {
+                showError('Cannot connect to server. Please make sure the server is running.');
+            } finally {
+                document.getElementById('btnText').classList.remove('hidden');
+                document.getElementById('btnLoading').classList.add('hidden');
+                document.getElementById('loginBtn').disabled = false;
+            }
+        }
+
+        function showError(msg) {
+            document.getElementById('errorText').textContent = msg;
+            document.getElementById('errorMsg').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>

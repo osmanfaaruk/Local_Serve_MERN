@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Provider = require('../../models/Provider');
-const Location = require('../../models/Location');
-
-// GET all approved providers with optional category/area filters
+const Location = require('../../models/Location');
 router.get('/providers', async (req, res) => {
     try {
         const { category, area } = req.query;
@@ -17,9 +15,7 @@ router.get('/providers', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-});
-
-// GET all locations (for the area filter dropdown)
+});
 router.get('/locations', async (req, res) => {
     try {
         const locations = await Location.find();

@@ -3,7 +3,6 @@ const router = express.Router();
 const Provider = require('../../models/Provider');
 const User = require('../../models/User');
 
-// GET the logged-in user's own provider profile by userId
 router.get('/me/:userId', async (req, res) => {
     try {
         const user = await User.findById(req.params.userId).populate('providerId');
@@ -15,7 +14,6 @@ router.get('/me/:userId', async (req, res) => {
     }
 });
 
-// GET a single provider by ID (for the provider's own dashboard)
 router.get('/:id', async (req, res) => {
     try {
         const provider = await Provider.findById(req.params.id);

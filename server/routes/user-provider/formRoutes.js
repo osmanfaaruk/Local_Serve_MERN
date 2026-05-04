@@ -5,7 +5,6 @@ const Category = require('../../models/Category');
 const Location = require('../../models/Location');
 const User = require('../../models/User');
 
-// GET all categories
 router.get('/categories', async (req, res) => {
     try {
         const categories = await Category.find();
@@ -15,7 +14,6 @@ router.get('/categories', async (req, res) => {
     }
 });
 
-// GET all locations
 router.get('/locations', async (req, res) => {
     try {
         const locations = await Location.find();
@@ -25,8 +23,7 @@ router.get('/locations', async (req, res) => {
     }
 });
 
-// POST - submit a new provider application
-// Also links the new provider to the user's account via providerId
+
 router.post('/submit', async (req, res) => {
     try {
         const { userId, ...providerFields } = req.body;

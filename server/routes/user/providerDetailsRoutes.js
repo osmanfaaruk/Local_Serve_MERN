@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Provider = require('../../models/Provider');
-
-// GET a single provider by ID (for the detail page)
+const Provider = require('../../models/Provider');
 router.get('/:id', async (req, res) => {
     try {
         const provider = await Provider.findById(req.params.id);

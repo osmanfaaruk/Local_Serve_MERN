@@ -43,7 +43,7 @@
 
     </style>
 
-    <!-- Force Light Theme -->
+    
     <meta name="color-scheme" content="light">
     <style>
         @media (prefers-color-scheme: dark) {
@@ -55,7 +55,7 @@
 
 <body class="min-h-screen bg-base-100">
 
-    <!-- Navbar -->
+    
     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="index.html"
@@ -69,11 +69,11 @@
             </ul>
         </div>
         <div class="navbar-end">
-            <a href="../Admin-Dashboard/index.html" class="btn btn-ghost btn-sm hidden md:flex">Admin Portal</a>
+            
         </div>
     </div>
 
-    <!-- Hero Section -->
+    
     <div class="hero min-h-[70vh] bg-base-200 relative overflow-hidden">
         <div class="hero-content text-center relative z-10">
             <div class="max-w-3xl">
@@ -94,7 +94,7 @@
 
 
                         <div id="categoryDropdown"
-                            class="hidden absolute top-full left-0 right-0 mt-2 bg-base-100 rounded-2xl shadow-2xl border border-base-200 z-[100] overflow-hidden max-h-80 overflow-y-auto anima-fade-in">
+                            class="hidden absolute top-full left-0 right-0 mt-2 bg-base-100 rounded-2xl shadow-2xl border border-base-200 z-[100] overflow-hidden max-h-80 overflow-y-auto">
                             <div class="p-2 space-y-1" id="dropdownList">
 
                                 <div class="dropdown-item flex items-center gap-3 p-4 hover:bg-primary/5 cursor-pointer rounded-xl transition-all group"
@@ -108,13 +108,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="relative flex-1 md:max-w-[200px]">
-                        <i
-                            class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 z-10"></i>
-                        <select id="areaSelect"
-                            class="select select-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-bold appearance-none">
-                            <option value="">All Areas</option>
-                        </select>
+                    <div class="relative flex-1 md:max-w-[200px]" id="areaContainer">
+                        <i class="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 z-10"></i>
+                        <input type="text" id="areaInput" placeholder="Location"
+                            class="input input-bordered w-full pl-12 h-14 rounded-xl focus:outline-primary border-none bg-base-100 font-bold"
+                            autocomplete="off" />
+                        
+                        <div id="areaDropdown"
+                            class="hidden absolute top-full left-0 right-0 mt-2 bg-base-100 rounded-2xl shadow-2xl border border-base-200 z-[100] overflow-hidden max-h-80 overflow-y-auto">
+                            <div class="p-2 space-y-1" id="areaDropdownList">
+                                
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-primary h-14 px-8 rounded-xl text-lg font-bold text-white" onclick="doSearch()">Search Now</button>
                 </div>
@@ -122,7 +127,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+    
     <main class="max-w-7xl mx-auto px-4 py-16">
 
 
@@ -131,7 +136,7 @@
             <p class="text-base-content/60 mb-10">Select a service to see verified providers near you.</p>
 
             <div id="category-grid" class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <!-- Data will be injected here -->
+                
             </div>
         </div>
 
@@ -147,12 +152,12 @@
             </div>
 
             <div id="featured-professionals-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Data will be injected here -->
+                
             </div>
         </div>
     </main>
 
-<!-- footer ey khan teke shoru hoycee -->
+
         <footer class="bg-slate-950 text-slate-300 pt-20 pb-10 px-6 md:px-20 border-t border-white/5">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
@@ -200,6 +205,11 @@
                     <li><a href="company-terms/contact-support.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Contact Support</a></li>
                     <li><a href="company-terms/privacy-policy.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Privacy Policy</a></li>
                     <li><a href="company-terms/terms-of-service.html" class="hover:text-blue-700 hover:translate-x-1 transition-all inline-block">Terms of Service</a></li>
+                    <li class="pt-2 mt-4 border-t border-slate-200">
+                        <a href="../Admin-Dashboard/admin-login.html" class="text-slate-500 hover:text-blue-700 font-medium transition-all inline-flex items-center gap-2">
+                            <i class="fas fa-lock text-xs"></i> Admin Login
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -234,21 +244,19 @@
 
     <script>
         let categories = [];
-
+        let allAreas = ["Nasirabad", "Halisahar", "Agrabad", "Khulshi", "Pahartali", "Chawkbazar", "Bakalia", "Bahaddarhat"];
 
         async function loadCategories() {
             try {
                 const response = await fetch('http://localhost:5000/api/categories');
                 categories = await response.json();
-                
-                // Update dropdown and grid
                 const categoryGrid = document.getElementById('category-grid');
                 if (categoryGrid) {
                     categoryGrid.innerHTML = categories.slice(0, 5).map(cat => `
-                        <div class="card bg-base-100 border border-base-300 hover:border-primary cursor-pointer transition-all hover:-translate-y-2 hover:shadow-xl group"
+                        <div class="card bg-base-100 border border-base-300 cursor-pointer"
                             onclick="window.location.href='search-providers.html?category=${encodeURIComponent(cat.name)}'">
                             <div class="card-body items-center text-center p-8">
-                                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
                                     <i class="fas ${cat.icon || 'fa-tag'} text-2xl"></i>
                                 </div>
                                 <h3 class="font-bold text-lg">${cat.name}</h3>
@@ -256,9 +264,7 @@
                         </div>
                     `).join('');
                 }
-            } catch (error) {
-                console.error('Error loading categories:', error);
-            }
+            } catch (error) { console.error('Error:', error); }
         }
 
         async function loadFeatured() {
@@ -266,20 +272,14 @@
                 const response = await fetch('http://localhost:5000/api/providers');
                 const providers = await response.json();
                 const featured = providers.filter(p => p.status === 'Approved').slice(0, 3);
-                
                 const featuredGrid = document.getElementById('featured-professionals-grid');
                 if (featuredGrid) {
-                    if (featured.length === 0) {
-                        featuredGrid.innerHTML = '<p class="text-center col-span-3 opacity-50">No featured professionals yet.</p>';
-                        return;
-                    }
                     featuredGrid.innerHTML = featured.map(p => `
                         <div class="card bg-base-100 border border-base-200 cursor-pointer overflow-hidden rounded-[2rem]"
                             onclick="window.location.href='provider-details.html?id=${p._id}'">
                             <figure class="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                                 <i class="fas fa-user-tie text-5xl text-primary/10"></i>
                                 <div class="absolute top-4 left-4 badge badge-primary font-black text-xs py-4 px-5 border-none shadow-xl shadow-primary/20">${p.categories[0] || 'Service'}</div>
-                                <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-base-100 to-transparent"></div>
                             </figure>
                             <div class="card-body p-8 pt-0 -mt-8 relative">
                                 <div class="w-16 h-16 rounded-2xl bg-base-100 shadow-xl border border-base-200 flex items-center justify-center mb-4">
@@ -290,48 +290,24 @@
                                     <i class="fas fa-map-marker-alt text-primary/40"></i> ${p.areas[0] || 'Chittagong'}
                                 </p>
                                 <div class="flex items-center justify-between border-t border-base-100 pt-5 mt-auto">
-                                    <div class="leading-none">
-                                        <span class="text-[10px] uppercase font-bold text-base-content/30 tracking-widest block mb-1">Starting from</span>
-                                        <div class="text-lg font-black text-primary">${p.priceConsult || p.priceHourly || 'N/A'} <span class="text-xs font-normal opacity-50">TK</span></div>
-                                    </div>
+                                    <div class="text-lg font-black text-primary">${p.priceConsult || p.priceHourly || 'N/A'} TK</div>
                                     <button class="btn btn-primary btn-sm px-5 rounded-xl font-bold">View</button>
                                 </div>
                             </div>
                         </div>
                     `).join('');
                 }
-            } catch (error) {
-                console.error('Error loading featured:', error);
-            }
+            } catch (error) { console.error('Error:', error); }
         }
 
-        loadCategories();
-        loadFeatured();
-        loadLocations();
-
-        async function loadLocations() {
+        async function loadAreas() {
             try {
                 const response = await fetch('http://localhost:5000/api/locations');
-                const locations = await response.json();
-                const areaSelect = document.getElementById('areaSelect');
-                locations.forEach(loc => {
-                    const option = document.createElement('option');
-                    option.value = loc.name;
-                    option.textContent = loc.name;
-                    areaSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error loading locations:', error);
-            }
-        }
-
-        function doSearch() {
-            const service = document.getElementById('categorySearch').value.trim();
-            const area = document.getElementById('areaSelect').value.trim();
-            const params = new URLSearchParams();
-            if (service) params.set('service', service);
-            if (area) params.set('area', area);
-            window.location.href = 'search-providers.html?' + params.toString();
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    allAreas = data.map(l => l.name);
+                }
+            } catch (error) { console.error('Error loading areas:', error); }
         }
 
         const searchInput = document.getElementById('categorySearch');
@@ -339,56 +315,93 @@
         const dropdownList = document.getElementById('dropdownList');
 
         function renderDropdown(filterValue = '') {
-            const filtered = categories.filter(cat =>
-                cat.name.toLowerCase().includes(filterValue.toLowerCase())
-            );
-
-
+            const filtered = categories.filter(cat => cat.name.toLowerCase().includes(filterValue.toLowerCase()));
             const displayList = filterValue === '' ? filtered.slice(0, 2) : filtered;
-
             dropdownList.innerHTML = displayList.map(cat => `
                 <div class="dropdown-item flex items-center gap-3 p-4 hover:bg-primary/5 cursor-pointer rounded-xl transition-all group" data-value="${cat.name}">
                     <span class="font-bold">${cat.name}</span>
                 </div>
             `).join('');
-
-
             document.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    searchInput.value = item.getAttribute('data-value');
-                    dropdown.classList.add('hidden');
-                });
+                item.onclick = () => { searchInput.value = item.getAttribute('data-value'); dropdown.classList.add('hidden'); };
             });
-
-            if (displayList.length > 0) {
-                dropdown.classList.remove('hidden');
-            } else {
-                dropdown.classList.add('hidden');
-            }
+            if (displayList.length > 0) dropdown.classList.remove('hidden');
+            else dropdown.classList.add('hidden');
         }
 
-        searchInput.addEventListener('focus', () => renderDropdown(searchInput.value));
-        searchInput.addEventListener('input', () => renderDropdown(searchInput.value));
+        searchInput.onfocus = () => renderDropdown(searchInput.value);
+        searchInput.oninput = () => renderDropdown(searchInput.value);
 
+        const areaInput = document.getElementById('areaInput');
+        const areaDropdown = document.getElementById('areaDropdown');
+        const areaDropdownList = document.getElementById('areaDropdownList');
+        const defaultLocation = "Ctg Metropolitan Area";
+
+        function renderAreaDropdown(filter = "") {
+            const val = filter.trim().toLowerCase();
+            areaDropdownList.innerHTML = "";
+            let displayAreas = [];
+
+            if (val === "") {
+                displayAreas = [defaultLocation];
+            } else {
+                displayAreas = allAreas.filter(a => a.toLowerCase().includes(val));
+                if (defaultLocation.toLowerCase().includes(val) && !displayAreas.includes(defaultLocation)) {
+                    displayAreas = [defaultLocation, ...displayAreas.filter(a => a !== defaultLocation)];
+                }
+            }
+
+            if (displayAreas.length === 0) {
+                areaDropdownList.innerHTML = '<div class="p-4 text-center opacity-40 text-sm italic">No results found</div>';
+            } else {
+                displayAreas.forEach(area => {
+                    const isDef = area === defaultLocation;
+                    const item = document.createElement('div');
+                    item.className = `p-4 hover:bg-primary/5 cursor-pointer rounded-xl font-bold text-sm transition-all whitespace-nowrap ${isDef ? 'text-primary bg-primary/5' : 'text-slate-700'}`;
+                    item.innerHTML = area;
+                    item.onclick = (e) => {
+                        e.stopPropagation();
+                        areaInput.value = area;
+                        areaDropdown.classList.add('hidden');
+                    };
+                    areaDropdownList.appendChild(item);
+                });
+            }
+            areaDropdown.classList.remove('hidden');
+        }
+
+        areaInput.onfocus = () => renderAreaDropdown(areaInput.value);
+        areaInput.oninput = (e) => renderAreaDropdown(e.target.value);
+        areaInput.onclick = (e) => { e.stopPropagation(); renderAreaDropdown(areaInput.value); };
 
         document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
+            if (searchInput && !searchInput.contains(e.target)) dropdown.classList.add('hidden');
+            if (areaInput && !areaInput.contains(e.target)) areaDropdown.classList.add('hidden');
         });
 
+        function doSearch() {
+            const cat = searchInput.value.trim();
+            const loc = areaInput.value.trim();
+            const params = new URLSearchParams();
+            if (cat) params.set('service', cat);
+            if (loc) params.set('area', loc);
+            window.location.href = 'search-providers.html?' + params.toString();
+        }
 
         const style = document.createElement('style');
         style.textContent = `
-            .anima-fade-in {
-                animation: fadeIn 0.15s ease-out;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
+            .anima-fade-in { animation: fadeIn 0.15s ease-out; }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+            #areaDropdown, #categoryDropdown { z-index: 9999 !important; border-radius: 1.5rem !important; }
         `;
         document.head.appendChild(style);
+
+        window.onload = async () => {
+            await loadCategories();
+            await loadFeatured();
+            await loadAreas();
+        };
+    </script>
     </script>
 </body>
 

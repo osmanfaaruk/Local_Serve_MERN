@@ -1,88 +1,81 @@
-# LocalServe - Service Provider Directory
+# LocalServe - Modern Service Provider Directory
 
-A local service provider directory connecting Chittagong's professionals with residents who need quality services.
+A full-stack local service provider directory connecting professional service providers with residents who need quality services. Now featuring a secure administrative portal and robust backend integration.
 
-## Project Structure
+## 🚀 Key Features
+
+- **Secure Admin Portal:** JWT-based authentication for administrative tasks.
+- **Provider Management:** Approve, reject, or manage service providers dynamically.
+- **Dynamic Content:** Categories, locations, and provider listings managed via backend.
+- **Service Registration:** Full multi-step application form for new providers.
+- **Professional UI:** Built with Tailwind CSS and DaisyUI for a premium, responsive experience.
+
+## 📂 Project Structure
 
 ```text
 .
-├── Admin-Dashboard/           # Administrative portal
-│   ├── data/                 # JSON data (categories, locations, providers)
-│   ├── manage-providers.html # Provider approval & management
-│   ├── manage-categories.html# Service category management
-│   ├── manage-locations.html # Location management
-│   ├── add-provider.html     # Add new provider form
-│   ├── settings.html         # Admin settings & password
-│   └── index.html            # Admin dashboard
-├── User-Website/              # Public-facing portal
-│   ├── company-terms/        # About, Privacy, Terms, Contact pages
-│   ├── user-provider/        # Provider registration, login & dashboard
-│   ├── search-providers.html # Search & filter providers
-│   ├── provider-details.html # Provider profile page
+├── Admin-Dashboard/           # Administrative portal (Protected)
+│   ├── adminAuth.js          # Client-side Auth Guard
+│   ├── admin-login.html      # Secure Admin Entry
+│   ├── settings.html         # Admin Password Management
+│   └── index.html            # Admin Stats & Dashboard
+├── User-Website/              # Public-facing customer portal
+│   ├── user-provider/        # Provider auth & dashboard
+│   ├── search-providers.html # Discovery & Filters
 │   └── index.html            # Landing page
-└── README.md
+├── server/                    # Node.js Express Backend
+│   ├── routes/               # API Endpoints (Admin & User)
+│   ├── models/               # MongoDB Schemas
+│   └── index.js              # Server Entry Point
+└── package.json               # Dependencies & Scripts
 ```
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-- HTML5, CSS
-- Tailwind CSS (CDN)
-- DaisyUI 3.1.0
-- Font Awesome 6.4.0
-- SweetAlert2
-- Vanilla JavaScript
-- LocalStorage for state
-- JSON files for data
+**Frontend:**
+- HTML5, Tailwind CSS (CDN), DaisyUI
+- Vanilla JavaScript (ES6+)
+- SweetAlert2 for polished interactions
 
-## How to Run Locally
+**Backend:**
+- Node.js & Express.js
+- MongoDB & Mongoose (ODM)
+- JSON Web Token (JWT) for secure sessions
+- Bcrypt.js for password hashing
 
-Follow these steps to get the project running on your machine:
+## ⚙️ How to Run Locally
 
-### Step 1: Clone the Repository
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/osmanfaaruk/Main_Local_Serve_Share.git
+   ```
 
-Open your terminal (Command Prompt / PowerShell / Git Bash) and run:
+2. **Setup Environment Variables:**
+   Create a `.env` file in the root directory and add:
+   ```env
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_secure_secret_key
+   ```
 
-```bash
-git clone https://github.com/osmanfaaruk/Main_Local_Serve_Share.git
-```
+3. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-### Step 2: Open the Project
+4. **Start the Server:**
+   ```bash
+   npm run dev
+   ```
 
-Open the cloned folder in **VS Code**:
+5. **Access the Website:**
+   Open `User-Website/index.html` using **Live Server** in VS Code.
 
-```bash
-cd Main_Local_Serve_Share
-code .
-```
+## 🔐 Default Admin Credentials
 
-### Step 3: Install Live Server Extension
+- **Username:** `groupAdmin`
+- **Password:** `gorupProject`
+*(Can be changed from Admin Settings after login)*
 
-This project uses local JSON files for data, so you need a local server to avoid CORS errors.
-
-1. In VS Code, go to **Extensions** (Ctrl+Shift+X)
-2. Search for **"Live Server"** by Ritwick Dey
-3. Click **Install**
-
-### Step 4: Start the Website
-
-1. Open `User-Website/index.html` in VS Code
-2. Right-click anywhere in the file
-3. Select **"Open with Live Server"**
-4. The website will open in your browser automatically
-
-### Step 5: Access the Admin Panel
-
-1. Open `Admin-Dashboard/index.html` in VS Code
-2. Right-click → **"Open with Live Server"**
-
-Or simply click the **"Admin Portal"** link in the website navbar.
-
-### Quick Links After Running
-
-| Portal          | File to Open                    |
-| --------------- | ------------------------------- |
-| Customer Website | `User-Website/index.html`      |
-| Admin Dashboard  | `Admin-Dashboard/index.html`   |
-| Provider Login   | `User-Website/user-provider/login.html` |
-
-> **Note:** No `npm install` or build step needed. Everything runs directly from CDN links. Just open with Live Server and you're good to go.
+---
+© 2026 LocalServe Directory. Built for excellence.
