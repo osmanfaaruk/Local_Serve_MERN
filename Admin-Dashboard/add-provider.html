@@ -358,6 +358,18 @@
                                     <input type="checkbox" name="chkWhy" value="Fast Response" class="checkbox checkbox-primary checkbox-sm" />
                                     <span class="label-text text-sm font-medium">Fast Response</span>
                                 </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Safe Chemicals" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Safe Chemicals</span>
+                                </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Guaranteed Results" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Guaranteed Results</span>
+                                </label>
+                                <label class="cursor-pointer label justify-start gap-3 bg-base-200 rounded-lg px-3 py-2 border border-base-300 hover:border-primary/40">
+                                    <input type="checkbox" name="chkWhy" value="Affordable Pricing" class="checkbox checkbox-primary checkbox-sm" />
+                                    <span class="label-text text-sm font-medium">Affordable Pricing</span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -763,6 +775,7 @@
                          <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Areas</p><div class="flex flex-wrap gap-2 mt-1">${data.areas.map(a => `<span class="badge badge-outline font-bold border-base-300">${a}</span>`).join('')}</div></div>
                          <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Services</p><div class="flex flex-wrap gap-2 mt-1">${data.offeredServices.map(s => `<span class="badge badge-ghost font-bold border-base-300"># ${s}</span>`).join('')}</div></div>
                          <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Availability / Pricing</p><p class="font-bold mt-1">${data.workDays.join(', ')} (${data.workTimeStart}-${data.workTimeEnd})<br>${data.priceConsult} TK Consult / ${data.priceHourly} TK Hourly</p></div>
+                         <div><p class="text-[10px] font-bold opacity-30 uppercase tracking-tighter">Why Choose Us</p><div class="flex flex-wrap gap-2 mt-1">${data.whyChooseUs ? data.whyChooseUs.map(w=>`<span class="badge badge-warning text-[10px] font-black uppercase tracking-widest px-3 py-2 border-none bg-warning/20 text-warning-content">${w}</span>`).join('') : 'None selected'}</div></div>
                     </div>
                 </div>
             </div>
