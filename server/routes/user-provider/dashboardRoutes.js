@@ -1,6 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Provider = require('../../models/Provider');
+const User = require('../../models/User');
+
+// GET the logged-in user's own provider profile by userId
+router.get('/me/:userId', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId).populate('providerId');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        if (!user.providerId) return res.json({ provider: null });
+        res.json({ provider: user.providerId });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
 // GET a single provider by ID (for the provider's own dashboard)
 router.get('/:id', async (req, res) => {

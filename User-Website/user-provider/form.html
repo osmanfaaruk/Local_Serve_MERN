@@ -726,10 +726,10 @@ function finalSubmit() {
     }).then(async (result) => {
         if(result.isConfirmed){
             try {
-                // Post to API
-                const payload = { ...formCache, status: 'Under Review', isApplied: true };
+                const currentUser = JSON.parse(localStorage.getItem('ls_currentUser') || '{}');
+                const payload = { ...formCache, status: 'Under Review', isApplied: true, userId: currentUser.id };
                 const isUpdate = !!payload._id;
-                const url = isUpdate ? `http://localhost:5000/api/providers/${payload._id}` : 'http://localhost:5000/api/providers';
+                const url = isUpdate ? `http://localhost:5000/api/providers/${payload._id}` : 'http://localhost:5000/api/user-provider/form/submit';
                 const method = isUpdate ? 'PUT' : 'POST';
 
                 const res = await fetch(url, {

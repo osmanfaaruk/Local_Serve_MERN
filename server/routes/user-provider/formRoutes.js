@@ -3,8 +3,9 @@ const router = express.Router();
 const Provider = require('../../models/Provider');
 const Category = require('../../models/Category');
 const Location = require('../../models/Location');
+const User = require('../../models/User');
 
-// GET all categories (to populate the category picker in the form)
+// GET all categories
 router.get('/categories', async (req, res) => {
     try {
         const categories = await Category.find();
@@ -14,7 +15,7 @@ router.get('/categories', async (req, res) => {
     }
 });
 
-// GET all locations (to populate the area picker in the form)
+// GET all locations
 router.get('/locations', async (req, res) => {
     try {
         const locations = await Location.find();
@@ -24,13 +25,19 @@ router.get('/locations', async (req, res) => {
     }
 });
 
-// POST - submit a new provider application from the user-facing form
-// isApplied is always set to true here to mark it as a user application
+// POST - submit a new provider application
+// Also links the new provider to the user's account via providerId
 router.post('/submit', async (req, res) => {
     try {
-        const providerData = { ...req.body, isApplied: true, status: 'Under Review' };
+        const { userId, ...providerFields } = req.body;
+        const providerData = { ...providerFields, isApplied: true, status: 'Under Review' };
         const provider = new Provider(providerData);
         const newProvider = await provider.save();
+
+        if (userId) {
+            await User.findByIdAndUpdate(userId, { providerId: newProvider._id });
+        }
+
         res.status(201).json(newProvider);
     } catch (err) {
         res.status(400).json({ message: err.message });

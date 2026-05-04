@@ -263,7 +263,7 @@
             providers.forEach(p => {
                 const categoryBadge = p.categories && p.categories.length > 0 ? p.categories[0] : 'Service';
                 const areaText = p.areas && p.areas.length > 0 ? p.areas[0] : 'Chittagong';
-                const price = p.priceConsult || p.priceHourly || 'Contact for price';
+                const price = p.priceHourly || p.priceConsult || 'Contact for price';
 
                 const card = document.createElement('div');
                 card.className = "card bg-base-100 border border-base-200 cursor-pointer rounded-3xl overflow-hidden";
@@ -293,7 +293,7 @@
                             
                             <div class="flex items-center justify-between border-t border-base-200 pt-4 mt-auto">
                                 <div>
-                                    <span class="text-[10px] uppercase font-bold tracking-wider text-base-content/40 block mb-0.5">Consultation Fee</span>
+                                    <span class="text-[10px] uppercase font-bold tracking-wider text-base-content/40 block mb-0.5">Hourly Labor</span>
                                     <div class="font-black text-primary text-lg">${price === 'Free' || price === '0' ? 'Free' : price + ' TK'}</div>
                                 </div>
                                 <button class="btn btn-primary btn-sm px-6 rounded-xl font-bold">View Profile</button>

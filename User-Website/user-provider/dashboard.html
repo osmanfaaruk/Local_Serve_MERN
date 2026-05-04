@@ -143,129 +143,99 @@
 <!-- SCRIPTS (Lightweight - no form logic!)     -->
 <!-- ========================================== -->
 <script>
-    // State
-    const DEMO_USER = "Osman";
-    const DEMO_PASS = "1";
     let currentUser = null;
     let providerData = null;
 
-    // Init
-    window.onload = () => {
-        loadState();
-        renderRouter();
-        document.body.style.opacity = "1";
-    };
-
-    function loadState() {
+    window.onload = async () => {
         const storedUser = localStorage.getItem('ls_currentUser');
-        if (storedUser) currentUser = JSON.parse(storedUser);
-        const storedData = localStorage.getItem('ls_providerData');
-        if (storedData) providerData = JSON.parse(storedData);
-    }
-
-    function saveState() {
-        if (currentUser) localStorage.setItem('ls_currentUser', JSON.stringify(currentUser));
-        else localStorage.removeItem('ls_currentUser');
-        if (providerData) localStorage.setItem('ls_providerData', JSON.stringify(providerData));
-        else localStorage.removeItem('ls_providerData');
-    }
-
-    function logout() {
-        currentUser = null;
-        saveState();
-        window.location.href = 'login.html';
-    }
-
-    // Router - decides what to show in the content area
-    function renderRouter() {
-        if (!currentUser) {
+        if (!storedUser) {
             window.location.href = 'login.html';
             return;
         }
+        currentUser = JSON.parse(storedUser);
 
         const container = document.getElementById('main-container');
         container.innerHTML = '';
         container.appendChild(document.getElementById('tmpl-provider-layout').content.cloneNode(true));
         document.getElementById('profile-username-display').innerText = currentUser.username;
 
+        // Fetch this user's own provider data from the server
+        try {
+            const res = await fetch(`http://localhost:5000/api/user-provider/dashboard/me/${currentUser.id}`);
+            const data = await res.json();
+            providerData = data.provider || null;
+        } catch (e) {
+            console.error('Could not reach server:', e);
+        }
+
         const contentArea = document.getElementById('dashboard-content-area');
 
         if (providerData) {
-            // User already submitted - show status
             contentArea.appendChild(document.getElementById('tmpl-dashboard').content.cloneNode(true));
             hydrateDashboard();
-        } else if (localStorage.getItem('ls_formDraft')) {
-            // Has an ongoing draft - send them to form page to continue
-            window.location.href = 'form.html';
         } else {
-            // Fresh user - show gateway
             contentArea.appendChild(document.getElementById('tmpl-apply-gateway').content.cloneNode(true));
         }
+
+        document.body.style.opacity = "1";
+    };
+
+    function logout() {
+        localStorage.removeItem('ls_currentUser');
+        localStorage.removeItem('ls_providerData');
+        localStorage.removeItem('ls_formDraft');
+        localStorage.removeItem('ls_editMode');
+        window.location.href = 'login.html';
     }
 
-    // Dashboard hydration
     async function hydrateDashboard() {
         if (!providerData) return;
         document.getElementById('dash-company-name').innerText = providerData.businessName;
         document.getElementById('dash-type').innerText = providerData.type;
-        
+
         const iconEl = document.getElementById('dash-icon');
         if (iconEl) {
             iconEl.className = providerData.type === 'Company' ? 'fas fa-building text-3xl' : 'fas fa-user text-3xl';
         }
 
-        try {
-            const res = await fetch(`http://localhost:5000/api/providers/${providerData._id}`);
-            if (res.ok) {
-                const liveData = await res.json();
-                providerData = liveData;
-                saveState();
-                
-                const statusEl = document.getElementById('dash-status-badge');
-                if (statusEl) {
-                    statusEl.innerText = liveData.status;
-                    statusEl.className = 'badge badge-sm font-bold ' + getStatusBadgeClass(liveData.status);
-                }
+        const statusEl = document.getElementById('dash-status-badge');
+        if (statusEl) {
+            statusEl.innerText = providerData.status;
+            statusEl.className = 'badge badge-sm font-bold ' + getStatusBadgeClass(providerData.status);
+        }
 
-                const alertContainer = document.getElementById('dash-alert-container');
-                if (alertContainer) {
-                    if (liveData.status === 'Approved') {
-                        alertContainer.innerHTML = `
-                            <div class="alert bg-success/10 border-none mb-6">
-                                <i class="fas fa-check-circle text-success text-2xl"></i>
-                                <div>
-                                    <h3 class="font-bold text-success">Application Approved & Live</h3>
-                                    <div class="text-sm">Your provider profile is now live on LocalServe. Customers can now find you!</div>
-                                </div>
-                            </div>
-                        `;
-                    } else if (liveData.status === 'Rejected') {
-                        alertContainer.innerHTML = `
-                            <div class="alert bg-error/10 border-none mb-6">
-                                <i class="fas fa-times-circle text-error text-2xl"></i>
-                                <div>
-                                    <h3 class="font-bold text-error">Application Rejected</h3>
-                                    <div class="text-sm">Reason: ${liveData.statusReason || 'Please review your information and try again.'}</div>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        const reasonHtml = liveData.statusReason ? `<div class="text-sm mt-2 p-3 bg-warning/20 rounded font-medium text-warning-content"><b>Reason / Violation:</b> ${liveData.statusReason}</div>` : '';
-                        alertContainer.innerHTML = `
-                            <div class="alert bg-base-200 border-none mb-6">
-                                <i class="fas fa-clock text-warning text-2xl"></i>
-                                <div>
-                                    <h3 class="font-bold">Application Under Review</h3>
-                                    <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
-                                    ${reasonHtml}
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
+        const alertContainer = document.getElementById('dash-alert-container');
+        if (alertContainer) {
+            if (providerData.status === 'Approved') {
+                alertContainer.innerHTML = `
+                    <div class="alert bg-success/10 border-none mb-6">
+                        <i class="fas fa-check-circle text-success text-2xl"></i>
+                        <div>
+                            <h3 class="font-bold text-success">Application Approved &amp; Live</h3>
+                            <div class="text-sm">Your provider profile is now live on LocalServe. Customers can now find you!</div>
+                        </div>
+                    </div>`;
+            } else if (providerData.status === 'Rejected') {
+                alertContainer.innerHTML = `
+                    <div class="alert bg-error/10 border-none mb-6">
+                        <i class="fas fa-times-circle text-error text-2xl"></i>
+                        <div>
+                            <h3 class="font-bold text-error">Application Rejected</h3>
+                            <div class="text-sm">Reason: ${providerData.statusReason || 'Please review your information and try again.'}</div>
+                        </div>
+                    </div>`;
+            } else {
+                const reasonHtml = providerData.statusReason ? `<div class="text-sm mt-2 p-3 bg-warning/20 rounded font-medium text-warning-content"><b>Reason / Violation:</b> ${providerData.statusReason}</div>` : '';
+                alertContainer.innerHTML = `
+                    <div class="alert bg-base-200 border-none mb-6">
+                        <i class="fas fa-clock text-warning text-2xl"></i>
+                        <div>
+                            <h3 class="font-bold">Application Under Review</h3>
+                            <div class="text-sm">Authority is currently reviewing your application. They will contact you within 2/3 business days.</div>
+                            ${reasonHtml}
+                        </div>
+                    </div>`;
             }
-        } catch (e) {
-            console.error(e);
         }
     }
 
@@ -276,13 +246,11 @@
         return 'badge-warning';
     }
 
-    // Edit Application - sets a flag and redirects to form page
     function editApplication() {
         localStorage.setItem('ls_editMode', 'edit');
         window.location.href = 'form.html';
     }
 
-    // Terminate Service
     function terminateService() {
         Swal.fire({
             title: 'Terminate Service?',
@@ -296,19 +264,20 @@
             customClass: { confirmButton: 'btn btn-error text-white ml-2', cancelButton: 'btn btn-ghost' },
             buttonsStyling: false,
             reverseButtons: true
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                providerData = null;
-                saveState();
+                try {
+                    await fetch(`http://localhost:5000/api/providers/${providerData._id}`, { method: 'DELETE' });
+                } catch (e) { console.error(e); }
+                localStorage.removeItem('ls_providerData');
+                localStorage.removeItem('ls_formDraft');
                 Swal.fire({
                     title: 'Terminated!',
-                    text: 'Your service provider account has been deleted.',
+                    text: 'Your service provider account has been removed.',
                     icon: 'success',
                     customClass: { confirmButton: 'btn btn-primary text-white' },
                     buttonsStyling: false
-                }).then(() => {
-                    renderRouter();
-                });
+                }).then(() => { window.location.reload(); });
             }
         });
     }
