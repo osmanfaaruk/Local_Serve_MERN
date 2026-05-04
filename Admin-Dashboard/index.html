@@ -60,7 +60,6 @@
             <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
         </div>
         <div class="flex-none gap-2">
-            <span class="text-sm font-medium text-base-content/50 hidden md:block" id="admin-username-display"></span>
             <a href="/" class="btn btn-ghost btn-sm">Website</a>
             <button onclick="adminLogout()" class="btn btn-ghost btn-sm text-error font-bold">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -184,8 +183,7 @@
 
         window.onload = async () => {
             const username = await requireAdminAuth();
-            if (!username) return; // redirected to login
-            document.getElementById('admin-username-display').textContent = username;
+            if (!username) return; 
             loadDashboardStats();
             document.body.style.opacity = "1";
         };
