@@ -47,7 +47,7 @@ A full-stack local service provider directory connecting professional service pr
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/osmanfaaruk/Main_Local_Serve_Share.git
+   git clone https://github.com/osmanfaaruk/Local_Serve_MERN.git
    ```
 
 2. **Setup Environment Variables:**

@@ -1,5 +1,5 @@
 {
-  "name": "main-localserve-website",
+  "name": "local-serve-mern",
   "version": "1.0.0",
   "description": "A local service provider directory connecting Chittagong's professionals with residents who need quality services.",
   "main": "index.js",
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/osmanfaaruk/Main_Local_Serve_Share.git"
+    "url": "git+https://github.com/osmanfaaruk/Local_Serve_MERN.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/osmanfaaruk/Main_Local_Serve_Share/issues"
+    "url": "https://github.com/osmanfaaruk/Local_Serve_MERN/issues"
   },
-  "homepage": "https://github.com/osmanfaaruk/Main_Local_Serve_Share#readme",
+  "homepage": "https://github.com/osmanfaaruk/Local_Serve_MERN#readme",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
