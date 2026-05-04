@@ -28,9 +28,13 @@ app.use('/api/user/provider-details', userProviderDetails);
 
 const formRoutes             = require('./routes/user-provider/formRoutes');      // → form.html
 const dashboardRoutes        = require('./routes/user-provider/dashboardRoutes'); // → dashboard.html
+const loginRoutes            = require('./routes/user-provider/loginRoutes');     // → login.html
+const registerRoutes         = require('./routes/user-provider/registerRoutes');  // → register.html
 
 app.use('/api/user-provider/form',      formRoutes);
 app.use('/api/user-provider/dashboard', dashboardRoutes);
+app.use('/api/user-provider/login',     loginRoutes);
+app.use('/api/user-provider/register',  registerRoutes);
 
 const adminManageProviders   = require('./routes/admin/manageProvidersRoutes');   // → manage-providers.html
 const adminManageCategories  = require('./routes/admin/manageCategoriesRoutes');  // → manage-categories.html

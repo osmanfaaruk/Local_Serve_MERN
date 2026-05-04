@@ -4,15 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Security | LocalServe</title>
+    <title>Change Password | LocalServe</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
     <script>
         tailwind.config = {
             darkMode: 'class',
-            daisyui: {
-                themes: ['sky', 'light'],
-                darkTheme: 'light'
-            }
+            daisyui: { themes: ['sky', 'light'], darkTheme: 'light' }
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -33,7 +30,6 @@
 
 <body class="min-h-screen bg-base-200">
 
-    <!-- Navbar -->
     <div class="navbar bg-base-100/80 backdrop-blur-md sticky top-0 z-50 px-4 md:px-20 border-b border-base-200">
         <div class="navbar-start">
             <a href="../index.html" class="btn btn-ghost normal-case text-2xl font-black text-primary tracking-tighter">LocalServe</a>
@@ -47,10 +43,9 @@
         </div>
     </div>
 
-    <!-- Main Content Container -->
     <div class="max-w-6xl mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row gap-6">
-            <!-- Sidebar -->
+
             <div class="md:w-1/4 w-full">
                 <div class="bg-base-100 rounded-xl shadow-sm border border-base-300 overflow-hidden sticky top-[90px]">
                     <div class="p-6 border-b border-base-200 bg-primary/5 flex items-center gap-4">
@@ -64,21 +59,20 @@
                     </div>
                     <ul class="menu p-4 w-full bg-base-100 text-base-content gap-2">
                         <li><a href="dashboard.html" class="font-bold py-3"><i class="fas fa-clipboard-list w-5"></i> Your Application</a></li>
-                        <li><a href="security.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-shield-alt w-5"></i> Account Security</a></li>
+                        <li><a href="security.html" class="font-bold py-3 active bg-blue-50 text-blue-700"><i class="fas fa-key w-5"></i> Change Password</a></li>
                         <div class="divider my-1"></div>
-                        <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
+                        <li><a onclick="logout()" class="font-bold text-error py-3 hover:bg-error/10 cursor-pointer"><i class="fas fa-sign-out-alt w-5"></i> Logout</a></li>
                     </ul>
                 </div>
             </div>
-            
-            <!-- Security Content -->
+
             <div class="md:w-3/4 w-full">
                 <div class="card bg-base-100 shadow-xl border border-base-300">
                     <div class="card-body p-6 md:p-10">
                         <h2 class="text-2xl font-extrabold mb-1 border-b pb-4 flex items-center gap-3">
                             <i class="fas fa-key text-primary"></i> Change Password
                         </h2>
-                        
+
                         <form id="changePasswordForm" class="space-y-6 mt-4" onsubmit="handleChangePassword(event)">
                             <div class="form-control">
                                 <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Current Password <span class="text-error">*</span></span></label>
@@ -92,14 +86,14 @@
                                 <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Confirm New Password <span class="text-error">*</span></span></label>
                                 <input type="password" id="cp_confirm" class="input input-bordered w-full md:w-2/3" required />
                             </div>
-                            
                             <div class="pt-4">
-                                <button type="submit" class="btn btn-primary font-bold shadow-lg px-8">Save Changes</button>
+                                <button type="submit" id="saveBtn" class="btn btn-primary font-bold shadow-lg px-8">Save Changes</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -122,31 +116,48 @@
         window.location.href = 'login.html';
     }
 
-    function handleChangePassword(e) {
+    async function handleChangePassword(e) {
         e.preventDefault();
-        const current = document.getElementById('cp_current').value;
-        const newPass = document.getElementById('cp_new').value;
-        const confirm = document.getElementById('cp_confirm').value;
+        const currentPassword = document.getElementById('cp_current').value;
+        const newPassword = document.getElementById('cp_new').value;
+        const confirmPassword = document.getElementById('cp_confirm').value;
+        const btn = document.getElementById('saveBtn');
 
-        if (newPass !== confirm) {
-            Swal.fire({ icon: 'error', title: 'Error', text: 'Passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+        if (newPassword !== confirmPassword) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'New passwords do not match!', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
             return;
         }
 
-        if (current !== '1') {
-            Swal.fire({ icon: 'error', title: 'Auth Error', text: 'Current password is incorrect.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
-            return;
-        }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Saving...';
 
-        Swal.fire({
-            icon: 'success', 
-            title: 'Success!', 
-            text: 'Password changed successfully.', 
-            customClass: { confirmButton: 'btn btn-primary text-white' }, 
-            buttonsStyling: false
-        }).then(() => {
-            document.getElementById('changePasswordForm').reset();
-        });
+        try {
+            const res = await fetch('http://localhost:5000/api/user-provider/login/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: currentUser.username, currentPassword, newPassword })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Password changed successfully.',
+                    customClass: { confirmButton: 'btn btn-primary text-white' },
+                    buttonsStyling: false
+                }).then(() => {
+                    document.getElementById('changePasswordForm').reset();
+                });
+            } else {
+                Swal.fire({ icon: 'error', title: 'Failed', text: data.message, customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+            }
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Could not connect to server.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = 'Save Changes';
+        }
     }
 </script>
 

@@ -60,13 +60,9 @@
 
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 py-12" id="main-container">
-        <!-- Login Card -->
         <div class="card bg-base-100 shadow-xl border border-base-300 max-w-md mx-auto">
             <div class="card-body">
                 <h2 class="card-title justify-center text-2xl font-bold mb-6">Login to Continue</h2>
-                <div class="alert alert-info shadow-none bg-blue-50 text-blue-700 mb-6 text-sm">
-                    <i class="fas fa-info-circle mr-2"></i> For demo, use Username: <strong>Osman</strong>, Password: <strong>1</strong>
-                </div>
                 <form onsubmit="handleLogin(event)" class="space-y-4">
                     <div class="form-control">
                         <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Username</span></label>
@@ -76,7 +72,7 @@
                         <label class="label"><span class="label-text font-bold uppercase tracking-wider text-xs">Password</span></label>
                         <input type="password" id="loginPassword" class="input input-bordered w-full" required />
                     </div>
-                    <button type="submit" class="btn btn-primary w-full text-white font-bold mt-4 shadow-lg">Login</button>
+                    <button type="submit" id="loginBtn" class="btn btn-primary w-full text-white font-bold mt-4 shadow-lg">Login</button>
                 </form>
                 <div class="divider text-xs opacity-50">OR</div>
                 <p class="text-center text-sm">Don't have an account? <a href="register.html" class="text-primary font-bold hover:underline">Register Now</a></p>
@@ -85,10 +81,6 @@
     </div>
 
 <script>
-    const DEMO_USER = "Osman";
-    const DEMO_PASS = "1";
-    let currentUser = null;
-
     window.onload = () => {
         const storedUser = localStorage.getItem('ls_currentUser');
         if (storedUser) {
@@ -98,23 +90,40 @@
         }
     };
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault();
-        const u = document.getElementById('loginUsername').value;
-        const p = document.getElementById('loginPassword').value;
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+        const btn = document.getElementById('loginBtn');
 
-        if (u === DEMO_USER && p === DEMO_PASS) {
-            currentUser = { username: u };
-            localStorage.setItem('ls_currentUser', JSON.stringify(currentUser));
-            window.location.href = 'dashboard.html';
-        } else {
-            Swal.fire({
-                icon: 'error', 
-                title: 'Login Failed', 
-                text: 'Invalid credentials. Use Osman / 1.', 
-                customClass: { confirmButton: 'btn btn-primary text-white' }, 
-                buttonsStyling: false
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Logging in...';
+
+        try {
+            const res = await fetch('http://localhost:5000/api/user-provider/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
             });
+            const data = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem('ls_currentUser', JSON.stringify(data.user));
+                window.location.href = 'dashboard.html';
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: data.message,
+                    customClass: { confirmButton: 'btn btn-primary text-white' },
+                    buttonsStyling: false
+                });
+            }
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Error', text: 'Could not connect to server.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = 'Login';
         }
     }
 </script>

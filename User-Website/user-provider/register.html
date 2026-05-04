@@ -103,51 +103,50 @@
     <script>
         document.body.style.opacity = "1";
 
-        // Handle Registration Form Submission
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const email = document.getElementById('regEmail').value;
             const username = document.getElementById('regUsername').value;
             const password = document.getElementById('regPassword').value;
+            const btn = document.querySelector('#registerForm button[type="submit"]');
 
-            // TODO: I am saving this in localStorage temporarily as our database.
-            // When the senior backend dev finishes the real API, I will just swap it out like this:
-            // fetch('/api/register', { method: 'POST', body: JSON.stringify({ email, username, password }) })
-            
-            let users = JSON.parse(localStorage.getItem('localserve_users') || '[]');
-            
-            // Check if username already exists in our mock db
-            const exists = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-            if (exists) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'That username is already taken! Try another one.',
-                    confirmButtonColor: '#1d4ed8'
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Creating account...';
+
+            try {
+                const res = await fetch('http://localhost:5000/api/user-provider/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, username, password })
                 });
-                return;
+                const data = await res.json();
+
+                if (res.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Account Created!',
+                        text: 'Registration successful! You can now login.',
+                        customClass: { confirmButton: 'btn btn-primary text-white' },
+                        buttonsStyling: false
+                    }).then(() => {
+                        window.location.href = 'login.html';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registration Failed',
+                        text: data.message,
+                        customClass: { confirmButton: 'btn btn-primary text-white' },
+                        buttonsStyling: false
+                    });
+                }
+            } catch (err) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Could not connect to server.', customClass: { confirmButton: 'btn btn-primary text-white' }, buttonsStyling: false });
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Sign Up';
             }
-
-            // Save to our "database" (localStorage for now)
-            users.push({
-                email: email,
-                username: username,
-                password: password, // Note for future self: Never save plain text password in DB like this! We have to hash it with bcrypt before inserting.
-                createdAt: new Date().toISOString()
-            });
-            localStorage.setItem('localserve_users', JSON.stringify(users));
-
-            // Success feedback
-            Swal.fire({
-                icon: 'success',
-                title: 'Account Created!',
-                text: 'Registration successful! You can now login with your new account.',
-                confirmButtonColor: '#1d4ed8'
-            }).then(() => {
-                // Redirect user back to login page
-                window.location.href = 'login.html';
-            });
         });
     </script>
 </body>
