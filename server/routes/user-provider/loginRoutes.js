@@ -26,6 +26,9 @@ router.post('/', async (req, res) => {
     });
 });
 
+
+
+// changes password
 router.post('/change-password', async (req, res) => {
     const { username, currentPassword, newPassword } = req.body;
 

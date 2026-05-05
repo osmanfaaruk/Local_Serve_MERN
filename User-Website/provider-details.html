@@ -438,20 +438,22 @@
                 
                 const date = new Date(p.createdAt || Date.now());
                 document.getElementById('memberSinceText').innerText = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
-                
+
                 document.getElementById('feeRangeText').innerText = `${(p.priceConsult || p.priceHourly || 'N/A').toString().replace(/['"]+/g, '').trim()} TK`;
                 document.getElementById('aboutText').innerText = (p.about || 'No description provided.').replace(/['"]+/g, '').trim();
-                
+
                 document.getElementById('phoneText').innerText = (p.phone || 'N/A').replace(/['"]+/g, '').trim();
                 document.getElementById('emailText').innerText = (p.email || 'N/A').replace(/['"]+/g, '').trim();
-                
+
                 let workDaysStr = p.workDays && p.workDays.length > 0 ? p.workDays.map(d => d.replace(/['"]+/g, '').trim()).join(', ') : 'N/A';
                 let timeStr = (p.workTimeStart && p.workTimeEnd) ? `${formatTime12h(p.workTimeStart.replace(/['"]+/g, '').trim())} - ${formatTime12h(p.workTimeEnd.replace(/['"]+/g, '').trim())}` : 'N/A';
                 document.getElementById('workingHoursText').innerText = workDaysStr !== 'N/A' || timeStr !== 'N/A' ? `${workDaysStr} | ${timeStr}` : 'N/A';
-                
+
+              
+
                 document.getElementById('consultFeeText').innerText = p.priceConsult ? `${p.priceConsult} TK` : 'N/A';
                 document.getElementById('hourlyLaborText').innerText = p.priceHourly ? `${p.priceHourly} TK` : 'N/A';
-                
+
                 if (p.phone) {
                     document.getElementById('callBtn').href = `tel:${p.phone}`;
                 }

@@ -9,8 +9,10 @@
 const API = '/api/admin/auth';
 
 /**
+ 
  * Call this at the top of every admin page's window.onload (or directly).
  * Returns the username if valid, otherwise redirects to login.
+ 
  */
 async function requireAdminAuth() {
     const token = localStorage.getItem('adminToken');
