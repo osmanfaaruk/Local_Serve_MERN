@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users | Admin</title>
+    <title>Manage Users | LocalServe Admin</title>
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%231d4ed8'/><path fill='white' d='M448 176L256 88L64 176l192 88l192-88zm-192 112l160-73.3v60L256 348L96 274.7v-60l160 73.3zm0 96l160-73.3v60L256 444l-160-73.3v-60l160 73.3z'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
@@ -59,7 +60,12 @@
     <!-- navbar section start -->
     <div class="navbar bg-base-100 shadow-md px-4 md:px-20">
         <div class="flex-1">
-            <a href="index.html" class="btn btn-ghost normal-case text-xl font-bold text-primary">LocalServe Admin</a>
+            <a href="index.html" class="flex items-center gap-2 group px-4">
+                <div class="w-8 h-8 bg-blue-700 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-700/20 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-layer-group text-xs"></i>
+                </div>
+                <span class="text-xl font-black text-primary tracking-tighter">LocalServe Admin</span>
+            </a>
         </div>
         <div class="flex-none gap-2">
             <a href="/" class="btn btn-ghost btn-sm">Website</a>
