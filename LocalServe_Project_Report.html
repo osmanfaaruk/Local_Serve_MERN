@@ -161,12 +161,31 @@
             text-align: left;
             width: 100%;
         }
+        img {
+            image-rendering: high-quality;
+            image-rendering: -webkit-optimize-contrast;
+        }
         @media print {
             body { padding: 0; max-width: none; }
             .cover-page {
                 height: 100%;
                 justify-content: space-around;
                 page-break-after: always;
+            }
+            img {
+                image-rendering: -webkit-optimize-contrast !important;
+                image-rendering: crisp-edges !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                width: auto !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
+                display: block;
+                margin: 0 auto;
+            }
+            .image-container {
+                page-break-inside: avoid;
             }
         }
     </style>
@@ -217,7 +236,7 @@
 
             <div class="submitted-by">
                 <div class="section-title">Submitted By:</div>
-                <p style="margin-top: 0; margin-bottom: 15px;"><strong>Semester:</strong> 07 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Section:</strong> 03</p>
+                <p style="margin-top: 0; margin-bottom: 15px; white-space: nowrap;"><strong>Semester:</strong> 07 &nbsp;|&nbsp; <strong>Section:</strong> 03 &nbsp;|&nbsp; <strong>Group:</strong> 04</p>
                 <ul class="student-list">
                     <li><strong>Osman Faruk</strong> - 241001012</li>
                     <li><strong>Tahmina Farhana Sharif</strong> - 241001112</li>
@@ -690,7 +709,7 @@
             <ul>
                 <li>Frontend:
                     <ul>
-                        <li><strong>index.html & Global Footer</strong>: Developed the main home page and the professional footer used across the entire website.</li>
+                        <li><strong>index.html & Global Footer</strong>: Developed the main home page with a clean and responsive layout, including navigation elements and a professional footer reused across all pages to maintain design consistency. Ensured proper structure for easy user navigation and accessibility.</li>
                         <li><strong>search-providers.html</strong>: Designed the search page to help users find service providers quickly using filters.</li>
                         <li><strong>provider-details.html</strong>: Created detailed profile pages to show all the info and pricing for each professional.</li>
                     </ul>
@@ -707,13 +726,13 @@
             <ul>
                 <li>Frontend:
                     <ul>
-                        <li><strong>login.html</strong>: Built a secure login page for users to access their accounts.</li>
+                        <li><strong>login.html</strong>: Built a secure and user-friendly login interface with properly structured input fields and validation support. Designed the layout to ensure smooth user interaction and accessibility.</li>
                         <li><strong>register.html</strong>: Created a simple sign-up page for new users to join the platform.</li>
                     </ul>
                 </li>
                 <li>Backend:
                     <ul>
-                        <li><strong>loginRoutes.js & registerRoutes.js</strong>: Set up the backend security system to handle user accounts and keep sessions safe.</li>
+                        <li><strong>loginRoutes.js & registerRoutes.js</strong>: Implemented backend authentication logic to handle user registration and login securely. Added validation checks, error handling, and ensured proper communication with the database. Managed user sessions using localStorage to maintain login state and dynamically update navigation elements such as profile access and dashboard redirection. Ensured secure and consistent authentication flow between frontend and backend systems.</li>
                     </ul>
                 </li>
             </ul>
@@ -746,7 +765,7 @@
         <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 5: Professional Platform Footer & Social Integration</p>
     </div>
 
-    <h2>7. Conclusion</h2>
+    <h2 style="page-break-before: always; break-before: page;">7. Conclusion</h2>
     <p>The LocalServe platform successfully achieves its goal of bridging the gap between skilled professionals and residents in Chittagong. By implementing a robust architecture using Node.js, Express, MongoDB, and Vanilla JavaScript, the project delivers a scalable, fast, and secure directory service. The dual-sided nature of the platform, providing easy search for users while ensuring a strict verification workflow for providers, establishes trust and reliability. Overall, LocalServe modernizes the local service industry, providing a much-needed digital infrastructure for the community.</p>
 
     <div style="margin-top: 50px; margin-bottom: 40px;">
