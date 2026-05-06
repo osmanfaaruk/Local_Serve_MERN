@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalServe Project Report</title>
+    <style>
+        * {
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+        body {
+            line-height: 1.4;
+            color: #333;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px 60px;
+            text-align: justify;
+        }
+        h1 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #000000;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 3px;
+        }
+        h3 {
+            color: #000000;
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+        li {
+            margin-bottom: 3px;
+        }
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .header-info {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #4a5568;
+        }
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            min-height: 95vh;
+            page-break-after: always;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .cover-header {
+            margin-bottom: 1rem;
+        }
+        .uni-name {
+            font-size: 34px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .school-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .dept-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .project-title-section {
+            margin: 3rem 0;
+        }
+        .project-label {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+        .project-title {
+            font-size: 38px;
+            font-weight: bold;
+            margin: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+            color: #000;
+        }
+        .course-info {
+            font-size: 20px;
+            margin-bottom: 2rem;
+            color: #000;
+            line-height: 1.8;
+            text-align: center;
+        }
+        .course-info p {
+            margin: 5px 0;
+        }
+        .submission-details {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+        }
+        .submitted-to, .submitted-by {
+            flex: 1;
+        }
+        .submitted-to {
+            padding-right: 20px;
+        }
+        .submitted-by {
+            padding-left: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: underline;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 15px;
+            display: inline-block;
+            color: #000;
+        }
+        .student-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .student-list li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .submission-date {
+            margin-top: 2rem;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            width: 100%;
+        }
+        @media print {
+            body { padding: 0; max-width: none; }
+            .cover-page {
+                height: 100%;
+                justify-content: space-around;
+                page-break-after: always;
+            }
+        }
+    </style>
+    <!-- Include Mermaid.js for diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+    <div class="cover-page">
+        <div class="cover-header" style="margin-bottom: 2rem;">
+            <!-- Logo Section -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <!-- Add your University Logo Seal here -->
+                <img src="logo.png" alt="EDU Seal" style="width: 120px; display: block; margin: 0 auto; margin-bottom: 10px; display: none;">
+                <div style="color: #900000; font-size: 56px; font-weight: 900; margin-top: 10px; font-family: 'Arial', sans-serif; letter-spacing: 3px; line-height: 1;">EDU</div>
+                <div style="color: #900000; font-size: 16px; font-weight: 900; letter-spacing: 2px; font-family: 'Arial', sans-serif; margin-top: 5px;">EAST DELTA<br>UNIVERSITY</div>
+            </div>
+            
+            <div class="school-name" style="color: #000;">School of Science Engineering & Technology</div>
+            <div class="dept-name" style="color: #000;">Computer Science & Engineering (B.Sc. in CSE)</div>
+        </div>
+
+        <div class="project-title-section">
+            <div class="project-label">Project Report On</div>
+            <h1 class="project-title">LocalServe</h1>
+        </div>
+
+        <div class="course-info">
+            <div style="display: inline-block; text-align: left;">
+                <p><strong>Course Code:</strong> CSE 242</p>
+                <p><strong>Course Name:</strong> Web Development Project Course</p>
+            </div>
+        </div>
+
+        <div class="submission-details">
+            <div class="submitted-to">
+                <div class="section-title">Submitted To:</div>
+                <p style="font-size: 18px; margin-bottom: 5px;"><strong>Promila Haque</strong></p>
+                <p style="margin: 0;">Lecturer, SoSET</p>
+                
+                <div class="submission-date" style="margin-top: 2rem;">
+                    Submission Date: 6 May 2026
+                </div>
+            </div>
+
+            <div class="submitted-by">
+                <div class="section-title">Submitted By:</div>
+                <p style="margin-top: 0; margin-bottom: 15px;"><strong>Semester:</strong> 07 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Section:</strong> 03</p>
+                <ul class="student-list">
+                    <li><strong>Osman Faruk</strong> - 241001012</li>
+                    <li><strong>Tahmina Farhana Sharif</strong> - 241001112</li>
+                    <li><strong>Marshiat Mehejabin</strong> - 241001212</li>
+                    <li><strong>Shahjadi Zareen</strong> - 241001312</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px;"></div>
+
+    <h2>1. Introduction</h2>
+    <p>LocalServe is a web-based directory platform designed to connect skilled professionals and residents in Chittagong. In metropolitan areas, finding reliable services like home maintenance or consulting often relies on word-of-mouth. LocalServe addresses these challenges by providing a platform where quality help is accessible with just a few clicks.</p>
+    
+    <p>Using a modern tech stack (MongoDB, Express.js, and Node.js), the website helps residents search for verified professionals while allowing service providers to show their expertise and clear pricing. The project aims to make it easier to find help through search filters, keep service costs clear, and build trust through a strict admin-led verification system. Overall, LocalServe modernizes the local service industry in Chittagong, making it easier for professionals to connect with the community.</p>
+
+    <h3>User Roles & System Segmentation</h3>
+    <p>The platform categorizes users into three primary segments to ensure a secure and structured service flow:</p>
+    <ul>
+        <li><strong>1. General Users (Service Seekers):</strong> Consumers who use the platform to find local professionals. They can search by service category and location in Chittagong and view detailed provider profiles without a complex registration process.</li>
+        <li><strong>2. Professional Service Providers:</strong> Skilled individuals or companies who list their services. To maintain quality, they must register and submit a detailed application form. Profiles remain "Under Review" and are only visible to the public after Admin verification.</li>
+        <li><strong>3. System Administrators:</strong> Admins manage the platform via a secure dashboard. They are responsible for reviewing provider applications (Approve/Reject) and managing system data like Categories, Locations, and user accounts.</li>
+    </ul>
+
+    <h2>2. Frontend Implementation</h2>
+    <p>The frontend is split into two parts the Public/Provider Website and the Admin Dashboard.</p>
+
+    <h3>Technologies & Libraries Used:</h3>
+    <ul>
+        <li><strong>HTML5 & CSS3:</strong> For structured markup and custom styling overrides.</li>
+        <li><strong>Tailwind CSS:</strong> Used as the utility-first CSS framework (via CDN) to create custom layouts without writing traditional CSS files.</li>
+        <li><strong>DaisyUI:</strong> A Tailwind-based component library that provides pre-styled semantic elements like buttons, cards, badges, and modals.</li>
+        <li><strong>Vanilla JavaScript (ES6+):</strong> Handles all client-side logic, including DOM manipulation, API interactions using the <code>fetch()</code> API, and state management.</li>
+        <li><strong>FontAwesome (v6.4.0):</strong> Used for vector icons to improve visual context in navigation and dashboards.</li>
+        <li><strong>SweetAlert2 (v11):</strong> Integrated for professional popup feedback during critical actions (e.g., successful login, provider application submission).</li>
+    </ul>
+
+    <h3>Public & Provider Website Pages:</h3>
+    <ul>
+        <li><strong>Home (index.html):</strong> The main landing page where users can search for local professionals using category and location filters.</li>
+        <li><strong>Search Results (search-providers.html):</strong> Displays a dynamic list of service providers that match the user's search criteria.</li>
+        <li><strong>Provider Details (provider-details.html):</strong> Shows the full profile of a professional, including their experience, pricing, and services.</li>
+        <li><strong>Login (user-provider/login.html):</strong> A secure page for users and providers to sign in to their accounts.</li>
+        <li><strong>Registration (user-provider/register.html):</strong> Allows new users and potential providers to create an account on the platform.</li>
+        <li><strong>Provider Application (user-provider/form.html):</strong> A multi-step form for professionals to submit their business details for admin review.</li>
+        <li><strong>Provider Dashboard (user-provider/dashboard.html):</strong> A private area for professionals to see their approval status and manage their profile.</li>
+        <li><strong>Account Security (user-provider/security.html):</strong> A dedicated page for users to update passwords and manage account safety settings.</li>
+    </ul>
+
+    <h3>Admin Dashboard Pages:</h3>
+    <ul>
+        <li><strong>Admin Login (admin-login.html):</strong> A dedicated secure gateway for platform administrators to access the management panel.</li>
+        <li><strong>Dashboard Home (index.html):</strong> An overview page showing real-time statistics of providers, users, categories, and locations.</li>
+        <li><strong>Manage Providers (manage-providers.html):</strong> The primary tool for admins to review, approve, or reject professional applications.</li>
+        <li><strong>Add Provider (add-provider.html):</strong> Allows administrators to manually input and list new service providers into the database.</li>
+        <li><strong>Manage Users (manage-users.html):</strong> A complete list and management interface for all registered customer accounts.</li>
+        <li><strong>Manage Categories (manage-categories.html):</strong> Allows admins to add or edit service types like Plumbing, Home Repair, etc.</li>
+        <li><strong>Manage Locations (manage-locations.html):</strong> Used to manage the list of neighborhoods and areas within Chittagong supported by the platform.</li>
+        <li><strong>System Settings (settings.html):</strong> Configuration area for admin profile details and general system preferences.</li>
+    </ul>
+
+    <h3>Frontend File Structure:</h3>
+    <pre style="text-align: left; overflow-x: auto; font-family: inherit;">
+/User-Website
+├── index.html
+├── search-providers.html
+├── provider-details.html
+├── /user-provider
+│   ├── login.html
+│   ├── register.html
+│   ├── form.html
+│   ├── dashboard.html
+│   └── security.html
+└── /company-terms
+    ├── about-mission.html
+    ├── contact-support.html
+    ├── privacy-policy.html
+    └── terms-of-service.html
+
+/Admin-Dashboard
+├── index.html
+├── admin-login.html
+├── manage-providers.html
+├── add-provider.html
+├── manage-users.html
+├── manage-categories.html
+├── manage-locations.html
+├── settings.html
+└── adminAuth.js
+    </pre>
+
+    <h2>3. Backend Implementation</h2>
+    <p>The backend serves as the main engine of the LocalServe platform, providing a secure way to manage data and user logins. It is built using Node.js and the Express.js framework, with a modular design to keep the code organized.</p>
+
+    <h3>Technologies & Packages Used:</h3>
+    <ul>
+        <li><strong>Node.js & Express.js:</strong> The runtime environment and web framework used to build the RESTful API and handle server-side logic.</li>
+        <li><strong>MongoDB & Mongoose:</strong> A NoSQL database for flexible data storage, with Mongoose providing a schema-based solution to model application data.</li>
+        <li><strong>JSON Web Token (JWT):</strong> Implemented for stateless authentication, allowing the server to verify user and admin identities securely.</li>
+        <li><strong>Bcrypt.js:</strong> Used for industry-standard password hashing, ensuring that sensitive user credentials are never stored in plain text.</li>
+        <li><strong>CORS & Dotenv:</strong> Essential packages for enabling Cross-Origin Resource Sharing and managing environment variables securely.</li>
+    </ul>
+
+
+    <h3>Backend File Structure & Module Descriptions:</h3>
+    <pre style="text-align: left; overflow-x: auto; font-family: inherit;">
+/server
+├── index.js (Main Entry Point)
+├── /models
+│   ├── Category.js
+│   ├── Location.js
+│   ├── Provider.js
+│   └── User.js
+└── /routes
+    ├── /admin
+    │   ├── addProviderRoutes.js
+    │   ├── adminAuthRoutes.js
+    │   ├── manageCategoriesRoutes.js
+    │   ├── manageLocationsRoutes.js
+    │   ├── manageProvidersRoutes.js
+    │   └── manageUsersRoutes.js
+    ├── /user
+    │   ├── indexRoutes.js
+    │   ├── providerDetailsRoutes.js
+    │   └── searchRoutes.js
+    ├── /user-provider
+    │   ├── dashboardRoutes.js
+    │   ├── formRoutes.js
+    │   ├── loginRoutes.js
+    │   └── registerRoutes.js
+    ├── categoryRoutes.js
+    ├── locationRoutes.js
+    └── providerRoutes.js
+    </pre>
+
+    <p><strong>Backend to Frontend Connectivity Mapping:</strong></p>
+    <ul>
+        <li><strong>index.js:</strong> Central server engine; initializes all routes and database connections.</li>
+        <li><strong>routes/user/indexRoutes.js:</strong> Supplies dynamic category and location data to <code>index.html</code>.</li>
+        <li><strong>routes/user/searchRoutes.js:</strong> Processes search queries for <code>search-providers.html</code> based on filters.</li>
+        <li><strong>routes/user/providerDetailsRoutes.js:</strong> Fetches detailed profile data for <code>provider-details.html</code>.</li>
+        <li><strong>routes/user-provider/loginRoutes.js:</strong> Handles authentication logic for <code>user-provider/login.html</code>.</li>
+        <li><strong>routes/user-provider/registerRoutes.js:</strong> Manages account creation for <code>user-provider/register.html</code>.</li>
+        <li><strong>routes/user-provider/formRoutes.js:</strong> Processes provider application submissions from <code>user-provider/form.html</code>.</li>
+        <li><strong>routes/user-provider/dashboardRoutes.js:</strong> Supplies status and profile data to <code>user-provider/dashboard.html</code>.</li>
+        <li><strong>routes/admin/adminAuthRoutes.js:</strong> Secures the administrative gateway for <code>Admin-Dashboard/admin-login.html</code>.</li>
+        <li><strong>routes/admin/manageProvidersRoutes.js:</strong> Connects the review/approval logic to <code>Admin-Dashboard/manage-providers.html</code>.</li>
+        <li><strong>routes/admin/manageCategoriesRoutes.js:</strong> Handles category CRUD operations for <code>Admin-Dashboard/manage-categories.html</code>.</li>
+        <li><strong>routes/admin/manageLocationsRoutes.js:</strong> Supplies location management data to <code>Admin-Dashboard/manage-locations.html</code>.</li>
+        <li><strong>routes/admin/addProviderRoutes.js:</strong> Handles manual provider data entry for <code>Admin-Dashboard/add-provider.html</code>.</li>
+    </ul>
+
+    <h2>4. Database Connection, ER Diagram & Normalization</h2>
+
+    <h3>Database Normalization Principles</h3>
+    <p>While MongoDB is a document-oriented NoSQL database, relational normalization principles (1NF, 2NF, 3NF) were adapted to ensure data integrity and optimize query performance:</p>
+    <ul>
+        <li><strong>First Normal Form (1NF) - Atomicity:</strong> All schema attributes contain atomic values. Multi-valued attributes such as service categories and coverage areas are managed as structured arrays within the Provider document, ensuring clear data boundaries.</li>
+        <li><strong>Second & Third Normal Form (2NF & 3NF) - Minimizing Redundancy:</strong> Instead of monolithic embedding, the architecture utilizes referencing. The <code>User</code> schema maintains a <code>providerId</code> reference to the <code>Provider</code> collection, decoupling authentication from professional profiles. Administrative configurations are isolated in a dedicated <code>AdminConfig</code> collection to prevent transitive dependencies.</li>
+    </ul>
+
+    <h3>Entity-Relationship (ER) Diagram</h3>
+    <div class="mermaid">
+        erDiagram
+            ADMINCONFIG {
+                ObjectId _id PK
+                String username
+                String passwordHash
+            }
+            USER {
+                ObjectId _id PK
+                String email
+                String username
+                String password
+                ObjectId providerId FK
+            }
+            PROVIDER {
+                ObjectId _id PK
+                String businessName
+                String type
+                String phone
+                String email
+                String about
+                Array categories
+                Array areas
+                String experience
+                String status
+                String statusReason
+                Boolean isApplied
+                Boolean verificationStatus
+                Date createdAt
+            }
+            CATEGORY {
+                ObjectId _id PK
+                String name
+                String icon
+            }
+            LOCATION {
+                ObjectId _id PK
+                String name
+            }
+
+            USER ||--o| PROVIDER : "Manages"
+            PROVIDER }o--o{ CATEGORY : "Belongs to"
+            PROVIDER }o--o{ LOCATION : "Located in"
+    </div>
+
+    <h2>5. Overall Project Flow Diagram</h2>
+    <p>The following diagram illustrates the lifecycle of a user request and the overall architectural flow of the platform, including Admin interactions.</p>
+    
+    <div class="mermaid">
+        graph TD
+            classDef actor fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+            classDef db fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
+            classDef action fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+
+            U([Regular User]):::actor
+            P([Service Provider]):::actor
+            A([Administrator]):::actor
+
+            DB[(MongoDB Database)]:::db
+
+            subgraph "Public Ecosystem"
+                Search[Search & Filter]:::action
+                Profile[View Profiles]:::action
+                U -->|Search| Search
+                Search -->|View| Profile
+            end
+
+            subgraph "Provider Ecosystem"
+                AppForm[Application Form]:::action
+                PDash[Provider Dashboard]:::action
+                P -->|Apply| AppForm
+                P -->|Check Status| PDash
+            end
+
+            subgraph "Admin Control Center"
+                MProv[Manage Providers]:::action
+                MUser[Manage Users]:::action
+                MCL[Categories & Locations]:::action
+                A -->|Review| MProv
+                A -->|Monitor| MUser
+                A -->|Update| MCL
+            end
+
+            %% DB Connections
+            Search -->|Query| DB
+            DB -.->|Data| Search
+
+            AppForm -->|Save Pending| DB
+            DB -.->|Status| PDash
+
+            MProv -->|Update Status| DB
+            MUser -->|Modify Data| DB
+            MCL -->|Update Entities| DB
+    </div>
+
+    <h2>6. Self Evaluation</h2>
+
+    <h3>Osman Faruk (ID: 241001012)</h3>
+    
+    <ul>
+        <li><strong>Database Setup & Schema Design:</strong>
+            <ul>
+                <li>Files: <strong>models/Provider.js, User.js, Category.js, Location.js</strong>.</li>
+                <li>Action: Created the main database structure to store all necessary information like provider details, user accounts, and locations.</li>
+                <li>File: <strong>server/index.js</strong>.</li>
+                <li>Action: Set up the core server to connect the website with the MongoDB database.</li>
+            </ul>
+        </li>
+        <li><strong>Provider Management Dashboard:</strong>
+            <ul>
+                <li>Files: <strong>manage-providers.html, manageProvidersRoutes.js</strong>.</li>
+                <li>Action: Built a dashboard for admins to manage providers. Added logic to separate providers into "Admin Added" and "Applied" categories for better organization.</li>
+                <li>Action: Included buttons for admins to review and update provider statuses (Approved, Pending, or Rejected) instantly.</li>
+            </ul>
+        </li>
+        <li><strong>Admin Provider Entry & Data Protection:</strong>
+            <ul>
+                <li>Files: <strong>add-provider.html, addProviderRoutes.js</strong>.</li>
+                <li>Action: Built a detailed form for admins to manually add new providers. Included an auto-save system so work isn't lost if the page is closed.</li>
+                <li>File: <strong>Admin-Dashboard/index.html</strong>.</li>
+                <li>Action: Created the home page for the admin panel to show total users, verified providers, and other live statistics.</li>
+            </ul>
+        </li>
+        <li><strong>Deployment:</strong>
+            <ul>
+                <li>Action: Uploaded the project to GitHub and deployed it on Render to make the website live and accessible online.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Website Interface (Osman Faruk)</h4>
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/osman-4.png" alt="Dashboard Overview" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 1: Admin Dashboard Statistics</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/osman-3.png" alt="Provider Management" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 2: Provider Management Table</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/osman-2.png" alt="Review Modal" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 3: Application Review Modal</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/osman-1.png" alt="Add Provider" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 4: Manual Provider Entry Form</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/osman-5.png" alt="Admin Login" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 5: Secure Admin Login Gateway</p>
+    </div>
+
+    <h3>Tahmina Farhana Sharif (ID: 241001112)</h3>
+    
+    <ul>
+        <li><strong>User Management Module:</strong>
+            <ul>
+                <li>Frontend: <strong>manage-users.html</strong>.</li>
+                <li>Action: Developed a clear page for admins to view and manage all registered users in the system.</li>
+                <li>Backend: <strong>manageUsersRoutes.js</strong>.</li>
+                <li>Action: Set up the API to securely fetch user data from the database.</li>
+            </ul>
+        </li>
+        <li><strong>Category & Location Management:</strong>
+            <ul>
+                <li>Frontend: <strong>manage-categories.html, manage-locations.html</strong>.</li>
+                <li>Action: Built easy-to-use dashboards for admins to add or edit service categories and city locations.</li>
+                <li>Backend: <strong>manageCategoriesRoutes.js, manageLocationsRoutes.js</strong>.</li>
+                <li>Action: Wrote the logic to save and update these categories and locations in the database.</li>
+            </ul>
+        </li>
+        <li><strong>System Settings & Security:</strong>
+            <ul>
+                <li>Frontend: <strong>settings.html</strong>.</li>
+                <li>Action: Created a settings page where admins can update their profile and account details.</li>
+                <li>Backend: <strong>adminAuthRoutes.js</strong>.</li>
+                <li>Action: Added security features to protect admin passwords and handle login sessions safely.</li>
+            </ul>
+        </li>
+        <li><strong>Company Info & Support Pages:</strong>
+            <ul>
+                <li>Frontend: <strong>about-mission.html, contact-support.html, privacy-policy.html, terms-service.html</strong>.</li>
+                <li>Action: Designed and wrote the content for the platform’s mission, contact, and legal policy pages.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Website Interface (Tahmina Farhana Sharif)</h4>
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-1.png" alt="User Management" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 1: Admin User Management</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-2.png" alt="Category Management" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 2: Category Management Portal</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-3.png" alt="Location Management" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 3: Location/Area Management</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-4.png" alt="Admin Settings" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 4: Administrator Settings Interface</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-about.png" alt="About Us" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 5: Platform Mission Page</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-contact.png" alt="Contact Support" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 6: Contact Support Interface</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-privacy.png" alt="Privacy Policy" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 7: Privacy Policy Documentation</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/tahmina-terms.png" alt="Terms of Service" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 8: Terms of Service Documentation</p>
+    </div>
+
+    <h3>Marshiat Mehejabin (ID: 241001212)</h3>
+    
+    <ul>
+        <li><strong>Provider Application System:</strong>
+            <ul>
+                <li>Frontend: <strong>user-provider/form.html</strong>.</li>
+                <li>Action: Created a multi-step application form for professionals to join the platform. Added an auto-save feature using Local Storage so users can save their progress and finish later.</li>
+                <li>Backend: <strong>formRoutes.js</strong>.</li>
+                <li>Action: Developed the system to securely receive and store these provider applications for admin review.</li>
+            </ul>
+        </li>
+        <li><strong>Provider Dashboard & Status:</strong>
+            <ul>
+                <li>Frontend: <strong>user-provider/dashboard.html</strong>.</li>
+                <li>Action: Built a private dashboard where providers can see their current status (Pending/Approved) and manage their profile.</li>
+                <li>Backend: <strong>dashboardRoutes.js</strong>.</li>
+                <li>Action: Set up the API to show live updates to providers about their application status.</li>
+            </ul>
+        </li>
+        <li><strong>Account Security:</strong>
+            <ul>
+                <li>Frontend: <strong>user-provider/security.html</strong>.</li>
+                <li>Action: Built a security page so providers can easily update their passwords and keep their accounts safe.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Website Interface (Marshiat Mehejabin)</h4>
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/marshiat-1.png" alt="Provider Onboarding" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 1: Provider Portal - Onboarding Entry</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/marshiat-2.png" alt="Multi-step Form" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 2: Multi-step Application (Services Configuration)</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/marshiat-3.png" alt="Profile Review" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 3: Final Application Review & Submission</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px; display: flex; justify-content: center; gap: 15px;">
+        <div style="flex: 1; max-width: 48%;">
+            <img src="report-images/marshiat-4.png" alt="Rejected Status" style="width: 100%; max-height: 280px; object-fit: contain; border: 1px solid #ccc;">
+            <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 4: Application Rejected State</p>
+        </div>
+        <div style="flex: 1; max-width: 48%;">
+            <img src="report-images/marshiat-5.png" alt="Approved Status" style="width: 100%; max-height: 280px; object-fit: contain; border: 1px solid #ccc;">
+            <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 5: Application Approved State</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px; display: flex; justify-content: center; gap: 15px;">
+        <div style="flex: 1; max-width: 48%;">
+            <img src="report-images/marshiat-6.png" alt="Account Security" style="width: 100%; max-height: 280px; object-fit: contain; border: 1px solid #ccc;">
+            <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 6: Credential Management Interface</p>
+        </div>
+        <div style="flex: 1; max-width: 48%;">
+            <img src="report-images/marshiat-7.png" alt="Service Termination" style="width: 100%; max-height: 280px; object-fit: contain; border: 1px solid #ccc;">
+            <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 7: Service Termination Protocol</p>
+        </div>
+    </div>
+
+    <h3>Shahjadi Zareen (ID: 241001312)</h3>
+    
+    <ul>
+        <li><strong>Public Search & Profile Engine:</strong>
+            <ul>
+                <li>Frontend:
+                    <ul>
+                        <li><strong>index.html & Global Footer</strong>: Developed the main home page and the professional footer used across the entire website.</li>
+                        <li><strong>search-providers.html</strong>: Designed the search page to help users find service providers quickly using filters.</li>
+                        <li><strong>provider-details.html</strong>: Created detailed profile pages to show all the info and pricing for each professional.</li>
+                    </ul>
+                </li>
+                <li>Backend:
+                    <ul>
+                        <li><strong>searchRoutes.js</strong>: Wrote the logic to filter and find providers based on what the user is looking for.</li>
+                        <li><strong>providerDetailsRoutes.js</strong>: Developed the API to fetch and display the full details of a provider.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><strong>User Login & Security:</strong>
+            <ul>
+                <li>Frontend:
+                    <ul>
+                        <li><strong>login.html</strong>: Built a secure login page for users to access their accounts.</li>
+                        <li><strong>register.html</strong>: Created a simple sign-up page for new users to join the platform.</li>
+                    </ul>
+                </li>
+                <li>Backend:
+                    <ul>
+                        <li><strong>loginRoutes.js & registerRoutes.js</strong>: Set up the backend security system to handle user accounts and keep sessions safe.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>Website Interface (Shahjadi Zareen)</h4>
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/zareen-1.png" alt="Home Page" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 1: Platform Landing Page & Search Entry</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/zareen-2.png" alt="Search Results" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 2: Service Search & Filtering Results</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/zareen-3.png" alt="Provider Details" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 3: Service Provider Profile View</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/zareen-4.png" alt="User Registration" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 4: Secure User Registration Portal</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 15px;">
+        <img src="report-images/zareen-5.png" alt="Website Footer" style="width: 100%; max-height: 380px; object-fit: contain; border: 1px solid #ccc;">
+        <p style="font-style: italic; font-size: 14px; margin-top: 5px;">Figure 5: Professional Platform Footer & Social Integration</p>
+    </div>
+
+    <h2>7. Conclusion</h2>
+    <p>The LocalServe platform successfully achieves its goal of bridging the gap between skilled professionals and residents in Chittagong. By implementing a robust architecture using Node.js, Express, MongoDB, and Vanilla JavaScript, the project delivers a scalable, fast, and secure directory service. The dual-sided nature of the platform, providing easy search for users while ensuring a strict verification workflow for providers, establishes trust and reliability. Overall, LocalServe modernizes the local service industry, providing a much-needed digital infrastructure for the community.</p>
+
+    <div style="margin-top: 50px; margin-bottom: 40px;">
+        <h3 style="margin-top: 0; color: #000; border-bottom: 2px solid #000; padding-bottom: 5px; display: inline-block;">Project Live Links & Access</h3>
+        
+        <p style="margin-top: 20px; font-size: 16px;"><strong>User Site Live Link:</strong> <br>
+        <a href="https://localserve-g1ne.onrender.com/" target="_blank" style="color: #2b6cb0; text-decoration: underline;">https://localserve-g1ne.onrender.com/</a></p>
+        
+        <p style="font-size: 16px;"><strong>Admin Site Live Link:</strong> <br>
+        <a href="https://localserve-g1ne.onrender.com/Admin-Dashboard/index.html" target="_blank" style="color: #2b6cb0; text-decoration: underline;">https://localserve-g1ne.onrender.com/Admin-Dashboard/index.html</a></p>
+        
+        <div style="margin-top: 20px;">
+            <p style="margin: 0 0 8px 0; font-size: 16px;"><strong>To login in Admin site use:</strong></p>
+            <p style="margin: 0; font-family: monospace; font-size: 16px;"><strong>Username:</strong> groupAdmin</p>
+            <p style="margin: 0; font-family: monospace; font-size: 16px;"><strong>Password:</strong> groupAdmin</p>
+        </div>
+    </div>
+
+</body>
+</html>
