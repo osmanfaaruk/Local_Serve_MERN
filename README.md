@@ -79,3 +79,5 @@ A full-stack local service provider directory connecting professional service pr
 
 ---
 © 2026 LocalServe Directory. Built for excellence.
+
+changes from new mac
