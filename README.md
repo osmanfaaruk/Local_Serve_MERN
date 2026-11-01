@@ -43,41 +43,6 @@ A full-stack local service provider directory connecting professional service pr
 - JSON Web Token (JWT) for secure sessions
 - Bcrypt.js for password hashing
 
-## ⚙️ How to Run Locally
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/osmanfaaruk/Local_Serve_MERN.git
-   ```
-
-2. **Setup Environment Variables:**
-   Create a `.env` file in the root directory and add:
-   ```env
-   PORT=5000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secure_secret_key
-   ```
-
-3. **Install Dependencies:**
-   ```bash
-   npm install
-   ```
-
-4. **Start the Server:**
-   ```bash
-   npm run dev
-   ```
-
-5. **Access the Website:**
-   Open `User-Website/index.html` using **Live Server** in VS Code.
-
-## 🔐 Default Admin Credentials
-
-- **Username:** `groupAdmin`
-- **Password:** `gorupProject`
-*(Can be changed from Admin Settings after login)*
-
----
-© 2026 LocalServe Directory. Built for excellence.
 
 changes from new mac
